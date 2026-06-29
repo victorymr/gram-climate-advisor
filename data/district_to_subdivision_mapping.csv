@@ -1,0 +1,11 @@
+state,district,meteorological_subdivision,imd_table_row,confidence_level,source
+Bihar,Gaya,BIHAR,9,High,Verified from IMD table row labels
+Bihar,Patna,BIHAR,9,High,Verified from IMD table row labels
+Uttar Pradesh,Varanasi,EAST U.P.,10,High,Verified from IMD table row labels
+Uttar Pradesh,Lucknow,WEST U.P.,11,High,Corrected: Lucknow is in West UP (was incorrectly mapped to East UP)
+Maharashtra,Yavatmal,VIDARBHA,26,High,Verified from IMD table row labels
+Maharashtra,Nagpur,VIDARBHA,26,High,Verified from IMD table row labels
+Rajasthan,Jaipur,WEST RAJASTHAN,17,High,Verified from IMD table row labels
+Rajasthan,Jodhpur,WEST RAJASTHAN,17,High,Verified from IMD table row labels
+Andhra Pradesh,Anantapur,RAYALASEEMA,30,High,Corrected: Anantapur is in Rayalaseema (was incorrectly mapped to SIK)
+Andhra Pradesh,Kurnool,RAYALASEEMA,30,High,Corrected: Kurnool is in Rayalaseema (was incorrectly mapped to SIK)

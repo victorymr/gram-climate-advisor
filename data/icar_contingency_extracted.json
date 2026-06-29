@@ -1,0 +1,832 @@
+[
+  {
+    "state": "Bihar",
+    "district": "Gaya",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "season situation system including variety Implementation",
+          "\uf0b7 Balanced use of fertilizers",
+          "wati, Rajendra Suwasni, \uf0b7 Drum seedling",
+          "Prabhat, Kuwan \uf0b7 Balanced use of fertilizers",
+          "Low land Rice \u2013 Wheat Rice \u2013 Wheat \uf0b7 Interculture for timely weed",
+          "Rice \u2013 Wheat \u2013 Rice- Sita , RM -1, Rajendra control in direct seeded rice"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "At vegetative stage Upland Pigeonpea- Pigeonpea \uf0b7 Gap filling of existing crop \uf0b7 Inter culturing",
+          "Sandy to Sandy loam \uf0b7 Mulching",
+          "\uf0b7 Life saving irrigation",
+          "Maize \u2013 vegetables vegetative growth \uf0b7 Mulching",
+          "Ganga-11, Deoki,Pusa early hybrid \uf0b7 Life saving irrigation"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [],
+        "section_found": false
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "2.2 Unusual rains (untimely, unseasonal etc) (for both rainfed and irrigated situations)",
+          "Continuous high Vegetative stage Flowering stage Crop maturity stage Post harvest",
+          "span leading to water",
+          "Rice \uf0b7 Drainage management \uf0b7 Drainage management \uf0b7 Drainage management Storage at safer place",
+          "\uf0b7 Re transplanting through \uf0b7 Subsequent crop if totally \uf0b7 Subsequent crop if totally",
+          "\uf0b7 Gap filling \uf0b7 Harvest at physiological maturity"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Sea water intrusion \u221a",
+          "season situation system including variety Implementation",
+          "\uf0b7 Balanced use of fertilizers",
+          "wati, Rajendra Suwasni, \uf0b7 Drum seedling",
+          "Prabhat, Kuwan \uf0b7 Balanced use of fertilizers",
+          "Low land Rice \u2013 Wheat Rice \u2013 Wheat \uf0b7 Interculture for timely weed"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Bihar",
+    "district": "Patna",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "sorghum",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situation including variety Implementation",
+          "Rice-Oilseeds/ Rice-Potato/ Rice- Rice: Prefer medium to long practices",
+          "Chickpea/ duration varieties \uf0b7 Direct sowing of rice",
+          "Rice- Linseed/ \uf0b7 Direct seeding of",
+          "Wheat/Chickpea/Linseed/ Rice : Rajendra Bhagawati, under sufficient soil",
+          "Rice-Pulses/ Rice \u2013Lentil/ fertilizers especially"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "At vegetative stage Upland Rice \u2013Wheat/ \uf0b7 Gap filling of existing crop \uf0b7 Inter culturing",
+          "Rice \u2013Pulses/ \uf0b7 Postponement of top \uf0b7 Mulching",
+          "\uf0b7 Foliar spray with (1%)",
+          "\uf0b7 Life saving irrigation",
+          "Rice \u2013Oilseeds/",
+          "\uf0b7 Life saving irrigation 2% MOP"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Rice \u2013Chickpea/ \uf0b7 Mulching evening, leave it open",
+          "Rice-Mustard/ \uf0b7 Life saving irrigation overnight and plank next",
+          "growing early rabi crops like",
+          "Rice-Linseed Wheat, Rabi Maize/Pulses",
+          "/Oilseeds/ Vegetables etc.",
+          "Mustard/ Rai/Linseed"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "2.2 Unusual rains (untimely, unseasonal etc) (for both rainfed and irrigated situations)",
+          "Continuous high rainfall in a Vegetative stage Flowering stage Crop maturity stage Post harvest",
+          "short span leading to water",
+          "Rice \uf0b7 Drainage management \uf0b7 Drainage management \uf0b7 Drainage management \uf0b7 Proper drying",
+          "\uf0b7 Gap filling, if required \uf0b7 Subsequent crop like Toria \uf0b7 Harvest at physiological \uf0b7 Safer storage and",
+          "\uf0b7 Resowing through drum seeder may be taken if present maturity Transportation"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Sea water intrusion \u221a",
+          "drought (delayed situation including variety Implementation",
+          "Rice-Oilseeds/ Rice-Potato/ Rice- Rice: Prefer medium to long practices",
+          "Chickpea/ duration varieties \uf0b7 Direct sowing of rice",
+          "Rice- Linseed/ \uf0b7 Direct seeding of",
+          "Wheat/Chickpea/Linseed/ Rice : Rajendra Bhagawati, under sufficient soil"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "At vegetative stage Upland Rice \u2013Wheat/ \uf0b7 Gap filling of existing crop \uf0b7 Inter culturing",
+          "Rice \u2013Pulses/ \uf0b7 Postponement of top \uf0b7 Mulching",
+          "\uf0b7 Foliar spray with (1%)",
+          "\uf0b7 Life saving irrigation",
+          "Rice \u2013Oilseeds/",
+          "\uf0b7 Life saving irrigation 2% MOP"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Varanasi",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "blackgram",
+      "chickpea",
+      "greengram",
+      "lentil",
+      "maize",
+      "mustard",
+      "pearl millet",
+      "pigeonpea",
+      "ragi",
+      "rice",
+      "sesame",
+      "sorghum",
+      "sugarcane",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situation system system including variety Implementation",
+          "Delay by 2 weeks Deep Alluvial soils Sequence cropping Rice short duration varieties: Sowing with seed cum Breeder seed may be",
+          "Uplands Deep, Vandana, Govind slope and resowing in University (NDUAT)",
+          "germination. Seed drills under RKVY",
+          "Rice \u2013Wheat Weed management Supply of seeds through",
+          "Pearl millet- Chickpea through dryland weeder NFSM"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "At vegetative stage Deep Alluvial soils Sequence cropping Life saving irrigation(5 cm) if Use of additional N",
+          "Dust/ straw mulch (4 t/ha) Spray of 2% urea as",
+          "Inter cropping system Earthing up in intercrops Conservation tillage",
+          "Thinning to maintain proper Spray of 2% urea as",
+          "distance between the plants foliar application",
+          "At flowering/ Deep Alluvial soils Sequence cropping Life saving irrigation(5 cm) if 1) Spraying of 2% urea Farmers may be advised"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Deep Alluvial soils Sequence cropping Life saving irrigation Sowing of toria in the Farmers may be advised",
+          "Dust/ straw mulch",
+          "Pearl millet- Chickpea Harvesting at physiological rotavater",
+          "Inter cropping system Harvesting of intercrop at",
+          "Earthing up in main crop",
+          "2.1.2 Drought - Irrigated situation"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Gross irrigated area 134.073",
+          "Sources of Irrigation Number Area (\u2018000 ha) Percentage of total irrigated area",
+          "Lift irrigation schemes 01",
+          "Micro-irrigation 14",
+          "Total Irrigated Area 82.206",
+          "Groundwater availability No. of blocks \u2013 8 (%) area Quality of water"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Horticultural Crops - Area (\u2018000 ha)",
+          "Total Irrigated Rainfed",
+          "Horticulture crops - Total Irrigated Rainfed",
+          "Medicinal and Aromatic Total Irrigated Rainfed",
+          "Plantation crops Total Irrigated Rainfed",
+          "Fodder crops Total Irrigated Rainfed"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Lucknow",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "ragi",
+      "rice",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situationa systemb cropping systemc Implementatione",
+          "onset) including variety",
+          "Sandy Loam Rice \u2013Lentil/ Mustard No change Short duration Varieties of To be Linked with",
+          "Delay by 2 weeks Paddy SDC/NSC for Seed",
+          "(1st week of Weed management, and Zero till seed",
+          "bajra showing, Earthing Weed"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Rice \u2013Lentil/ Mustard No change Life saving irrigation,",
+          "At vegetative stage Mulching, Weed"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "2.1.2 Drought - Irrigated situation",
+          "water in canals pant-12, NDR-359, CSR-36,CSR-43, \uf0b7 Provide",
+          "due to low rainfall NDR-97, NDR-118,Sahbhagi, irrigation at",
+          "Black gram Prefer varieties Azad Urd-2, Pant \uf0b7 Weed",
+          "water in canals \uf0b7 Provide",
+          "due to low rainfall irrigation at"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "2.2 Unusual rains (untimely, unseasonal etc) (for both rainfed and irrigated situations)",
+          "Continuous high rainfall in a Vegetative stage Flowering stage Crop maturity stage Post harvest",
+          "short span leading to water",
+          "Paddy Bunds repairing Strengthen of Bunds Harvest at physiological",
+          "Drain out excess water",
+          "Urd Drain out excess water Drain out excess water Harvest at physiological"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Horticulture crops - Area (\u2018000 ha)",
+          "Fruits Total Irrigated Rainfed",
+          "Horticulture crops - Total Irrigated Rainfed",
+          "1.7 Major Fodder crops cultivated Area(ha) Total",
+          "1.8 Production and productivity of major crops (Average of last 5 years)",
+          "1.8 Major field crops Area(\u2018000 ha)"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "Rice \u2013Lentil/ Mustard No change Life saving irrigation,",
+          "At vegetative stage Mulching, Weed",
+          "2.1.2 Drought - Irrigated situation",
+          "water in canals pant-12, NDR-359, CSR-36,CSR-43, \uf0b7 Provide",
+          "due to low rainfall NDR-97, NDR-118,Sahbhagi, irrigation at",
+          "Black gram Prefer varieties Azad Urd-2, Pant \uf0b7 Weed"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Yavatmal",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "ragi",
+      "rice",
+      "sesame",
+      "sorghum",
+      "soybean",
+      "sunflower",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situation Cropping cropping system Implementation",
+          "onset) system including variety",
+          "Intercropping PDKV, Akola",
+          "Blackgram 1:1 intercropping system.)",
+          "PDKV, Akola (Test GP% Use seed rate @ 75-80kg/ha",
+          "Seed Treatment with Rhizobium+ PSB (250gm each"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "At vegetative stage Deep to Medium Bt Cotton Protective irrigation if Spraying of 2 % urea or",
+          "Cotton +Tur Intercropping weeding Avoid applying With limited water",
+          "Intercultivation to create fertilizer till there is availability prefer micro",
+          "soil mulch to conserve sufficient moisture in the irrigation system",
+          "moisture. Protective soil.Opening of alternate Intercultivation implements/",
+          "irrigation if possible. furrows. machineries to be popularized"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "(Early withdrawal situation Crop/cropping Implementation",
+          "deep black soils Intercropping irrigation, if available or taking",
+          "up harvest at physiological",
+          "Greengram Giving supplemental irrigation, Prepare for rabi sowing -",
+          "Blackgram if available or taking up harvest Provided irrigation is available",
+          "2.1.2 Irrigated situation :"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "1.3 Land use Geographical Cultivable Forest Land under Permanent Cultivable Land under Barren and Current Other",
+          "district (latest tree crops",
+          "1.5 Agricultural land use Area (\u2018000 ha)* Cropping intensity % **",
+          "Net sown area 884",
+          "Area sown more than once 15 101.6",
+          "Gross cropped area 899"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "1.3 Land use Geographical Cultivable Forest Land under Permanent Cultivable Land under Barren and Current Other",
+          "district (latest tree crops",
+          "1.5 Agricultural land use Area (\u2018000 ha)* Cropping intensity % **",
+          "Net sown area 884",
+          "Area sown more than once 15 101.6",
+          "Gross cropped area 899"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "castor",
+      "chickpea",
+      "cotton",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "ragi",
+      "rice",
+      "sesame",
+      "sorghum",
+      "soybean",
+      "sugarcane",
+      "sunflower",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situation Cropping system cropping system Implementation",
+          "onset) including variety",
+          "Cotton+Tur No change (Cotton + Pigeonpea 6:2/8:2 & intercropping system.) Linkage with",
+          "Intercropping Dr.PDKV / MSSC",
+          "25th June- 1st July Soybean No change Test GP% Use seed rate @ 75-80kg/ha Seed Treatment",
+          "with Rhizobium+ PSB (250gm each /10Kg seed +"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long situation Crop/cropping measures Implementation",
+          "Deep to Medium Bt Cotton Weeding Avoid applying fertilizer till there is With limited water",
+          "At vegetative deep black soils Intercultivation to create soil mulch to sufficient moisture in the soil. availability prefer",
+          "stage conserve moisture. Protective irrigation Opening of alternate furrows. micro irrigation",
+          "Intercropping implements/",
+          "Paddy Life saving irrigation Application of nitrogenous fertilizers at"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "(Early withdrawal situation Crop/cropping Implementation",
+          "black soils irrigation, if available or taking -",
+          "up harvest at physiological",
+          "black soils (Transplanted) kg N) under Protective irrigation.",
+          "(Kh. Jowar) irrigation, if available or taking",
+          "(Transplanted ) kg N) under Protective irrigation."
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "(Shore Seines, plants",
+          "Water Spread Area (ha) Yield Production (\u2018000",
+          "i) Brackish water (Data Source: MPEDA/ Fisheries Department) - - -",
+          "ii) Fresh water (Data Source: Fisheries Department) 15000 0.73 10900",
+          "1.11 Production and Productivity of major crops (Average of last 5 years: 2004, 05, 06, 07, 08; specify)",
+          "1.11 Name of Kharif Rabi Summer Total Crop"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "(Shore Seines, plants",
+          "Water Spread Area (ha) Yield Production (\u2018000",
+          "i) Brackish water (Data Source: MPEDA/ Fisheries Department) - - -",
+          "ii) Fresh water (Data Source: Fisheries Department) 15000 0.73 10900",
+          "1.11 Production and Productivity of major crops (Average of last 5 years: 2004, 05, 06, 07, 08; specify)",
+          "1.11 Name of Kharif Rabi Summer Total Crop"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "Deep to Medium Bt Cotton Weeding Avoid applying fertilizer till there is With limited water",
+          "At vegetative deep black soils Intercultivation to create soil mulch to sufficient moisture in the soil. availability prefer",
+          "stage conserve moisture. Protective irrigation Opening of alternate furrows. micro irrigation",
+          "Intercropping implements/",
+          "Paddy Life saving irrigation Application of nitrogenous fertilizers at",
+          "(Transplanted ) sufficient soil moisture. Interculture"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jaipur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "cotton",
+      "greengram",
+      "groundnut",
+      "maize",
+      "mustard",
+      "pearl millet",
+      "sesame",
+      "sorghum",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought situation system system including variety measures Implementation",
+          "Delay by 2 Deep brown Pearl millet-Fallow No change Use recommended Seed source",
+          "weeks loamy soil (low practice of fertilizer 1.NSSC",
+          "sandy soil measures like mulch",
+          "Delay by 4 Deep brown Pearl millet-Fallow Green gram-fallow Uprooting of weeds & Seed source",
+          "weeks loamy soil (low using them as mulch 1.NSSC"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Deep brown Pearl millet Removal of alternate rows Hoeing & weeding to",
+          "At vegetative loamy soil (low conserve moisture",
+          "Deep dark brown Sorghum Spray of thiourea @",
+          "sandy soil 500 ppm to conserve",
+          "Deep brown Pearl millet Harvest of Kharif crops and Do not take rabi crops",
+          "At flowering/ loamy soil (low using them as fodder"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [],
+        "section_found": false
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "1.5 Agricultural land use (2007-8) Area (\u2018000 ha) Cropping intensity %",
+          "Net sown area 641.2 140.0",
+          "Area sown more than once 254.2",
+          "Gross cropped area 895.5",
+          "1.6 Irrigation (2007-8) Area (\u2018000 ha)",
+          "Net irrigated area 296.2"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "1.12 Sowing window for 5 Pearlmillet Groundnut Wheat Barley Gram",
+          "major field crops",
+          "Kharif-Irrigated - June-July - - -",
+          "Rabi-Irrigated - - Ocober-November Ocober- -",
+          "Sea water intrusion \u221a",
+          "drought situation system system including variety measures Implementation"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "1.3 Land use Geographical Cultivable Forest Land under Permanent Cultivable Land Barren and Current Other",
+          "district (latest agricultural use Misc. land",
+          "1.5 Agricultural land use (2007-8) Area (\u2018000 ha) Cropping intensity %",
+          "Net sown area 641.2 140.0",
+          "Area sown more than once 254.2",
+          "Gross cropped area 895.5"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jodhpur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "maize",
+      "mustard",
+      "pearl millet",
+      "ragi",
+      "sesame",
+      "sorghum",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed situation Cropping system including variety Implementation",
+          "Low rain fall, Pearl millet No change \u2022 Use press wheel behind tine to \u2022 Use certified seed",
+          "( 3rd week July) undulating inter- \u2022 Seed soaking with thiourea SAU",
+          "dunal spaces/ Deep (0.05%) for four hours \u2022 Provide subsidy by",
+          "Mothbean No change Seed soaking with thiourea (0.05%)",
+          "Greengram No change Seed soaking with thiourea (0.05%)"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long dry situation Crop/cropping conservation measures Implementation",
+          "Low rain fall, Pearl millet Remove 25% within row Dust and vegetative mulch Water harvesting",
+          "Sand Dunes with Timely weed control by \u2022 Delay top dressing urea structures be constructed",
+          "At vegetative stage dunal spaces/ Deep wheel hand hoe \u2022 Provide life saving irrigation if under MGNREGA, NHM,",
+          "Coarse to fine \u2022 Spray of thiourea at 500 ppm etc",
+          "textured hard pan Provide subsidy for"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "situation Crop/cropping measues Implementation",
+          "(Early withdrawal Low rain fall, Pearl millet Life saving irrigation if feasible Sowing of Barley using poor Link watersheds,",
+          "of monsoon) Sand Dunes with If damage will be severe, harvest for quality water in Luni basin NREGS for water",
+          "undulating inter- harvesting technology",
+          "sandy plain/ Coarse Sesame Life saving irrigation if feasible -",
+          "If damage will be severe, harvest for"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [],
+        "section_found": false
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Lift irrigation schemes - - -",
+          "Micro-irrigation - - -",
+          "Total Irrigated Area - 10",
+          "Groundwater availability and use* (Data No. of blocks/ (%) area Quality of water (specify the problem",
+          "source: State/Central Ground water Tehsils such as high levels of arsenic, fluoride,",
+          "Wastewater availability and use - -"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "Sand Dunes with Timely weed control by \u2022 Delay top dressing urea structures be constructed",
+          "At vegetative stage dunal spaces/ Deep wheel hand hoe \u2022 Provide life saving irrigation if under MGNREGA, NHM,",
+          "Coarse to fine \u2022 Spray of thiourea at 500 ppm etc",
+          "textured hard pan Provide subsidy for",
+          "soils Sesame Timely weed control \u2022 Spray of Urea (2%), Provide life thiourea",
+          "saving irrigation."
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Anantapur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "pearl millet",
+      "ragi",
+      "rice",
+      "sorghum",
+      "sunflower"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "(Specify month) 30) intercropping (7:1) Redgram (LRG-30)",
+          "(Specify month) Shallow red soils (15:1) inter cropping",
+          "Delay by 6 weeks Shallow red soils Groundnut + Redgram Pure crop of Jowar (CSH-9, Jowar / pearl millet are",
+          "(Specify month) intercropping system 13, CSV-12, 13, NTJ1-3) / cut for fodder at 45",
+          "Groundnut + Redgram Pure crop of Jowar (fodder) 1. Jowar / Pearlmillet are -",
+          "Delay by 8 weeks Shallow red soils intercropping system PGH-1 & 2) / Pearlmillet cut for fodder at 45DAS"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "At vegetative Shallow red soils Groundnut + Redgram Protect the crop from Thrips Mulching with groundnut",
+          "Shallow red soils Groundnut + Redgram Supplemental irrigation with Digging of farm",
+          "At reproductive harvested rain water in ponds ponds may be",
+          "micro-irrigation (Sprinklers) NREC"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "shallow red soils Groundnut + Redgram Supplemental irrigation with Digging of farm",
+          "harvested rain water in ponds ponds may be",
+          "irrigation. NREC",
+          "2.1.2 Irrigated situation",
+          "(Note: provide agronomic measures in each table under irrigated situation)",
+          "Delayed/ limited 1. Red soils Paddy ID crops like groundnut (oct 16th \u2013"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "2.2 Unusual rains (untimely, unseasonal etc) (for both rainfed and irrigated situations)",
+          "Continuous high rainfall Vegetative stage Flowering stage Crop maturity stage Post harvest",
+          "Groundnut ---- Drain excess water Weather based 1. Shifting of produce immediately after",
+          "Timely plant protection advisory to be drying",
+          "measures are to be taken against followed for 2 Threshing on 5th day after harvest of",
+          "LLS, rust and stem rot harvesting. groundnut crop."
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Lift irrigation",
+          "Micro-irrigation",
+          "Groundwater availability and use No. of blocks % area Quality of water",
+          "Wastewater availability and use 1443.25 NA",
+          "Area under major field crops & horticulture etc.",
+          "*If break-up data (irrigated, rainfed) is not available, give total area"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "At vegetative Shallow red soils Groundnut + Redgram Protect the crop from Thrips Mulching with groundnut",
+          "Shallow red soils Groundnut + Redgram Supplemental irrigation with Digging of farm",
+          "At reproductive harvested rain water in ponds ponds may be",
+          "micro-irrigation (Sprinklers) NREC",
+          "shallow red soils Groundnut + Redgram Supplemental irrigation with Digging of farm",
+          "harvested rain water in ponds ponds may be"
+        ],
+        "section_found": true
+      }
+    }
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Kurnool",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/Crop_Contingency_Plan.html",
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "ragi",
+      "rice",
+      "sorghum",
+      "sunflower"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed Farming Crop/cropping system crop/cropping Agronomic measures",
+          "Red soils intercropping",
+          "Farming Crop/cropping system crop/cropping Agronomic measures",
+          "Red soils Redgram intercropping"
+        ],
+        "section_found": true
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Crop/cropping system Crop management Soil management",
+          "Rainfed \u2013 Red Protect the crop from thrips to 1. Mulching with Link with",
+          "soils avoid PBND and PSND groundnut shells MGNREGS",
+          "Spraying of 2 % urea intercultivation to",
+          "Redgram intercropping",
+          "conserve soil moisture"
+        ],
+        "section_found": true
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Sunflower Protctive irrigation through farm ponds",
+          "2.1.2 Irrigated situation",
+          "Crop/cropping systemg Agronomic measuresi",
+          "Planting of aged",
+          "Canal irrigated",
+          "seedlings of paddy"
+        ],
+        "section_found": true
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Lift irrigation",
+          "Micro-irrigation --",
+          "Groundwater availability and use No. of blocks % area Quality of water",
+          "Wastewater availability and use",
+          "Area under major field crops & horticulture etc.",
+          "*If break-up data (irrigated, rainfed) is not available, give total area"
+        ],
+        "section_found": true
+      },
+      "heat_stress": {
+        "crop_actions": [
+          "Sea water inundation",
+          "drought (delayed Farming Crop/cropping system crop/cropping Agronomic measures",
+          "Red soils intercropping",
+          "Farming Crop/cropping system crop/cropping Agronomic measures",
+          "Red soils Redgram intercropping"
+        ],
+        "section_found": true
+      },
+      "livestock": {
+        "actions": [
+          "Horticulture crops - Fruits Total area",
+          "Horticultural crops- flowers Total area",
+          "Spice crops Total area"
+        ],
+        "section_found": true
+      }
+    }
+  }
+]

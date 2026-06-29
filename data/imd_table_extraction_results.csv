@@ -1,0 +1,11 @@
+state,district,met_subdivision,row_number,col_1_3_jun,col_10_jun,col_17_jun,col_24_jun,last_2_weeks_trend,cumulative_estimate,confidence,notes
+Bihar,Gaya,BIHAR,9,White (No Rain),White (No Rain),White (No Rain),White (No Rain),No Rain both weeks,Large Deficient: no rain received since June 1,High,All 4 columns show White - no monsoon onset in Bihar yet
+Bihar,Patna,BIHAR,9,White (No Rain),White (No Rain),White (No Rain),White (No Rain),No Rain both weeks,Large Deficient: no rain received since June 1,High,Same row as Gaya - all White
+Uttar Pradesh,Varanasi,EAST U.P.,10,Green (Normal),Green (Normal),Red (Deficient),Green (Normal),Deficient then Normal recovery,Near Normal cumulative: 2 Normal + 1 Deficient + 1 Normal,High,Week of 17-Jun was deficient but recovered by 24-Jun
+Uttar Pradesh,Lucknow,WEST U.P.,11,White (No Rain),White (No Rain),Red (Deficient),Green (Normal),No Rain then Deficient then Normal,Deficient cumulative: late start with recent recovery,High,Corrected: Lucknow is in West UP not East UP
+Maharashtra,Yavatmal,VIDARBHA,26,Green (Normal),Red (Deficient),Green (Normal),Green (Normal),Normal both recent weeks,Near Normal cumulative: 1 Normal + 1 Deficient + 2 Normal,High,Early deficiency in mid-June recovered
+Maharashtra,Nagpur,VIDARBHA,26,Green (Normal),Red (Deficient),Green (Normal),Green (Normal),Normal both recent weeks,Near Normal cumulative: same as Yavatmal,High,Same subdivision row as Yavatmal
+Rajasthan,Jaipur,WEST RAJASTHAN,17,White (No Rain),White (No Rain),Light Blue (Excess),Dark Blue (Large Excess),Excess then Large Excess,Excess cumulative: strong late-June rainfall surge,High,Dramatic shift from no rain to large excess in recent 2 weeks
+Rajasthan,Jodhpur,WEST RAJASTHAN,17,White (No Rain),White (No Rain),Light Blue (Excess),Dark Blue (Large Excess),Excess then Large Excess,Excess cumulative: same pattern as Jaipur,High,Same subdivision row as Jaipur
+Andhra Pradesh,Anantapur,RAYALASEEMA,30,Red (Deficient),Red (Deficient),Green (Normal),Red (Deficient),Normal then Deficient,Deficient cumulative: 3 Deficient + 1 Normal,High,Corrected: Anantapur is in Rayalaseema not SIK
+Andhra Pradesh,Kurnool,RAYALASEEMA,30,Red (Deficient),Red (Deficient),Green (Normal),Red (Deficient),Normal then Deficient,Deficient cumulative: same as Anantapur,High,Same subdivision row as Anantapur

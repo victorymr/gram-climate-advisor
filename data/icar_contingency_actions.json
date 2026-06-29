@@ -1,0 +1,1422 @@
+[
+  {
+    "state": "Bihar",
+    "district": "Gaya",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP/Bihar/BR17_Gaya%20_28.12.2013.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Gaya advisory",
+      "Bihar Agricultural University"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "fingermillet",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use short-duration rice varieties like 'Saket' and 'NDR-359'",
+          "Consider maize as alternative crop if sowing window is missed",
+          "Apply seed treatment with bio-fertilizers for better germination"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season",
+          "Ensure drinking water availability through traditional water sources",
+          "Prepare fodder banks using crop residues"
+        ],
+        "local_override_notes": [
+          "Local KVK recommends direct-seeded rice method for delayed sowing",
+          "Maize variety 'HQPM-1' suitable for late planting in Gaya district"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Balanced use of fertilizers",
+          "Application of manures",
+          "Raise staggered community nursery preferably with medium duration varieties in mid and lowlands"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Assess germination and plant stand regularly",
+          "Use protective irrigation if available (check dams, farm ponds)",
+          "Apply light irrigation to save seedlings",
+          "Consider gap filling with fresh seed if germination is poor"
+        ],
+        "livestock_actions": [
+          "Plan fodder supplementation with concentrate feed",
+          "Protect water sources from evaporation using covers",
+          "Schedule grazing during cooler parts of the day"
+        ],
+        "local_override_notes": [
+          "Gaya region has limited irrigation infrastructure, prioritize critical crops",
+          "KVK suggests mulching techniques for moisture conservation"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation during flowering stage for rice",
+          "Delay fertilizer application until rainfall resumes",
+          "Adopt interculture operations to conserve soil moisture",
+          "Apply foliar spray of urea during moisture stress"
+        ],
+        "livestock_actions": [
+          "Plan fodder supplementation with stored crop residues",
+          "Protect water sources and prioritize drinking water",
+          "Consider staggered grazing patterns"
+        ],
+        "local_override_notes": [
+          "Rice at flowering stage is most vulnerable in Gaya district",
+          "Local varieties show better drought tolerance during mid-season"
+        ],
+        "icar_pdf_actions": [
+          "Pre sowing irrigation",
+          "Life saving irrigation",
+          "Gap filling of existing crop",
+          "Inter culturing"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize irrigation for rice at reproductive stage",
+          "Avoid fertilizer application without moisture",
+          "Plan early harvest for pulse crops if conditions worsen",
+          "Store crop residues for fodder"
+        ],
+        "livestock_actions": [
+          "Prepare for fodder shortage contingency plans",
+          "Protect drinking water sources for livestock",
+          "Coordinate with village-level fodder banks"
+        ],
+        "local_override_notes": [
+          "Terminal drought common in Gaya during El Niño years",
+          "Local farmers traditionally practice mixed cropping for risk mitigation"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Clear drainage channels in rice fields immediately",
+          "Avoid fertilizer application during heavy rainfall",
+          "Monitor for pest and disease outbreaks after water recedes",
+          "Apply fungicide preventively if waterlogging exceeds 48 hours"
+        ],
+        "livestock_actions": [
+          "Move livestock away from flood-prone low-lying areas",
+          "Protect stored fodder from water damage",
+          "Ensure access to dry fodder and clean drinking water"
+        ],
+        "local_override_notes": [
+          "Gaya has good natural drainage but flash floods occur in monsoon",
+          "Local varieties of rice show better waterlogging tolerance"
+        ],
+        "icar_pdf_actions": [
+          "Life saving irrigation",
+          "Enhanced dose of nitrogen with full basal dose of NPK at transplanting",
+          "40-45 days old seedlings may be used with four seedlings per hill with close spacing",
+          "Drainage management"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Sowing window for 5 major field crops (start and end of normal sowing period)",
+          "Kharif-Irrigated",
+          "Location map of district within State as Annexure I",
+          "Provide irrigation"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/gaya.pdf"
+  },
+  {
+    "state": "Bihar",
+    "district": "Patna",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP/Bihar/BR27_Patna_28.12.2013.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Patna advisory",
+      "Rajendra Agricultural University"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "fingermillet",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use short-duration rice varieties like 'Rajendra Sweta' and 'Saket'",
+          "Consider hybrid maize as alternative crop",
+          "Apply seed treatment with Azospirillum for better establishment"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season",
+          "Ensure drinking water availability through tubewells",
+          "Prepare silage from available green fodder"
+        ],
+        "local_override_notes": [
+          "Patna district has better irrigation facilities than other Bihar districts",
+          "Hybrid maize 'Pioneer 3396' recommended for late planting"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "No change Rice: Prefer medium to long duration varieties",
+          "Direct sowing of rice can also be done",
+          "Direct seeding of drought tolerant varieties in dry soil in June/ July with pre emergence herbicide application under sufficient soil moisture conditions."
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Use supplemental irrigation from tubewells and canals",
+          "Apply light irrigation to save seedlings",
+          "Consider re-sowing if plant stand is very poor",
+          "Use drought-tolerant vegetable varieties"
+        ],
+        "livestock_actions": [
+          "Utilize available green fodder efficiently",
+          "Provide mineral mixture supplementation",
+          "Schedule grazing during early morning and evening"
+        ],
+        "local_override_notes": [
+          "Patna has good groundwater availability for supplemental irrigation",
+          "KVK recommends micro-irrigation for vegetable crops"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation during critical crop stages",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Utilize stored fodder judiciously",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Rice at panicle initiation stage most vulnerable in Patna",
+          "Local farmers practice alternate wetting and drying for water saving"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize water for high-value vegetable crops",
+          "Plan early harvest for pulse crops",
+          "Store crop residues for fodder use",
+          "Avoid late fertilizer applications"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies",
+          "Consider purchasing supplemental feed",
+          "Protect livestock from heat stress"
+        ],
+        "local_override_notes": [
+          "Terminal drought affects vegetable crops severely in Patna",
+          "Local markets provide alternative fodder options"
+        ],
+        "icar_pdf_actions": [
+          "Foliar application with 2% MOP",
+          "Life saving irrigation",
+          "Rice (Short duration) – Late sown Wheat/Pulses/Mustard/Potato Vegetables –Wheat Rice:Prabhat, Dhanlaxmi, Richharia, Turanta",
+          " Life saving irrigation"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in vegetable fields",
+          "Apply fungicide preventively for vegetable crops",
+          "Monitor for disease outbreaks in rice",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to elevated areas",
+          "Protect stored feed from moisture",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Patna's alluvial soil has good drainage but can get waterlogged",
+          "Vegetable crops more susceptible to waterlogging than rice"
+        ],
+        "icar_pdf_actions": [
+          "Drainage management",
+          "Gap filling, if required",
+          "Resowing through drum seeder",
+          "Re transplanting through Dapog nursery if needed"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure I",
+          "Re-transplanting if damaged after receding of floods",
+          "Re-sowing, gap filling",
+          "Re-sowing, if damaged after receding of floods"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/patna.pdf"
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Varanasi",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Uttar%20Pradesh/UP21-Varanasi-27.09.2012.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Varanasi advisory",
+      "Institute of Agricultural Sciences, BHU"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "sugarcane",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay rice transplantation until adequate water availability",
+          "Use short-duration rice varieties like 'NDR-97' and 'Sarjoo-52'",
+          "Consider direct-seeded rice method to save water",
+          "Apply organic manure to improve soil moisture retention"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from wheat harvest residues",
+          "Ensure drinking water availability through wells and handpumps",
+          "Prepare green fodder from available grasslands"
+        ],
+        "local_override_notes": [
+          "Varanasi region traditionally practices rice transplantation",
+          "BHU recommends System of Rice Intensification (SRI) for water saving"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Rice short duration varieties: NDR 97, NDR 118, Barani Deep, Vandana, Govind",
+          "Sowing of Pigeonpea + Sesame on ridges Wider spacing of Pigeon pea 90cm and normal spacing of Sesame i. e. 30 cm for mono culmed and 45 cm for branched genotypes",
+          "Resowing of crops to have proper germination Intercultivation , thinning, conservation furrow Sowing the crops through seed cum ferti drills Split application of nutrients wherever necessary"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Use supplemental irrigation from wells and canals",
+          "Apply light irrigation to save transplanted rice seedlings",
+          "Consider gap filling in rice fields",
+          "Use mulching for vegetable crops"
+        ],
+        "livestock_actions": [
+          "Utilize wheat straw as fodder supplement",
+          "Provide adequate mineral supplementation",
+          "Schedule grazing during cooler periods"
+        ],
+        "local_override_notes": [
+          "Varanasi has good groundwater availability for supplemental irrigation",
+          "Local farmers practice traditional water conservation methods"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation during rice flowering stage",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar spray of micronutrients",
+          "Monitor for pest outbreaks in rice"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Rice at flowering stage most vulnerable in Varanasi region",
+          "Local varieties show better drought tolerance"
+        ],
+        "icar_pdf_actions": [
+          "Earthing up in maincrops. Thinning to maintain proper distance between the plants",
+          "Conservation tillage Spray of 2% urea as foliar application",
+          "Life saving irrigation(5 cm) if possible Dust/ straw mulch (4 t/ha) Thinning Inter cultivation",
+          "Use of additional N @10kg/ha Spray of 2% urea as foliar application Conservation furrow"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize irrigation for rice at reproductive stage",
+          "Plan early harvest for pulse crops if needed",
+          "Store crop residues for fodder",
+          "Prepare for next wheat season with soil moisture conservation"
+        ],
+        "livestock_actions": [
+          "Prepare fodder banks for winter season",
+          "Protect livestock from heat and water stress",
+          "Coordinate with local fodder suppliers"
+        ],
+        "local_override_notes": [
+          "Terminal drought affects both kharif and subsequent rabi crops",
+          "Local farmers practice crop diversification for risk management"
+        ],
+        "icar_pdf_actions": [
+          "Life saving irrigation (5 cm) if possible Dust/ straw mulch Intercultivation Defoliate older leaves Harvesting at physiological maturity.",
+          "Sowing of toria in the month of September (Type 9 & Bhavani) Conservation tillage Deep ploughing with rotavater",
+          "Harvesting of intercrop at physiological maturity Earthing up in main crop",
+          "Deep Alluvial soils medium land Tube well- irrigated"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in rice and vegetable fields",
+          "Monitor for disease outbreaks in rice",
+          "Apply fungicide preventively for vegetable crops",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent diseases"
+        ],
+        "local_override_notes": [
+          "Varanasi's Gangetic plains have good natural drainage",
+          "Traditional water management practices effective during floods"
+        ],
+        "icar_pdf_actions": [
+          "Provide drainage",
+          "Proper bunding, drain out excess water",
+          "Harvest at physiological maturity",
+          "Drain out excess water, Sow on ridges"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure- I",
+          "Re sowing with short duration varities",
+          "Provide drainage",
+          "Harvesting at physiological maturity Shift to safer place"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/varanasi.pdf"
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Lucknow",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Uttar%20Pradesh/UP49-Lucknow-26.07.14.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Lucknow advisory",
+      "C.S. Azad University of Agriculture and Technology"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "rice",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay rice transplantation until adequate water availability",
+          "Use short-duration rice varieties like 'Sarjoo-52' and 'NDR-359'",
+          "Consider maize as alternative crop for late planting",
+          "Apply bio-fertilizers for better seedling establishment"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season harvests",
+          "Ensure drinking water availability through municipal and rural water supply",
+          "Prepare green fodder from available grasslands"
+        ],
+        "local_override_notes": [
+          "Lucknow district has good irrigation infrastructure",
+          "CSAUAT recommends hybrid maize for delayed planting"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping systemc including variety",
+          "Short duration Varieties of Paddy Weed management, DSR",
+          "Improved varieties, line showing, Earthing Weed Management",
+          "Weed management, Mulching with crop residue"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Use supplemental irrigation from canals and tubewells",
+          "Apply light irrigation to save transplanted rice seedlings",
+          "Consider re-sowing if plant stand is very poor",
+          "Use drought-tolerant vegetable varieties"
+        ],
+        "livestock_actions": [
+          "Utilize available green fodder efficiently",
+          "Provide mineral mixture supplementation",
+          "Schedule grazing during early morning and late evening"
+        ],
+        "local_override_notes": [
+          "Lucknow has reliable irrigation facilities for supplemental watering",
+          "KVK recommends drip irrigation for vegetable crops"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation during critical crop stages",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies judiciously",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Rice at flowering stage most critical in Lucknow district",
+          "Local farmers practice efficient water management techniques"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize water for high-value vegetable crops",
+          "Plan early harvest for pulse crops if conditions worsen",
+          "Store crop residues for fodder use",
+          "Prepare soil for upcoming wheat season"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies",
+          "Consider purchasing supplemental feed if needed",
+          "Protect livestock from heat stress"
+        ],
+        "local_override_notes": [
+          "Terminal drought affects vegetable cultivation severely",
+          "Lucknow's proximity to market enables fodder procurement"
+        ],
+        "icar_pdf_actions": [
+          "Life saving irrigation, Mulching, Weed management",
+          "1% KCL Foliar application",
+          "Inclusion of these varieties Sarju-52, pant-12, NDR-359, CSR-36,CSR-43, NDR-97, NDR-118,Sahbhagi, Susk samrat",
+          "Provide irrigation at hair line crack stage"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in all field crops",
+          "Apply fungicide preventively for vegetable crops",
+          "Monitor for disease outbreaks in rice and pulses",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to elevated areas",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Lucknow's urban-rural interface affects drainage patterns",
+          "Vegetable crops in peri-urban areas vulnerable to waterlogging"
+        ],
+        "icar_pdf_actions": [
+          "Tube well irrigated",
+          "Harvest at physiological maturity stage Drain out excess water",
+          "Drain out excess water",
+          "Priority given to dwarf varieties and drain out excess water"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Rabi - Irrigated",
+          "Location map of district within State as Annexure I",
+          "Deworming and vaccination against RD and fowl pox",
+          "Arrangement for protection from chilled air"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/lucknow.pdf"
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Yavatmal",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Maharastra(Pdf)/PDKV,%20Akola/Yavatmal.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Yavatmal advisory",
+      "Dr. Panjabrao Deshmukh Krishi Vidyapeeth"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "soybean",
+      "sunflower",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use short-duration cotton varieties like 'PKV-081' and 'AHC-319'",
+          "Consider early-maturing soybean varieties",
+          "Apply seed treatment with Rhizobium for soybean"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's sorghum residues",
+          "Ensure drinking water availability through wells and check dams",
+          "Prepare fodder banks using available grasses"
+        ],
+        "local_override_notes": [
+          "Yavatmal is cotton-dominated district with water scarcity issues",
+          "Local KVK recommends dryland agriculture techniques"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Normal recommended Package of Practices by Dr. PDKV, Akola Seed Treatment of Imidachloprid 70 WS 7g/Kg Seed Sulphur 4g/Kg Seed",
+          "Normal recommended Package of Practices by Dr. PDKV, Akola (Test GP% Use seed rate @ 75-80kg/ha Seed Treatment with Rhizobium+ PSB (250gm each /10Kg seed + Thiram 3 gm+ Carbendazim",
+          "Normal recommended Package of Practices by Dr. PDKV, Akola Seed Treatment with Rhizobium+ PSB (250gm each /10Kg seed + Thiram 3 gm+ Carbendazim 1 gm + Trichoderma 4 gm/Kg of seed"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Assess germination and plant stand regularly",
+          "Use conservation agriculture practices to retain soil moisture",
+          "Consider re-sowing if plant stand is very poor",
+          "Apply mulching using crop residues"
+        ],
+        "livestock_actions": [
+          "Utilize sorghum and millet residues as fodder",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during cooler parts of the day"
+        ],
+        "local_override_notes": [
+          "Yavatmal has limited irrigation facilities, focus on rainfed techniques",
+          "Local farmers traditional knowledge valuable for drought management"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation from wells if available",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress in cotton",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies carefully",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Cotton at flowering and boll formation stage most vulnerable",
+          "Local varieties show better drought tolerance"
+        ],
+        "icar_pdf_actions": [
+          "Protective irrigation if possible.",
+          "Spraying of 2 % urea or DAP.",
+          "weeding Intercultivation to create soil mulch to conserve moisture. Protective irrigation if possible.",
+          "Avoid applying fertilizer till there is sufficient moisture in the soil.Opening of alternate furrows."
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize available water for cotton at critical stages",
+          "Plan early harvest for pulse crops if needed",
+          "Store crop residues for fodder use",
+          "Prepare soil for next season's water conservation"
+        ],
+        "livestock_actions": [
+          "Prepare contingency fodder supplies for winter",
+          "Protect livestock from heat and water stress",
+          "Coordinate with district animal husbandry department"
+        ],
+        "local_override_notes": [
+          "Terminal drought severely affects cotton yields in Yavatmal",
+          "Local farmers practice crop insurance for risk mitigation"
+        ],
+        "icar_pdf_actions": [
+          "harvest at physiological maturity with some realizable yield .",
+          "Protective irrigation if possible.",
+          "Spraying of 2 % urea or DAP.",
+          "Giving life saving supplemental irrigation, if available or taking up harvest at physiological maturity with some realizable yield."
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in cotton and soybean fields",
+          "Monitor for disease outbreaks in cotton",
+          "Apply fungicide preventively for soybean",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground away from waterlogged areas",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent diseases"
+        ],
+        "local_override_notes": [
+          "Yavatmal's black cotton soils can get waterlogged easily",
+          "Excess rainfall can cause severe damage to cotton crop"
+        ],
+        "icar_pdf_actions": [
+          "Open well irrigated-Rabi cropping",
+          "Sprinkler Irrigation",
+          "ponding, Foliar spray of 2% Urea Interculture at optimum soil moisture to improve soil aeration",
+          "remove surface ponding, Nutrient spray to arrest flower drop"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Kharif-Irrigated",
+          "Location map of district within State as Annexure I",
+          "Increase the frequency of irrigation, Use of temporary shed net, Spraying of antitranspirant. Mulching , Pruning of damaged parts",
+          "Increase the frequency of irrigation, Spraying of antitranspirant. Mulching. , Pruning of damaged parts, Application of Bourdeaux paste"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/yavatmal.pdf"
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Maharastra(Pdf)/PDKV,%20Akola/Nagpur.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Nagpur advisory",
+      "Dr. Panjabrao Deshmukh Krishi Vidyapeeth"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "soybean",
+      "sugarcane",
+      "sunflower",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use short-duration cotton varieties suitable for late planting",
+          "Consider early-maturing soybean varieties",
+          "Apply organic manure to improve soil moisture retention"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's crop residues",
+          "Ensure drinking water availability through municipal and rural supply",
+          "Prepare green fodder from available grasslands"
+        ],
+        "local_override_notes": [
+          "Nagpur region has better irrigation facilities than Yavatmal",
+          "Orange orchards require special attention during delayed monsoon"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Test GP% Use seed rate @ 75-80kg/ha Seed Treatment with Rhizobium+ PSB (250gm each /10Kg seed + Thiram 3 gm+Carbendazim 1gm+Trichoderma 4 gm/Kg of seed",
+          "Seed Treatment of Imidachloprid 70 WS 7g/Kg Seed Sulphur 4g/Kg Seed",
+          "Paddy (Transplanted ) Bandhi system"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Use supplemental irrigation for orange orchards",
+          "Apply light irrigation to save field crop seedlings",
+          "Consider re-sowing if plant stand is very poor",
+          "Use mulching for moisture conservation"
+        ],
+        "livestock_actions": [
+          "Utilize available crop residues efficiently",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during cooler periods"
+        ],
+        "local_override_notes": [
+          "Nagpur has good groundwater availability for supplemental irrigation",
+          "Orange orchards prioritized for irrigation during drought"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation for cotton at flowering stage",
+          "Prioritize irrigation for orange orchards",
+          "Delay fertilizer application until rainfall resumes",
+          "Monitor for pest outbreaks in cotton"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies judiciously",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Cotton at flowering stage and orange orchards most vulnerable",
+          "Local farmers practice drip irrigation for oranges"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize irrigation for orange orchards",
+          "Plan early harvest for pulse crops if needed",
+          "Store crop residues for fodder use",
+          "Prepare soil conservation measures for next season"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies",
+          "Consider purchasing supplemental feed if needed",
+          "Protect livestock from heat stress"
+        ],
+        "local_override_notes": [
+          "Terminal drought severely affects both cotton and oranges",
+          "Orange orchards require long-term water management planning"
+        ],
+        "icar_pdf_actions": [
+          "Protective irrigation if possible.",
+          "Spraying of 2 % urea or DAP.",
+          "Paddy (Transplanted ) Bandhi system",
+          "Life saving irrigation"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in cotton and soybean fields",
+          "Monitor for disease outbreaks in all crops",
+          "Apply fungicide preventively for susceptible crops",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent diseases"
+        ],
+        "local_override_notes": [
+          "Nagpur's urban drainage affects agricultural areas",
+          "Orange orchards sensitive to waterlogging"
+        ],
+        "icar_pdf_actions": [
+          "Follow alternate row irrigation/irrigate at critical stages/ Stream cutoff",
+          "Tapping of other sources of irrigation. Sprinkler Irrigation",
+          "Open well irrigated-Rabi cropping",
+          "Sprinkler Irrigation, MIS"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure I",
+          "Increase the frequency of irrigation, Use of temporary shed net., Spraying of antitranspirant. ,Mulching , Pruning of damaged parts",
+          "Increase the frequency of irrigation, Spraying of antitranspirant, Mulching. , Pruning of damaged parts, Application of Bourdeux paste",
+          "Increase the frequency of irrigation, Spraying of antitranspirant., Mulching, Pruning of damaged parts"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/nagpur.pdf"
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jaipur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Rajastan%20(Pdf)/RAU,%20Bikaner/RAJ1-Jaipur%203.2.2011.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Jaipur advisory",
+      "Sri Karan Narendra Agriculture University"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "sesame",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use drought-tolerant pearl millet varieties like 'HHB-67' and 'RHB-177'",
+          "Consider early-maturing cluster bean varieties",
+          "Apply seed treatment with phosphate solubilizing bacteria"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's crop residues",
+          "Ensure drinking water availability through traditional water sources",
+          "Prepare fodder banks using available grasses and crop residues"
+        ],
+        "local_override_notes": [
+          "Jaipur district is arid with high water scarcity",
+          "Local farmers have traditional knowledge of drought management"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Use recommended practice of fertilizer application",
+          "Follow conservation measures like mulch",
+          "Uprooting of weeds & using them as mulch Seed soaking with"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Assess germination and plant stand regularly",
+          "Use conservation agriculture practices to retain soil moisture",
+          "Consider re-sowing if plant stand is very poor",
+          "Apply mulching using available crop residues"
+        ],
+        "livestock_actions": [
+          "Utilize pearl millet stover and cluster bean residues as fodder",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during early morning and late evening"
+        ],
+        "local_override_notes": [
+          "Jaipur has very limited irrigation facilities",
+          "Traditional water harvesting structures important for survival"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use available water for critical crop stages only",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies very carefully",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water at all times"
+        ],
+        "local_override_notes": [
+          "Pearl millet at flowering stage most critical for survival",
+          "Local varieties adapted to drought conditions"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize available water for survival of crops",
+          "Plan early harvest for fodder if grain production not viable",
+          "Store all crop residues for fodder use",
+          "Prepare soil conservation measures for next season"
+        ],
+        "livestock_actions": [
+          "Prepare emergency fodder supplies for winter",
+          "Protect livestock from severe heat and water stress",
+          "Coordinate with district animal husbandry department for support"
+        ],
+        "local_override_notes": [
+          "Terminal drought common in Jaipur district",
+          "Farmers traditionally diversify livelihood options"
+        ],
+        "icar_pdf_actions": [
+          "Harvest at physiological maturity",
+          "Seed source 1.NSSC 2.RSSC 3.NSP 4.Water harvesting structure can be constructed under MANREGA",
+          "Use moisture conservation techniques Limited irrigation",
+          "Irrigated Coarse textured soils"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Clear drainage channels in fields (rare but important)",
+          "Monitor for disease outbreaks in all crops",
+          "Apply fungicide preventively if waterlogging occurs",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground away from water accumulation",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Excess rainfall rare in Jaipur but can cause local flooding",
+          "Soil has low water retention capacity"
+        ],
+        "icar_pdf_actions": [
+          "Irrigation water areas"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure I",
+          "Frequent irrigation & spray of Thiourea @500 ppm",
+          "Frequent irrigation",
+          "Light irrigation, Spray of 0.1 % H SO 2 4"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/jaipur.pdf"
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jodhpur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Rajastan%20(Pdf)/RAU,%20Bikaner/RAJ16-Jodhpur-9.3.2012.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Jodhpur advisory",
+      "Maharana Pratap University of Agriculture and Technology"
+    ],
+    "major_crops": [
+      "bajra",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "sesame",
+      "wheat"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use extra-early pearl millet varieties like 'HHB-60'",
+          "Consider drought-tolerant mung bean varieties",
+          "Apply organic manure to improve soil moisture retention"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's crop residues",
+          "Ensure drinking water availability through traditional water sources",
+          "Prepare fodder banks using available grasses and crop residues"
+        ],
+        "local_override_notes": [
+          "Jodhpur district is hyper-arid with extreme water scarcity",
+          "Traditional water conservation practices critical for survival"
+        ],
+        "icar_pdf_actions": [
+          "Change in crop / cropping system including variety",
+          "Seed soaking with thiourea (0.05%) for four hours",
+          "Seed soaking with thiourea (0.05%) for four hours.",
+          "Reduce 25% acreage Sowing at 60 cm & use press wheel"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Assess germination and plant stand regularly",
+          "Use conservation agriculture practices to retain soil moisture",
+          "Consider re-sowing only if survival chances are high",
+          "Apply mulching using available crop residues"
+        ],
+        "livestock_actions": [
+          "Utilize pearl millet stover and pulse residues as fodder",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during early morning and late evening only"
+        ],
+        "local_override_notes": [
+          "Jodhpur has extremely limited irrigation facilities",
+          "Traditional knowledge essential for crop management"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use available water for survival of crops only",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress if possible",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies extremely carefully",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water at all times"
+        ],
+        "local_override_notes": [
+          "Mid-season drought can cause complete crop failure in Jodhpur",
+          "Farmers practice multiple cropping strategies for risk management"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Harvest crops early for fodder if grain production not viable",
+          "Store all crop residues for fodder use",
+          "Prepare soil conservation measures for next season",
+          "Consider alternative livelihood options"
+        ],
+        "livestock_actions": [
+          "Prepare emergency fodder supplies for extended drought",
+          "Protect livestock from severe heat and water stress",
+          "Coordinate with district authorities for emergency support"
+        ],
+        "local_override_notes": [
+          "Terminal drought leads to complete crop failure in Jodhpur",
+          "Traditional migration patterns common during severe drought"
+        ],
+        "icar_pdf_actions": [
+          "Timely weed control by hoe",
+          "Spray of thiourea at 500 ppm at vegetative",
+          "Weeding, using dust & vegetative mulch",
+          "Spray of thiourea at 500 ppm Provide life saving irrigation"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Clear drainage channels in fields (very rare event)",
+          "Monitor for disease outbreaks in all crops",
+          "Apply fungicide preventively if waterlogging occurs",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground away from water accumulation",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Excess rainfall extremely rare in Jodhpur but can cause flash floods",
+          "Soil has very low water retention capacity"
+        ],
+        "icar_pdf_actions": [
+          "Irrigated conditions",
+          "Use low water requiring cultivars Use sprinkler or drip irrigation system,",
+          "Sowing of early maturing and drought tolerant varieties of",
+          "Sowing of early maturing and drought tolerant varieties of Mustard (Bio 902),"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Sowing window for 5 major field crops (start and end of normal sowing period)",
+          "Kharif-Irrigated",
+          "15th Sept – 30th Sept (Sorghum fodder)",
+          "Location map of district within State as Annexure I"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/jodhpur.pdf"
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Anantapur",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Andhra%20pradesh%20(Pdf)/ANGRAU,%20Hyderabad/AP14-Anantapur%2031.1.2011.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Anantapur advisory",
+      "Acharya N.G. Ranga Agricultural University"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "cotton",
+      "fingermillet",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "pigeonpea",
+      "rice",
+      "sunflower"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use drought-tolerant groundnut varieties like 'TMV-2' and 'K-6'",
+          "Consider early-maturing pulse varieties",
+          "Apply seed treatment with Rhizobium for pulses"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's crop residues",
+          "Ensure drinking water availability through wells and tanks",
+          "Prepare fodder banks using available grasses"
+        ],
+        "local_override_notes": [
+          "Anantapur is drought-prone district with chronic water scarcity",
+          "Local farmers have extensive experience with drought management"
+        ],
+        "icar_pdf_actions": [
+          "Jowar / pearl millet are cut for fodder at 45 DAS and 65DAS and left for grains if rains are continued.",
+          "Pure crop of Jowar (fodder) PGH-1 & 2) / Pearlmillet (ICTP 8203, ICMV-221, ICMH-451) / Cowpea / Greengram (MGG-295, LGG- 107) / Sunflower (Morden)",
+          "1. Jowar / Pearlmillet are cut for fodder at 45DAS and 65DAS and left for grains if rains are continued. 2. Top dressing of urea for millets (specify the dosage)..",
+          "No fertilizer to crop is recommended to horsegram."
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Assess germination and plant stand regularly",
+          "Use conservation agriculture practices to retain soil moisture",
+          "Consider re-sowing if plant stand is very poor",
+          "Apply mulching using available crop residues"
+        ],
+        "livestock_actions": [
+          "Utilize groundnut haulms and pulse residues as fodder",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during early morning and late evening"
+        ],
+        "local_override_notes": [
+          "Anantapur has limited irrigation facilities",
+          "Traditional water harvesting structures important"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use available water for critical crop stages only",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies carefully",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Groundnut at peg penetration stage most critical",
+          "Local varieties adapted to drought conditions"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize available water for survival of crops",
+          "Plan early harvest for fodder if grain production not viable",
+          "Store all crop residues for fodder use",
+          "Prepare soil conservation measures for next season"
+        ],
+        "livestock_actions": [
+          "Prepare emergency fodder supplies for winter",
+          "Protect livestock from severe heat and water stress",
+          "Coordinate with district animal husbandry department"
+        ],
+        "local_override_notes": [
+          "Terminal drought common in Anantapur district",
+          "Farmers practice crop diversification for risk management"
+        ],
+        "icar_pdf_actions": [
+          "Protect the crop from Thrips which act as vectors for PBND and PSND, Chloripyriphos @ 2ml/L at 7-10 days interval",
+          "Mulching with groundnut shells is advised",
+          "Supplemental irrigation with harvested rain water in ponds (10 mm depth.) by using micro-irrigation (Sprinklers)",
+          "Supplemental irrigation with harvested rain water in ponds (10 mm depth) by using micro- irrigation."
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in all fields (rare but important)",
+          "Monitor for disease outbreaks in groundnut and cotton",
+          "Apply fungicide preventively if waterlogging occurs",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground away from water accumulation",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Excess rainfall rare in Anantapur but can cause local flooding",
+          "Red soils have moderate drainage capacity"
+        ],
+        "icar_pdf_actions": [
+          "Drain excess water Timely plant protection measures are to be taken against LLS, rust and stem rot",
+          "Weather based advisory to be followed for harvesting.",
+          "1. Shifting of produce immediately after drying 2 Threshing on 5th day after harvest of groundnut crop.",
+          "Drain the excess water as soon as possible."
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure I",
+          "Spray Carbendazim 1 g or COC 3g per litre to prevent spread of diseases",
+          "If the damage is severe, go for resowing.",
+          "Manuring and plant protection measures have to be taken up."
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/anantapur.pdf"
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Kurnool",
+    "source": "ICAR-CRIDA District Agriculture Contingency Plan",
+    "source_url": "https://www.icar-crida.res.in/CP-2012/statewiseplans/Andhra%20pradesh%20(Pdf)/ANGRAU,%20Hyderabad/AP7-%20Kurnool%2031.1.2011.pdf",
+    "local_sources": [
+      "IMD Agromet advisory",
+      "KVK Kurnool advisory",
+      "Acharya N.G. Ranga Agricultural University"
+    ],
+    "major_crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "pigeonpea",
+      "rice",
+      "sunflower"
+    ],
+    "scenarios": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Delay sowing until adequate soil moisture is available",
+          "Use short-duration rice varieties for late planting",
+          "Consider drought-tolerant cotton varieties",
+          "Apply seed treatment with bio-fertilizers"
+        ],
+        "livestock_actions": [
+          "Conserve fodder from previous season's crop residues",
+          "Ensure drinking water availability through canals and wells",
+          "Prepare fodder banks using available grasses"
+        ],
+        "local_override_notes": [
+          "Kurnool has better irrigation facilities than Anantapur",
+          "Tungabhadra canal provides irrigation support"
+        ],
+        "icar_pdf_actions": [
+          "Foxtailmillet Cowpea, Greengram, Horsegram, Fodder jowar,",
+          "Redgram (short duration varieties)",
+          "15-20 days dry spell after sowing leading to poor germination/crop stand etc.)",
+          "Formation of dead furrows at 3.6 mts"
+        ]
+      },
+      "early_season_dry_spell": {
+        "crop_actions": [
+          "Use supplemental irrigation from canals and wells",
+          "Apply light irrigation to save seedlings",
+          "Consider re-sowing if plant stand is very poor",
+          "Use mulching for moisture conservation"
+        ],
+        "livestock_actions": [
+          "Utilize available crop residues efficiently",
+          "Provide mineral supplementation to livestock",
+          "Schedule grazing during cooler periods"
+        ],
+        "local_override_notes": [
+          "Kurnool has good irrigation infrastructure for supplemental watering",
+          "Tungabhadra project provides reliable water source"
+        ]
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Use protective irrigation during critical crop stages",
+          "Delay fertilizer application until rainfall resumes",
+          "Apply foliar nutrients to reduce stress",
+          "Monitor for pest outbreaks during dry conditions"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies judiciously",
+          "Provide adequate salt and mineral supplements",
+          "Ensure access to clean drinking water"
+        ],
+        "local_override_notes": [
+          "Rice at flowering stage most critical in Kurnool",
+          "Cotton at boll formation stage also vulnerable"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Prioritize irrigation for rice and cotton",
+          "Plan early harvest for pulse crops if needed",
+          "Store crop residues for fodder use",
+          "Prepare soil for next season's water conservation"
+        ],
+        "livestock_actions": [
+          "Ration available fodder supplies",
+          "Consider purchasing supplemental feed if needed",
+          "Protect livestock from heat stress"
+        ],
+        "local_override_notes": [
+          "Terminal drought affects both rice and cotton yields",
+          "Irrigation infrastructure provides some buffer"
+        ],
+        "icar_pdf_actions": [
+          "Protctive irrigation through farm ponds",
+          "Canal irrigated red soil. Canal irrigated black soils",
+          "Planting of aged seedlings of paddy Close planting, 4 – 5 seedlings / hill, 20 % additional fertilizer for Paddy",
+          "Direct sown paddy"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Ensure proper drainage in rice and cotton fields",
+          "Monitor for disease outbreaks in all crops",
+          "Apply fungicide preventively for susceptible crops",
+          "Avoid field operations during waterlogged conditions"
+        ],
+        "livestock_actions": [
+          "Move livestock to higher ground",
+          "Protect stored feed from moisture damage",
+          "Provide clean drinking water to prevent waterborne diseases"
+        ],
+        "local_override_notes": [
+          "Kurnool's black cotton soils can get waterlogged easily",
+          "Good drainage infrastructure available in many areas"
+        ],
+        "icar_pdf_actions": [
+          "1. Drain out excess water 2. spraying of FeSO to for iron 4 deficiency 3. spraying of Bavistin 0.1% + Mancozeb 0.25% against Tikka LS",
+          "1.Drain out excess water 2. Spraying of FeSO to 4 avoid iron deficency 3. spraying of Bavistin0.1% + Mancozeb 0.25% against Tikka LS 3.Application of 20 Kg urea & 15 kg MOP immediately after rain",
+          "Weather based advisory to be followed for harvesting.",
+          "1.Drain out excess water 2. Spraying of Mancozeb to avoid Alternaria blight"
+        ]
+      },
+      "livestock": {},
+      "heat_cold_wave": {
+        "crop_actions": [],
+        "icar_pdf_actions": [
+          "Location map of district within State as Annexure I",
+          "carcasses by burning / deep burying (4-8 feet) with lime powder (1kg for small ruminants and 5kg for large ruminants) in pit Drying the harvested crop material and proper storage for use as fodder.",
+          "Feed the animals as per routine schedule Allow the animals for grazing (normal timings)",
+          "Age and season at vaccination"
+        ]
+      }
+    },
+    "pdf_local_path": "data/icar_contingency_plans/kurnool.pdf"
+  }
+]

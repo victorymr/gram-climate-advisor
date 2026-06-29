@@ -1,0 +1,11 @@
+state,district,extracted_rainfall_pct,source_map,confidence_level,notes
+Bihar,Gaya,-65,IMD Weekly Rainfall Regions,High,Large Deficient (Red zone)
+Bihar,Patna,-65,IMD Weekly Rainfall Regions,High,Large Deficient (Red zone)
+Uttar Pradesh,Varanasi,-10,IMD Weekly Rainfall Regions,Medium,Normal (Green zone)
+Uttar Pradesh,Lucknow,-35,IMD Weekly Rainfall Regions,Medium,Deficient (Orange zone)
+Maharashtra,Yavatmal,35,IMD Weekly Rainfall Regions,Medium,Excess (Light Blue zone)
+Maharashtra,Nagpur,5,IMD Weekly Rainfall Regions,Medium,Normal (Green zone)
+Rajasthan,Jaipur,-40,IMD Weekly Rainfall Regions,Medium,Deficient (Orange zone)
+Rajasthan,Jodhpur,-45,IMD Weekly Rainfall Regions,Medium,Deficient (Orange zone)
+Andhra Pradesh,Anantapur,40,IMD Weekly Rainfall Regions,Medium,Excess (Light Blue zone)
+Andhra Pradesh,Kurnool,10,IMD Weekly Rainfall Regions,Medium,Normal (Green zone)

@@ -1,0 +1,94 @@
+{
+  "visakhapatnam_advisory_2026-06-25": {
+    "district": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "date": "2026-06-25",
+    "valid_until": "2026-06-30",
+    "subseasonal_forecast": {
+      "rainfall_5day_total": "17.4 mm (light rainfall)",
+      "daily_rainfall_range": "3.2-3.8 mm",
+      "max_temp_range": "36.5-37.5°C",
+      "min_temp_range": "29.2-29.6°C",
+      "humidity_morning": "72-75%",
+      "humidity_afternoon": "70-75%",
+      "wind_speed": "9-10 kmph",
+      "warnings": ["thunderstorm", "lightning", "strong_surface_winds"]
+    },
+    "crop_specific_advisories": {
+      "pearl_millet_sowing": {
+        "varieties": ["ABV 04", "APHB 126"],
+        "seed_rate": "1.6 kg/acre",
+        "seed_treatment": "Apply before sowing",
+        "fertilizer_basal": {
+          "urea": "26 kg/acre",
+          "ssp": "75 kg/acre", 
+          "mop": "15 kg/acre"
+        }
+      },
+      "rice_nursery": {
+        "varieties": ["short_duration", "medium_duration"],
+        "soil_moisture_requirement": "sufficient soil moisture needed",
+        "nursery_prep": "raised beds with FYM @ 200 kg/5 cents",
+        "fertilizer_nursery": {
+          "urea": "2 kg/acre",
+          "ssp": "6 kg/acre",
+          "mop": "1 kg/acre"
+        },
+        "seed_rate": "20 kg/acre"
+      },
+      "black_gram_sowing": {
+        "varieties": ["LBG 932", "LBG 904", "TBG 129", "LBG 884", "TRG 59", "TBG 104"],
+        "seed_treatment": {
+          "carbendazim": "2.5 g/kg seed",
+          "imidacloprid": "600 FS @ 5 ml/kg seed"
+        },
+        "purpose": "protect from sucking pests and diseases"
+      },
+      "green_manure": {
+        "crops": ["sunnhemp", "pillipesara", "diancha", "short_duration_greengram"],
+        "purpose": "soil improvement"
+      }
+    },
+    "horticulture_advisories": {
+      "brinjal_fruit_formation": {
+        "pest_risk": "sucking pest incidence",
+        "treatment": [
+          "Dimethoate @ 2.0 ml/l",
+          "Imidacloprid @ 0.25 ml/l"
+        ]
+      }
+    },
+    "weather_impact_advisories": {
+      "thunderstorm_warning": {
+        "crop_protection": [
+          "Harvest matured fruits and vegetables",
+          "Send to market immediately",
+          "Provide propping in sugarcane",
+          "Mechanical support to orchard and vegetable crops"
+        ],
+        "safety_measures": [
+          "Stay in safe and secured places",
+          "Keep cattle in safe places", 
+          "Avoid staying under trees and tall objects"
+        ]
+      }
+    },
+    "recommended_mobile_apps": [
+      {
+        "name": "Mausam",
+        "purpose": "Weather forecast and agromet advisories",
+        "link": "https://play.google.com/store/apps/details"
+      },
+      {
+        "name": "Meghdoot", 
+        "purpose": "Weather based agromet advisories",
+        "link": "https://play.google.com/store/apps/details"
+      },
+      {
+        "name": "Damini",
+        "purpose": "Thunderstorm and lightning forecast",
+        "link": "https://play.google.com/store/apps/details"
+      }
+    ]
+  }
+}

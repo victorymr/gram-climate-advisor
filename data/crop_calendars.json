@@ -1,0 +1,922 @@
+[
+  {
+    "state": "Bihar",
+    "district": "Gaya",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "rice",
+        "local_varieties": ["Saket", "NDR-359", "Sarjoo-52"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-15",
+          "end_date": "07-31",
+          "optimal_start": "06-25",
+          "optimal_end": "07-15"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 35},
+          "flowering": {"days_after_sowing": 42, "duration_days": 21},
+          "harvesting": {"days_after_sowing": 63, "duration_days": 28}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium", 
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "maize",
+        "local_varieties": ["HQPM-1", "Pioneer-3396"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-25",
+          "optimal_start": "06-20",
+          "optimal_end": "07-10"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 30},
+          "flowering": {"days_after_sowing": 37, "duration_days": 18},
+          "harvesting": {"days_after_sowing": 55, "duration_days": 25}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high", 
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "medium",
+          "waterlogging": "low"
+        }
+      },
+      {
+        "crop_name": "pulses",
+        "local_varieties": ["IPCM-2009-4", "PDM-139"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-20",
+          "end_date": "08-05",
+          "optimal_start": "07-01",
+          "optimal_end": "07-20"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "low"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Bihar", 
+    "district": "Patna",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "rice",
+        "local_varieties": ["Rajendra Sweta", "Saket", "NDR-359"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-30",
+          "optimal_start": "06-20",
+          "optimal_end": "07-15"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 35},
+          "flowering": {"days_after_sowing": 42, "duration_days": 21},
+          "harvesting": {"days_after_sowing": 63, "duration_days": 28}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "maize",
+        "local_varieties": ["Pioneer-3396", "HQPM-1"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-05",
+          "end_date": "07-20",
+          "optimal_start": "06-15",
+          "optimal_end": "07-05"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 30},
+          "flowering": {"days_after_sowing": 37, "duration_days": 18},
+          "harvesting": {"days_after_sowing": 55, "duration_days": 25}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "medium",
+          "waterlogging": "low"
+        }
+      },
+      {
+        "crop_name": "vegetables",
+        "local_varieties": ["Various local varieties"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-01",
+          "end_date": "08-15",
+          "optimal_start": "06-15",
+          "optimal_end": "07-30"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 20},
+          "flowering": {"days_after_sowing": 25, "duration_days": 10},
+          "harvesting": {"days_after_sowing": 35, "duration_days": 15}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Varanasi",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "rice",
+        "local_varieties": ["NDR-97", "Sarjoo-52", "NDR-359"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-15",
+          "end_date": "07-25",
+          "optimal_start": "06-25",
+          "optimal_end": "07-10"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 35},
+          "flowering": {"days_after_sowing": 42, "duration_days": 21},
+          "harvesting": {"days_after_sowing": 63, "duration_days": 28}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "wheat",
+        "local_varieties": ["PBW-343", "HD-2967"],
+        "season": "rabi",
+        "sowing_window": {
+          "start_date": "11-15",
+          "end_date": "12-20",
+          "optimal_start": "11-25",
+          "optimal_end": "12-10"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 40},
+          "flowering": {"days_after_sowing": 47, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 62, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "low"
+        }
+      },
+      {
+        "crop_name": "pulses",
+        "local_varieties": ["IPCM-2009-4", "PDM-139"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-25",
+          "end_date": "08-10",
+          "optimal_start": "07-05",
+          "optimal_end": "07-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "low"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Lucknow",
+    "source": "Local KVK and Agricultural Department", 
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "rice",
+        "local_varieties": ["Sarjoo-52", "NDR-359", "NDR-97"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-20",
+          "optimal_start": "06-20",
+          "optimal_end": "07-05"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 35},
+          "flowering": {"days_after_sowing": 42, "duration_days": 21},
+          "harvesting": {"days_after_sowing": 63, "duration_days": 28}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "wheat",
+        "local_varieties": ["HD-2967", "PBW-343"],
+        "season": "rabi",
+        "sowing_window": {
+          "start_date": "11-10",
+          "end_date": "12-15",
+          "optimal_start": "11-20",
+          "optimal_end": "12-05"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 40},
+          "flowering": {"days_after_sowing": 47, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 62, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "low"
+        }
+      },
+      {
+        "crop_name": "vegetables",
+        "local_varieties": ["Various local varieties"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-01",
+          "end_date": "08-10",
+          "optimal_start": "06-15",
+          "optimal_end": "07-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 20},
+          "flowering": {"days_after_sowing": 25, "duration_days": 10},
+          "harvesting": {"days_after_sowing": 35, "duration_days": 15}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Yavatmal",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "cotton",
+        "local_varieties": ["PKV-081", "AHC-319", "NHH-44"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-01",
+          "end_date": "07-15",
+          "optimal_start": "06-10",
+          "optimal_end": "06-30"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 45},
+          "flowering": {"days_after_sowing": 52, "duration_days": 30},
+          "harvesting": {"days_after_sowing": 82, "duration_days": 35}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "soybean",
+        "local_varieties": ["JS-335", "MAUS-472"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-15",
+          "end_date": "07-20",
+          "optimal_start": "06-20",
+          "optimal_end": "07-05"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "pulses",
+        "local_varieties": ["IPCM-2009-4", "PDM-139"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-20",
+          "end_date": "07-25",
+          "optimal_start": "06-25",
+          "optimal_end": "07-10"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "low"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "cotton",
+        "local_varieties": ["NHH-44", "PKV-081", "AHC-319"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-05",
+          "end_date": "07-10",
+          "optimal_start": "06-10",
+          "optimal_end": "06-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 45},
+          "flowering": {"days_after_sowing": 52, "duration_days": 30},
+          "harvesting": {"days_after_sowing": 82, "duration_days": 35}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "soybean",
+        "local_varieties": ["JS-335", "MAUS-472"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-15",
+          "optimal_start": "06-15",
+          "optimal_end": "06-30"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "oranges",
+        "local_varieties": ["Nagpur Santra", "Mosambi"],
+        "season": "perennial",
+        "sowing_window": {
+          "start_date": "06-01",
+          "end_date": "09-30",
+          "optimal_start": "07-01",
+          "optimal_end": "08-31"
+        },
+        "stages": {
+          "flowering": {"days_after_sowing": 0, "duration_days": 30},
+          "fruit_set": {"days_after_sowing": 30, "duration_days": 60},
+          "fruit_development": {"days_after_sowing": 90, "duration_days": 120},
+          "harvesting": {"days_after_sowing": 210, "duration_days": 60}
+        },
+        "water_requirements": {
+          "flowering": "medium",
+          "fruit_set": "high",
+          "fruit_development": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jaipur",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "pearl_millet",
+        "local_varieties": ["HHB-67", "RHB-177", "MH-169"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-20",
+          "end_date": "08-05",
+          "optimal_start": "07-01",
+          "optimal_end": "07-20"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 30},
+          "flowering": {"days_after_sowing": 35, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 50, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "low",
+          "drought_stress": "low",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "cluster_bean",
+        "local_varieties": ["RGC-1035", "RGC-981"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-25",
+          "end_date": "08-10",
+          "optimal_start": "07-05",
+          "optimal_end": "07-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "sesame",
+        "local_varieties": ["RT-103", "RT-46"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-15",
+          "end_date": "07-30",
+          "optimal_start": "06-25",
+          "optimal_end": "07-15"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 20},
+          "flowering": {"days_after_sowing": 25, "duration_days": 10},
+          "harvesting": {"days_after_sowing": 35, "duration_days": 15}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "high"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jodhpur",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "pearl_millet",
+        "local_varieties": ["HHB-60", "HHB-67", "RHB-177"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-25",
+          "end_date": "08-10",
+          "optimal_start": "07-05",
+          "optimal_end": "07-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 30},
+          "flowering": {"days_after_sowing": 35, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 50, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "low",
+          "drought_stress": "low",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "mung_bean",
+        "local_varieties": ["RMG-268", "RMG-62"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-20",
+          "end_date": "08-05",
+          "optimal_start": "07-01",
+          "optimal_end": "07-20"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 20},
+          "flowering": {"days_after_sowing": 25, "duration_days": 10},
+          "harvesting": {"days_after_sowing": 35, "duration_days": 15}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "cluster_bean",
+        "local_varieties": ["RGC-1035", "RGC-981"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-30",
+          "end_date": "08-15",
+          "optimal_start": "07-10",
+          "optimal_end": "07-30"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Anantapur",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "groundnut",
+        "local_varieties": ["TMV-2", "K-6", "ICGV-86031"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-15",
+          "end_date": "08-05",
+          "optimal_start": "06-25",
+          "optimal_end": "07-20"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 25}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "pulses",
+        "local_varieties": ["LGG-460", "TRG-38"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-20",
+          "end_date": "08-10",
+          "optimal_start": "07-01",
+          "optimal_end": "07-25"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "low",
+          "flowering": "medium",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "low"
+        }
+      },
+      {
+        "crop_name": "sunflower",
+        "local_varieties": ["KBSH-41", "Morden"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-30",
+          "optimal_start": "06-20",
+          "optimal_end": "07-15"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 25},
+          "flowering": {"days_after_sowing": 30, "duration_days": 15},
+          "harvesting": {"days_after_sowing": 45, "duration_days": 20}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      }
+    ]
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Kurnool",
+    "source": "Local KVK and Agricultural Department",
+    "last_updated": "2026-06-27",
+    "crops": [
+      {
+        "crop_name": "rice",
+        "local_varieties": ["BPT-5204", "MTU-1010"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-10",
+          "end_date": "07-25",
+          "optimal_start": "06-20",
+          "optimal_end": "07-10"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 35},
+          "flowering": {"days_after_sowing": 42, "duration_days": 21},
+          "harvesting": {"days_after_sowing": 63, "duration_days": 28}
+        },
+        "water_requirements": {
+          "sowing": "low",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "medium",
+          "waterlogging": "medium"
+        }
+      },
+      {
+        "crop_name": "cotton",
+        "local_varieties": ["NHH-44", "MCU-5"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-05",
+          "end_date": "07-15",
+          "optimal_start": "06-10",
+          "optimal_end": "06-30"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 7},
+          "vegetative": {"days_after_sowing": 7, "duration_days": 45},
+          "flowering": {"days_after_sowing": 52, "duration_days": 30},
+          "harvesting": {"days_after_sowing": 82, "duration_days": 35}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "low"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "medium",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      },
+      {
+        "crop_name": "chili",
+        "local_varieties": ["Pusa Jwala", "Byadagi"],
+        "season": "kharif",
+        "sowing_window": {
+          "start_date": "06-01",
+          "end_date": "07-20",
+          "optimal_start": "06-10",
+          "optimal_end": "07-05"
+        },
+        "stages": {
+          "sowing": {"days_after_sowing": 0, "duration_days": 5},
+          "vegetative": {"days_after_sowing": 5, "duration_days": 30},
+          "flowering": {"days_after_sowing": 35, "duration_days": 20},
+          "harvesting": {"days_after_sowing": 55, "duration_days": 30}
+        },
+        "water_requirements": {
+          "sowing": "medium",
+          "vegetative": "medium",
+          "flowering": "high",
+          "harvesting": "medium"
+        },
+        "climate_sensitivity": {
+          "heat_stress": "high",
+          "drought_stress": "high",
+          "waterlogging": "high"
+        }
+      }
+    ]
+  }
+]

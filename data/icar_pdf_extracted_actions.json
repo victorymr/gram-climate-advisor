@@ -1,0 +1,908 @@
+{
+  "Gaya": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "fingermillet",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Change in crop / cropping system",
+          "including variety",
+          "Agronomic measures",
+          "Maize - Vegetables",
+          "Pigeonpea – Bahar, Pusa-9",
+          "Narendra Arhar-I , ICPL 88039",
+          "No change in normal package",
+          "Balanced use of fertilizers"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Mid season drought",
+          "(long dry spell,",
+          "consecutive 2 weeks",
+          "rainless (>2.5 mm)",
+          "Soil nutrient & moisture",
+          "conservation measues",
+          "At vegetative stage",
+          "Sandy to Sandy loam"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Soil nutrient & moisture",
+          "conservation measues",
+          "Pigeonpea – Bahar, Pusa-9",
+          "Foliar application of 1%",
+          "Urea to boost up the",
+          "vegetative growth in",
+          "Open the furrow during",
+          "evening and left furrow open"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "rainfall in a short",
+          "span leading to water",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Drainage management",
+          "Re transplanting through",
+          "Dapog nursery if needed",
+          "Re sowing through drum"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak",
+          "Extreme event type",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Provide irrigation"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Descript Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (‘000)",
+          "Fisheries (Data source: Chief Planning Officer)"
+        ]
+      }
+    }
+  },
+  "Patna": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "fingermillet",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop / cropping system",
+          "including variety",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "1st week of July",
+          "Rice –Wheat/ Vegetable-Vegetable/",
+          "Rice-Oilseeds/ Rice-Potato/ Rice-"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long dry",
+          "spell, consecutive 2",
+          "(>2.5 mm) period)",
+          "Soil nutrient & moisture",
+          "conservation measures",
+          "At vegetative stage",
+          "Rice –Vegetables/",
+          "Rice: Prabhat, Dhanlaxmi,"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "(Early withdrawal",
+          "Rabi Crop planning",
+          "Rice:Prabhat, Richharia ,",
+          "Dhanlaxmi, Turanta",
+          "Foliar application with",
+          "Life saving irrigation",
+          "For rabi land preparation"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a",
+          "short span leading to water",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Drainage management",
+          "Gap filling, if required",
+          "Resowing through drum seeder",
+          "Re transplanting through"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak",
+          "Extreme event type",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Maize, Pigeonpea,"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Before the events",
+          "During the event",
+          "Feed and fodder availability",
+          "1. Advance planning for cultivation",
+          "2. Storage of Improved Quality",
+          "3. Conservation & Storage of",
+          "Hay & Silage: ––"
+        ]
+      }
+    }
+  },
+  "Varanasi": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "greengram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "sugarcane",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop / cropping",
+          "system including variety",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "1st week of July",
+          "Deep Alluvial soils",
+          "Sequence cropping"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Mid season drought",
+          "(long dry spell,",
+          "consecutive 2 weeks",
+          "rainless (>2.5 mm)",
+          "moisture conservation",
+          "At vegetative stage",
+          "Deep Alluvial soils",
+          "Sequence cropping"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "(Early withdrawal",
+          "Rabi Crop planning",
+          "Deep Alluvial soils",
+          "Sequence cropping",
+          "Pearl millet- Chickpea",
+          "Pearl millet- Lentil",
+          "Greengram- Barley"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a",
+          "short span leading to water",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Provide drainage",
+          "Proper bunding, drain out excess",
+          "Harvest at physiological",
+          "Shift to safer place"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak",
+          "Extreme event type",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Provide Light irrigation to reduce"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Male + Female (<3 Yrs)",
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low",
+          "Descript Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Before the events"
+        ]
+      }
+    }
+  },
+  "Lucknow": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "jowar",
+      "lentil",
+      "maize",
+      "mustard",
+      "rice",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop /",
+          "cropping systemc",
+          "including variety",
+          "Agronomic measuresd",
+          "Delay by 2 weeks",
+          "Rice –Lentil/ Mustard",
+          "Short duration Varieties of"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long dry",
+          "spell, consecutive 2",
+          "(>2.5 mm) period)",
+          "Crop managementc",
+          "moisture conservation",
+          "At vegetative stage",
+          "Rice –Lentil/ Mustard",
+          "Life saving irrigation,"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "(Early withdrawal",
+          "Crop managementc",
+          "Rabi Crop planningd",
+          "Rice –Lentil/ Mustard",
+          "Moisture conservation for Rabi",
+          "Black gram, Maize, Jowar and"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a",
+          "short span leading to water",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Strengthen of Bunds",
+          "Harvest at physiological",
+          "Drain out excess water",
+          "Shelter/environment"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to?",
+          "Sea water intrusion",
+          "Sheath Blight, Stemborer , Pyrilla loose smut, Heliothis, Rust etc white",
+          "Extreme event type",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Drain out heated water from"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Livestock(year 2007)",
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred Cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Descript Buffaloes",
+          "Other (Camel,Pig, Yak etc)",
+          "Commerical dairy farms (number)"
+        ]
+      }
+    }
+  },
+  "Yavatmal": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "soybean",
+      "sunflower",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop /",
+          "including variety",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "25th June- 1st July",
+          "deep black soils",
+          "Normal recommended Package of Practices by Dr."
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Mid season drought",
+          "(long dry spell,",
+          "consecutive 2 weeks",
+          "rainless (>2.5 mm)",
+          "Soil nutrient & moisture",
+          "conservation measures",
+          "At vegetative stage",
+          "deep black soils"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "(Early withdrawal",
+          "Rabi Crop planning",
+          "deep black soils",
+          "Cotton + Pigeonpea",
+          "Giving life saving supplemental",
+          "irrigation, if available or taking",
+          "up harvest at physiological"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a",
+          "short span leading to water",
+          "Vegetative stage",
+          "Opening of field channels to remove surface",
+          "Opening of field channels to",
+          "Opening of field",
+          "channels to remove",
+          "Before the events"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to?",
+          "Sea water intrusion*",
+          "Pests and disease outbreak (specify)",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Increase the frequency of irrigation, Use",
+          "of temporary shed net, Spraying of"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (‘000)",
+          "Formation of village Disaster Management Committee"
+        ]
+      }
+    }
+  },
+  "Nagpur": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "rice",
+      "sesame",
+      "soybean",
+      "sugarcane",
+      "sunflower",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop /",
+          "including variety",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "25th June- 1st July",
+          "deep black soils",
+          "(Cotton + Pigeonpea 6:2/8:2 & intercropping system.)"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Soil nutrient & moisture conservation",
+          "deep black soils",
+          "Intercultivation to create soil mulch to",
+          "conserve moisture. Protective irrigation",
+          "Avoid applying fertilizer till there is",
+          "sufficient moisture in the soil.",
+          "Opening of alternate furrows.",
+          "With limited water"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "(Early withdrawal",
+          "Rabi Crop planning",
+          "Deep to Medium deep",
+          "Giving life saving supplemental",
+          "irrigation, if available or taking",
+          "up harvest at physiological",
+          "maturity with some realizable"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a short",
+          "span leading to water logging",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Opening of field channels to",
+          "Opening of field channels",
+          "Before the events",
+          "During the event"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak",
+          "Others (specify)",
+          "Seedling / nursery stage",
+          "Vegetative stage",
+          "Reproductive stage",
+          "Increase the frequency of irrigation, Use"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Commercial dairy farms (Number)",
+          "Adopt various water conservation methods at village level to",
+          "improve the ground water level for adequate water supply.",
+          "Identification of water resources"
+        ]
+      }
+    }
+  },
+  "Jaipur": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "pigeonpea",
+      "sesame",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Change in crop / cropping",
+          "system including variety",
+          "Pearl millet-Fallow",
+          "practice of fertilizer",
+          "Cluster bean-Fallow",
+          "Green gram-Fallow",
+          "(medium rainfall)",
+          "Follow conservation"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "Removal of alternate rows",
+          "Hoeing & weeding to",
+          "conserve moisture",
+          "(medium rainfall)",
+          "Spray of thiourea @",
+          "500 ppm to conserve",
+          "loamy soil (high",
+          "Harvest of Kharif crops and"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "(Early withdrawal",
+          "Rabi Crop planning",
+          "Pearl millet-wheat",
+          "Harvest at physiological",
+          "Do not take rabi crop",
+          "structure can be",
+          "loamy soil (high"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a short span leading to water logging",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Removal of Excess water",
+          "Heavy rainfall with high speed winds in a short span",
+          "Outbreak of pests and diseases due to unseasonal rains"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak (specify)",
+          "Others (specify)",
+          "Extreme event type",
+          "Seedling / nursery stage",
+          "Reproductive stage",
+          "Frequent irrigation & spray of Thiourea @500 ppm"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (‘000)",
+          "Fisheries (Data source: Chief Planning Officer) NA"
+        ]
+      }
+    }
+  },
+  "Jodhpur": {
+    "crops": [
+      "bajra",
+      "castor",
+      "chickpea",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "mustard",
+      "sesame",
+      "wheat"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Change in crop / cropping",
+          "system including variety",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "( 3rd week July)",
+          "undulating inter-",
+          "dunal spaces/ Deep"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long dry",
+          "spell, consecutive 2",
+          "(>2.5 mm) period)",
+          "At vegetative stage",
+          "Soil nutrient & moisture",
+          "conservation measures",
+          "undulating inter-",
+          "dunal spaces/ Deep"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "Rabi Crop planning",
+          "(Early withdrawal",
+          "undulating inter-",
+          "dunal spaces/ Deep",
+          "sandy plain/ Coarse",
+          "to fine textured hard",
+          "Life saving irrigation if feasible"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall",
+          "in a short span leading to",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Drain excess water as early",
+          "Inter cultivation with hoe",
+          "Apply 20 kg additional N /",
+          "Drain excess water as early as"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick mark)",
+          "Sea water intrusion",
+          "Pests and disease outbreak (specify)",
+          "Pearl millet: Downy mildew",
+          "Moong & Moth: Leaf",
+          "Sesame: Macrophomina,",
+          "Others (specify)",
+          "Vegetative stage"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Livestock – 2003 (P)",
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (‘000)"
+        ]
+      }
+    }
+  },
+  "Anantapur": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "cotton",
+      "fingermillet",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "pigeonpea",
+      "rice",
+      "sunflower"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "drought (delayed",
+          "Agronomic measures",
+          "Delay by 2 weeks",
+          "Shallow red soils",
+          "Groundnut + Redgram(LRG",
+          "30) intercropping (7:1)",
+          "Redgram (LRG-30)",
+          "Delay by 4 weeks"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "(>2.5 mm) period",
+          "Shallow red soils",
+          "Groundnut + Redgram",
+          "Protect the crop from Thrips",
+          "which act as vectors for PBND",
+          "and PSND, Chloripyriphos @",
+          "2ml/L at 7-10 days interval",
+          "Mulching with groundnut"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "Rabi Crop planning",
+          "shallow red soils",
+          "Groundnut + Redgram",
+          "Supplemental irrigation with",
+          "harvested rain water in ponds",
+          "(10 mm depth) by using micro-",
+          "encouraged under"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall",
+          "in a short span leading to",
+          "Vegetative stage",
+          "Crop maturity stage",
+          "Drain excess water",
+          "Timely plant protection",
+          "measures are to be taken against",
+          "LLS, rust and stem rot"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the",
+          "district is prone to? (Tick mark and",
+          "mention years if known during the",
+          "last 10 year period)",
+          "High intense storms",
+          "Sea water inundation",
+          "Pests and diseases (specify)",
+          "Extreme event type"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (number)",
+          "Fisheries (Data source: Chief Planning Officer)"
+        ]
+      }
+    }
+  },
+  "Kurnool": {
+    "crops": [
+      "bajra",
+      "blackgram",
+      "castor",
+      "cotton",
+      "greengram",
+      "groundnut",
+      "jowar",
+      "maize",
+      "pigeonpea",
+      "rice",
+      "sunflower"
+    ],
+    "actions": {
+      "delayed_monsoon": {
+        "crop_actions": [
+          "Agronomic measures",
+          "drought (delayed",
+          "Groundnut / Groundnut + Redgram",
+          "Castor / Castor + Redgram",
+          "Bajra / Bajra + Groundnut",
+          "Groundnut / Groundnut +",
+          "Jowar / Jowar +Groundnut",
+          "Castor (or) Castor + Redgram"
+        ],
+        "varieties": []
+      },
+      "mid_season_break": {
+        "crop_actions": [
+          "drought (long dry",
+          "consecutive weeks",
+          "rainless (>2.5 mm)",
+          "Groundnut / Groundnut +",
+          "Redgram intercropping",
+          "Protect the crop from thrips to",
+          "avoid PBND and PSND",
+          "Spraying of 2 % urea"
+        ]
+      },
+      "terminal_drought": {
+        "crop_actions": [
+          "Terminal drought",
+          "Groundnut / Groundnut +",
+          "Redgram intercropping",
+          "Protctive irrigation through farm ponds",
+          "digging farm crops",
+          "Castor / Castor + Redgram",
+          "Bajra / Bajra + Groundnut",
+          "Jowar / Jowar +Groundnut"
+        ]
+      },
+      "excess_rainfall_waterlogging": {
+        "crop_actions": [
+          "Continuous high rainfall in a",
+          "Vegetative stagek",
+          "Flowering stagel",
+          "Crop maturity stagem",
+          "short span leading to water",
+          "1. Drain out excess water",
+          "2. spraying of FeSO to for iron",
+          "3. spraying of Bavistin 0.1% +"
+        ]
+      },
+      "heat_cold_wave": {
+        "crop_actions": [
+          "What is the major contingency the district is prone to? (Tick",
+          "mark and mention years if known during the last 10 year period)",
+          "High intense storms",
+          "Sea water inundation",
+          "Pests and diseases (specify)",
+          "to get involve in rescue operations",
+          "carcasses by burning / deep burying (4-8",
+          "feet) with lime powder (1kg for small"
+        ]
+      },
+      "livestock": {
+        "actions": [
+          "Non descriptive Cattle (local low yielding)",
+          "Crossbred cattle",
+          "Non descriptive Buffaloes (local low yielding)",
+          "Graded Buffaloes",
+          "Others (Camel, Pig, Yak etc.)",
+          "Commercial dairy farms (Number)",
+          "Total No. of birds (‘number)",
+          "Fisheries (Data source: Chief Planning Officer)"
+        ]
+      }
+    }
+  }
+}

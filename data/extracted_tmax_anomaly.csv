@@ -1,0 +1,11 @@
+state,district,lat,lon,week1_rgb,week1_anomaly_degC,week1_signal,week1_pixel,week2_rgb,week2_anomaly_degC,week2_signal,week2_pixel,week3_rgb,week3_anomaly_degC,week3_signal,week3_pixel,week4_rgb,week4_anomaly_degC,week4_signal,week4_pixel
+Bihar,Gaya,24.7937,84.9893,"(115,0,0)",6.0,above_normal,"(191,185)","(255,166,53)",1.0,near_normal,"(497,185)","(255,255,255)",0.2,near_normal,"(185,521)","(255,255,255)",0.2,near_normal,"(490,521)"
+Bihar,Patna,25.5941,85.1376,"(115,0,0)",6.0,above_normal,"(192,178)","(255,166,53)",1.0,near_normal,"(498,178)","(255,255,255)",0.2,near_normal,"(186,514)","(255,255,255)",0.2,near_normal,"(491,514)"
+Uttar Pradesh,Varanasi,25.3176,82.9739,"(115,0,0)",6.0,above_normal,"(177,180)","(255,166,53)",1.0,near_normal,"(483,180)","(255,255,255)",0.2,near_normal,"(171,516)","(255,255,255)",0.2,near_normal,"(476,516)"
+Uttar Pradesh,Lucknow,26.8467,80.9462,"(115,0,0)",6.0,above_normal,"(162,167)","(255,118,5)",2.0,above_normal,"(468,167)","(255,255,255)",0.2,near_normal,"(156,503)","(255,255,255)",0.2,near_normal,"(461,503)"
+Maharashtra,Yavatmal,20.3898,78.1308,"(255,250,205)",0.5,near_normal,"(142,223)","(200,200,233)",-1.0,near_normal,"(448,223)","(255,118,5)",2.0,above_normal,"(136,559)","(255,118,5)",2.0,above_normal,"(441,559)"
+Maharashtra,Nagpur,21.1458,79.0882,"(255,166,53)",1.0,near_normal,"(149,216)","(220,220,247)",0.0,near_normal,"(455,216)","(255,118,5)",2.0,above_normal,"(143,552)","(255,118,5)",2.0,above_normal,"(448,552)"
+Rajasthan,Jaipur,26.9124,75.7873,"(255,94,0)",3.0,above_normal,"(125,167)","(255,118,5)",2.0,above_normal,"(431,167)","(255,118,5)",2.0,above_normal,"(119,503)","(255,166,53)",1.0,near_normal,"(424,503)"
+Rajasthan,Jodhpur,26.2389,73.0243,"(255,166,53)",1.0,near_normal,"(105,173)","(255,118,5)",2.0,above_normal,"(411,173)","(255,255,255)",0.2,near_normal,"(99,509)","(255,255,255)",0.2,near_normal,"(404,509)"
+Andhra Pradesh,Anantapur,14.6798,77.6008,"(170,170,212)",-2.0,below_normal,"(138,272)","(130,130,184)",-3.0,below_normal,"(444,272)","(170,170,212)",-2.0,below_normal,"(132,608)","(200,200,233)",-1.0,near_normal,"(437,608)"
+Andhra Pradesh,Kurnool,15.8281,78.0373,"(170,170,212)",-2.0,below_normal,"(141,262)","(130,130,184)",-3.0,below_normal,"(447,262)","(170,170,212)",-2.0,below_normal,"(135,598)","(220,220,247)",0.0,near_normal,"(440,598)"
