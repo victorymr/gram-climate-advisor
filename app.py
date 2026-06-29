@@ -55,7 +55,7 @@ st.markdown("""
     }
     .action-card h4 {margin: 0 0 0.7rem 0; font-size: 1.05rem; display: flex; align-items: center; gap: 0.4rem;}
     .action-card ul {margin: 0; padding-left: 1.15rem;}
-    .action-card li {margin-bottom: 0.45rem; font-size: 0.92rem; line-height: 1.4;}
+    .action-card li {margin-bottom: 0.45rem; font-size: 0.92rem; line-height: 1.4; color: #2c3e50;}
     .card-do    {background: #fdecea; border-color: #f5b7b1;}
     .card-do h4 {color: #c0392b;}
     .card-prep  {background: #fef9e7; border-color: #f7dc6f;}
@@ -63,8 +63,8 @@ st.markdown("""
     .card-avoid {background: #f4f6f7; border-color: #d5dbdb;}
     .card-avoid h4 {color: #566573;}
 
-    /* Section title */
-    .sec-title {font-size: 1.25rem; font-weight: 700; margin: 1.4rem 0 0.5rem 0; color: #2c3e50;}
+    /* Section title (on page background — inherit theme text color) */
+    .sec-title {font-size: 1.25rem; font-weight: 700; margin: 1.4rem 0 0.5rem 0;}
 
     /* Guidance box */
     .guidance-box {
@@ -82,7 +82,7 @@ st.markdown("""
         width: 2rem; height: 2rem; border-radius: 50%; background: #27ae60; color: #fff;
         font-weight: 700; margin-bottom: 0.6rem;
     }
-    .step-card h4 {margin: 0.2rem 0 0.4rem 0;}
+    .step-card h4 {margin: 0.2rem 0 0.4rem 0; color: #2c3e50;}
     .step-card p {color: #5f6b7a; font-size: 0.9rem; margin: 0;}
 </style>
 """, unsafe_allow_html=True)
