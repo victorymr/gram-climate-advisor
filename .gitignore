@@ -29,3 +29,11 @@ Thumbs.db
 
 # Claude Code local tooling config
 .claude/
+
+# Vendored forecast pipeline — generated/downloaded artifacts (only code is tracked)
+india_forecasts/data/
+india_forecasts/plots/
+*.nc
+*.grib
+*.grb2
+*.idx

@@ -26,7 +26,7 @@ The system follows a strict 4-tier source hierarchy:
 
 By default the forecast fields are extracted by hand from IMD imagery (see **Admin Updates** below).
 The advisor can instead be driven by **numerical model forecasts** produced by the companion
-`india_forecasts` pipeline (at `../enso_india/india_forecasts`), which pulls real subseasonal and
+`india_forecasts` pipeline (vendored in this repo at `india_forecasts/`), which pulls real subseasonal and
 seasonal models and collapses them to each district.
 
 ### What the models provide
@@ -98,6 +98,13 @@ gram-climate-advisor/
 │   ├── update_forecasts.py        # IMD CSV -> district_forecasts.json
 │   ├── import_model_forecasts.py  # Merge india_forecasts model output into district_forecasts.json
 │   └── run_forecast_pipeline.py   # One command: run the whole model pipeline + refresh forecasts
+├── india_forecasts/               # Vendored forecast pipeline (subseasonal & seasonal models)
+│   ├── forecast_region_s2s.py     # Weekly multi-model + per-member odds per district
+│   ├── forecast_region.py         # Seasonal tercile forecast per district
+│   ├── download_*.py              # Model/obs downloaders (GEFS, CFSv2, EC46, SEAS5, SFS, ERA5)
+│   ├── build_era5_clim.py         # ERA5 weekly climatology (for anomalies)
+│   ├── config.py, utils.py, s2s_utils.py, requirements.txt, README.md
+│   └── data/, plots/              # Generated/downloaded artifacts (git-ignored)
 ├── tests/                         # Test suite
 │   └── test_scenarios.py          # Main scenario tests
 └── docs/                          # Documentation

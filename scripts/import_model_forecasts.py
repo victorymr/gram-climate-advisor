@@ -41,8 +41,8 @@ from datetime import datetime
 
 ADVISOR_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_JSON = ADVISOR_ROOT / "data" / "district_forecasts.json"
-# india_forecasts lives at <...>/enso_india/india_forecasts, sibling-ish to the advisor.
-DEFAULT_PLOTS = ADVISOR_ROOT.parent / "enso_india" / "india_forecasts" / "plots"
+# the forecast pipeline is vendored into the repo at gram-climate-advisor/india_forecasts/
+DEFAULT_PLOTS = ADVISOR_ROOT / "india_forecasts" / "plots"
 
 RAIN_ABOVE, RAIN_BELOW = 3.0, -3.0     # mm/day thresholds (match extract_rainfall_anomaly.py)
 TMAX_ABOVE, TMAX_BELOW = 1.5, -1.5     # degC thresholds (match app.py _temp_cell_color)

@@ -38,7 +38,7 @@ import subprocess
 from pathlib import Path
 
 ADVISOR_ROOT = Path(__file__).resolve().parent.parent
-FORECASTS_DIR = ADVISOR_ROOT.parent / "enso_india" / "india_forecasts"
+FORECASTS_DIR = ADVISOR_ROOT / "india_forecasts"   # vendored forecast pipeline
 PLOTS_DIR = FORECASTS_DIR / "plots"
 CLIM_DIR = FORECASTS_DIR / "data" / "clim"
 DISTRICTS_CSV = ADVISOR_ROOT / "data" / "district_coordinates.csv"
