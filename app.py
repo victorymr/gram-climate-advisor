@@ -150,6 +150,82 @@ def _temp_cell_color(v):
     return ""
 
 
+# --- probabilistic outlook helpers -----------------------------------------
+def _round10(p):
+    """Round a probability (0-1) to the nearest 10%."""
+    return int(round((p or 0.0) * 10)) * 10
+
+
+def _likelihood_word(p):
+    pct = (p or 0.0) * 100
+    if pct < 10:
+        return "Very unlikely"
+    if pct < 30:
+        return "Unlikely"
+    if pct < 50:
+        return "Possible"
+    if pct < 70:
+        return "Likely"
+    if pct < 90:
+        return "Very likely"
+    return "Almost certain"
+
+
+def _odds(p):
+    return "—" if p is None else f"{_likelihood_word(p)} · {_round10(p)}%"
+
+
+def _rain_lean(w):
+    """Dominant of wetter/near/drier for a week's probability dict."""
+    opts = {k: v for k, v in {
+        "Wetter than normal": w.get("p_wetter"),
+        "Near normal": w.get("p_near"),
+        "Drier than normal": w.get("p_drier"),
+    }.items() if v is not None}
+    if not opts:
+        return "—"
+    lean, p = max(opts.items(), key=lambda kv: kv[1])
+    return f"{lean} · {_round10(p)}%"
+
+
+def _rain_category(v):
+    """Plain-language rainfall category from a weekly anomaly (mm/day)."""
+    if v is None:
+        return "—"
+    if v >= 7:
+        return "Much wetter than normal"
+    if v >= 3:
+        return "Wetter than normal"
+    if v >= 1:
+        return "Slightly wetter"
+    if v > -1:
+        return "Near normal"
+    if v > -3:
+        return "Slightly drier"
+    if v > -7:
+        return "Drier than normal"
+    return "Much drier than normal"
+
+
+def _temp_category(v):
+    """Plain-language temperature category from a weekly anomaly (°C)."""
+    if v is None:
+        return "—"
+    if v >= 4:
+        return "Very warm"
+    if v >= 2:
+        return "Warm"
+    if v >= 1:
+        return "Slightly warm"
+    if v > -1:
+        return "Near normal"
+    if v > -2:
+        return "Slightly cool"
+    if v > -4:
+        return "Cool"
+    return "Very cool"
+
+
 # App header
 st.markdown("""
 <div class="app-header">
@@ -220,8 +296,14 @@ selected_crop_stage = st.sidebar.selectbox("Crop Stage (Optional)", ["Not specif
 
 st.sidebar.markdown("&nbsp;")
 
-# Generate advisory button
+# Generate advisory button. We gate rendering on session_state (not the button's
+# transient True) so widgets *inside* the results — e.g. the Source Data source
+# switcher — don't clear the advisory when they trigger a rerun. The body recomputes
+# from the current sidebar selections on every run, so it always stays in sync.
 if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=True):
+    st.session_state["advisory_shown"] = True
+
+if st.session_state.get("advisory_shown"):
     # Load forecast and adaptation data
     forecast_data = load_district_data(selected_state, selected_district)
     icar_data = load_icar_data(selected_state, selected_district)
@@ -297,36 +379,21 @@ if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=Tr
             outlook = advisory['extended_outlook']
             st.write(outlook['narrative'])
 
-            weeks = outlook['weeks']
             df_out = pd.DataFrame([
                 {
                     "Week": f"Week {wk['week']}",
-                    "Rainfall (mm/day)": wk['anomaly_mm_day'],
-                    "Outlook": wk['label'],
-                    "Temp anomaly (°C)": wk.get('tmax_anomaly_degC'),
+                    "Rainfall": _rain_category(wk.get('anomaly_mm_day')),
+                    "Temperature": _temp_category(wk.get('tmax_anomaly_degC')),
                 }
-                for wk in weeks
+                for wk in outlook['weeks']
             ]).set_index("Week")
+            st.dataframe(df_out, use_container_width=True)
 
-            styler = (
-                df_out.style
-                .map(_rain_cell_color, subset=["Rainfall (mm/day)"])
-                .map(_temp_cell_color, subset=["Temp anomaly (°C)"])
-                .format({"Rainfall (mm/day)": "{:+.1f}", "Temp anomaly (°C)": "{:+.1f}"}, na_rep="—")
+            st.info(
+                "ℹ️ These are broad categories relative to the seasonal normal. "
+                "For the **odds** of specific thresholds (heavy rain, dry spell, hot week) "
+                "and exact model values, see the **📡 Source Data** tab."
             )
-            st.dataframe(styler, use_container_width=True)
-
-            ch1, ch2 = st.columns(2)
-            with ch1:
-                st.caption("Rainfall anomaly (mm/day)")
-                st.bar_chart(df_out[["Rainfall (mm/day)"]], color="#2980b9")
-            with ch2:
-                st.caption("Temperature anomaly (°C)")
-                temp_series = df_out[["Temp anomaly (°C)"]].dropna()
-                if not temp_series.empty:
-                    st.bar_chart(temp_series, color="#e74c3c")
-                else:
-                    st.info("No temperature anomaly data available.")
         else:
             st.info("No extended outlook available for this district.")
 
@@ -346,14 +413,33 @@ if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=Tr
 
     # --- Source data tab ---
     with tab_data:
-        forecast_rows = []
-        for wk in range(1, 5):
-            forecast_rows.append({
-                "Week": f"Week {wk}",
-                "Rainfall (mm/day)": forecast_data.get(f"week{wk}_rainfall_anomaly_mm_day"),
-                "Tmax (°C)": forecast_data.get(f"week{wk}_tmax_anomaly_degC"),
-            })
-        df_src = pd.DataFrame(forecast_rows).set_index("Week")
+        # Source switcher: official IMD guidance, the downloaded multi-model mean,
+        # or an individual model. Falls back to the active top-level fields if the
+        # data predates the model import (no forecast_variants present).
+        variants = forecast_data.get("forecast_variants") or []
+        selected_variant = None
+        if variants:
+            labels = [v.get("label", v.get("key", "?")) for v in variants]
+            st.caption(
+                "Compare the forecast inputs behind this advisory. The recommendations "
+                "above use the **multi-model mean**."
+            )
+            choice = st.radio("Forecast source", labels, horizontal=True,
+                              label_visibility="collapsed")
+            selected_variant = variants[labels.index(choice)] if choice in labels else variants[0]
+            weeks = selected_variant.get("weeks", [])
+        else:
+            weeks = [{"week": wk,
+                      "rainfall_mm_day": forecast_data.get(f"week{wk}_rainfall_anomaly_mm_day"),
+                      "tmax_degC": forecast_data.get(f"week{wk}_tmax_anomaly_degC")}
+                     for wk in range(1, 5)]
+
+        df_src = pd.DataFrame([
+            {"Week": f"Week {w['week']}",
+             "Rainfall (mm/day)": w.get("rainfall_mm_day"),
+             "Tmax (°C)": w.get("tmax_degC")}
+            for w in weeks
+        ]).set_index("Week")
         src_styler = (
             df_src.style
             .map(_rain_cell_color, subset=["Rainfall (mm/day)"])
@@ -361,6 +447,45 @@ if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=Tr
             .format({"Rainfall (mm/day)": "{:+.1f}", "Tmax (°C)": "{:+.1f}"}, na_rep="—")
         )
         st.dataframe(src_styler, use_container_width=True)
+        if selected_variant and selected_variant.get("source"):
+            st.caption(f"**{selected_variant['label']}** — {selected_variant['source']}")
+
+        # Weekly threshold odds (ensemble probabilities)
+        wprob = forecast_data.get("weekly_probabilities")
+        if wprob and wprob.get("weeks"):
+            pweeks = wprob["weeks"]
+            st.markdown("<div class='sec-title'>🎲 Weekly threshold odds</div>", unsafe_allow_html=True)
+            df_p = pd.DataFrame([
+                {
+                    "Week": f"Week {w['week']}",
+                    "Rainfall lean": _rain_lean(w),
+                    "Heavy rain": _odds(w.get("p_heavy")),
+                    "Dry spell": _odds(w.get("p_dryspell")),
+                    "Hot week": _odds(w.get("p_hot")),
+                }
+                for w in pweeks
+            ]).set_index("Week")
+            st.dataframe(df_p, use_container_width=True)
+
+            split = pd.DataFrame([
+                {
+                    "Week": f"Week {w['week']}",
+                    "Wetter": round((w.get('p_wetter') or 0) * 100),
+                    "Near": round((w.get('p_near') or 0) * 100),
+                    "Drier": round((w.get('p_drier') or 0) * 100),
+                }
+                for w in pweeks
+            ]).set_index("Week")
+            st.caption("Rainfall category odds (%)")
+            try:
+                st.bar_chart(split, color=["#2980b9", "#b0b0b0", "#c0904f"], stack=True)
+            except TypeError:
+                st.bar_chart(split)
+
+            n = wprob.get("n_members", "?")
+            src = wprob.get("source", "ensemble")
+            init = wprob.get("init") or forecast_data.get("forecast_date", "")
+            st.caption(f"Odds from the {src} ({n} members), init {init}; rounded to the nearest 10%.")
 
         obs_col1, obs_col2, obs_col3 = st.columns(3)
         with obs_col1:
@@ -375,6 +500,8 @@ if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=Tr
             st.markdown(f"**Heat wave warning:** {hw}")
             st.markdown(f"**Heavy rain warning:** {hr}")
 
+        if forecast_data.get("forecast_source"):
+            st.caption(f"Forecast source: {forecast_data['forecast_source']}")
         if forecast_data.get("imd_source_notes"):
             st.caption(f"Source note: {forecast_data['imd_source_notes']}")
 

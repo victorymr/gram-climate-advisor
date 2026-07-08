@@ -2,196 +2,1428 @@
   {
     "state": "Bihar",
     "district": "Gaya",
-    "forecast_date": "2026-06-28",
-    "rainfall_since_june_1_pct_departure": -100,
-    "rainfall_last_7_days_pct_departure": -100,
-    "rainfall_last_14_days_pct_departure": -100,
-    "monsoon_onset_status": "not_started",
-    "week1_rainfall_signal": "below_normal",
-    "week2_rainfall_signal": "near_normal",
-    "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "below_normal_risk",
-    "tmax_signal": "above_normal",
-    "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 6.0,
-    "week2_tmax_anomaly_degC": 1.0,
-    "week3_tmax_anomaly_degC": 0.2,
-    "week4_tmax_anomaly_degC": 0.2,
-    "week1_rainfall_anomaly_mm_day": -3.0,
-    "week2_rainfall_anomaly_mm_day": -1.0,
-    "week3_rainfall_anomaly_mm_day": 0.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
-    "heat_wave_warning": true,
-    "heavy_rain_warning": false,
-    "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-3mm/d, tmaxanom map Wk1=+6°C. Extreme heat + delayed monsoon."
-  },
-  {
-    "state": "Bihar",
-    "district": "Patna",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": -100,
     "rainfall_last_7_days_pct_departure": -100,
     "rainfall_last_14_days_pct_departure": -100,
     "monsoon_onset_status": "not_started",
     "week1_rainfall_signal": "near_normal",
-    "week2_rainfall_signal": "near_normal",
-    "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "below_normal_risk",
+    "week2_rainfall_signal": "below_normal",
+    "week3_4_rainfall_signal": "above_normal",
+    "seasonal_monsoon_context": "normal",
     "tmax_signal": "above_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 6.0,
-    "week2_tmax_anomaly_degC": 1.0,
-    "week3_tmax_anomaly_degC": 0.2,
-    "week4_tmax_anomaly_degC": 0.2,
-    "week1_rainfall_anomaly_mm_day": -1.0,
-    "week2_rainfall_anomaly_mm_day": 0.0,
-    "week3_rainfall_anomaly_mm_day": 0.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
+    "week1_tmax_anomaly_degC": 4.635,
+    "week2_tmax_anomaly_degC": 2.376,
+    "week3_tmax_anomaly_degC": 1.316,
+    "week4_tmax_anomaly_degC": -0.464,
+    "week1_rainfall_anomaly_mm_day": -2.824,
+    "week2_rainfall_anomaly_mm_day": -4.42,
+    "week3_rainfall_anomaly_mm_day": 6.834,
+    "week4_rainfall_anomaly_mm_day": 14.86,
     "heat_wave_warning": true,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-1mm/d, tmaxanom map Wk1=+6°C. Near-normal rainfall forecast but extreme heat."
+    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-3mm/d, tmaxanom map Wk1=+6\u00b0C. Extreme heat + delayed monsoon. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net +0.02)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net +0.02)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-3mm/d, tmaxanom map Wk1=+6\u00b0C. Extreme heat + delayed monsoon.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net +0.02)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -2.824,
+            "tmax_degC": 4.635
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -4.42,
+            "tmax_degC": 2.376
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 6.834,
+            "tmax_degC": 1.316
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 14.86,
+            "tmax_degC": -0.464
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 5.749,
+            "tmax_degC": 0.376
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -5.19,
+            "tmax_degC": 5.635
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.76,
+            "tmax_degC": 2.043
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 11.989,
+            "tmax_degC": 1.137
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 26.942,
+            "tmax_degC": -1.607
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 8.242,
+            "tmax_degC": 0.084
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -0.458,
+            "tmax_degC": 3.636
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -3.08,
+            "tmax_degC": 2.709
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 1.68,
+            "tmax_degC": 1.496
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 2.779,
+            "tmax_degC": 0.679
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 3.257,
+            "tmax_degC": 0.669
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.409,
+          "p_near": 0.136,
+          "p_drier": 0.455,
+          "p_heavy": 0.182,
+          "p_dryspell": 0.409,
+          "p_hot": 0.909
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.227,
+          "p_near": 0.0,
+          "p_drier": 0.773,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.682,
+          "p_hot": 0.773
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.591,
+          "p_near": 0.136,
+          "p_drier": 0.273,
+          "p_heavy": 0.227,
+          "p_dryspell": 0.227,
+          "p_hot": 0.364
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.5,
+          "p_near": 0.136,
+          "p_drier": 0.364,
+          "p_heavy": 0.364,
+          "p_dryspell": 0.364,
+          "p_hot": 0.273
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.5,
+          "p_near": 0.273,
+          "p_drier": 0.227,
+          "p_heavy": 0.364,
+          "p_dryspell": 0.182,
+          "p_hot": 0.318
+        }
+      ]
+    }
+  },
+  {
+    "state": "Bihar",
+    "district": "Patna",
+    "forecast_date": "2026-06-29",
+    "rainfall_since_june_1_pct_departure": -100,
+    "rainfall_last_7_days_pct_departure": -100,
+    "rainfall_last_14_days_pct_departure": -100,
+    "monsoon_onset_status": "not_started",
+    "week1_rainfall_signal": "below_normal",
+    "week2_rainfall_signal": "below_normal",
+    "week3_4_rainfall_signal": "above_normal",
+    "seasonal_monsoon_context": "normal",
+    "tmax_signal": "above_normal",
+    "tmin_signal": null,
+    "week1_tmax_anomaly_degC": 4.935,
+    "week2_tmax_anomaly_degC": 3.054,
+    "week3_tmax_anomaly_degC": 1.727,
+    "week4_tmax_anomaly_degC": -0.206,
+    "week1_rainfall_anomaly_mm_day": -4.581,
+    "week2_rainfall_anomaly_mm_day": -5.798,
+    "week3_rainfall_anomaly_mm_day": 6.455,
+    "week4_rainfall_anomaly_mm_day": 14.834,
+    "heat_wave_warning": true,
+    "heavy_rain_warning": false,
+    "humidity_heat_index_signal": null,
+    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-1mm/d, tmaxanom map Wk1=+6\u00b0C. Near-normal rainfall forecast but extreme heat. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net -0.04)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net -0.04)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-1mm/d, tmaxanom map Wk1=+6\u00b0C. Near-normal rainfall forecast but extreme heat.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 6.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 1.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> normal (net -0.04)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -4.581,
+            "tmax_degC": 4.935
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.798,
+            "tmax_degC": 3.054
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 6.455,
+            "tmax_degC": 1.727
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 14.834,
+            "tmax_degC": -0.206
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 5.548,
+            "tmax_degC": 0.604
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -5.19,
+            "tmax_degC": 5.635
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.76,
+            "tmax_degC": 2.043
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 11.989,
+            "tmax_degC": 1.137
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 26.942,
+            "tmax_degC": -1.607
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 8.242,
+            "tmax_degC": 0.084
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.972,
+            "tmax_degC": 4.236
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.835,
+            "tmax_degC": 4.065
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.921,
+            "tmax_degC": 2.317
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 2.727,
+            "tmax_degC": 1.196
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 2.855,
+            "tmax_degC": 1.124
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.227,
+          "p_near": 0.0,
+          "p_drier": 0.773,
+          "p_heavy": 0.091,
+          "p_dryspell": 0.682,
+          "p_hot": 0.955
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.136,
+          "p_near": 0.046,
+          "p_drier": 0.818,
+          "p_heavy": 0.091,
+          "p_dryspell": 0.818,
+          "p_hot": 0.909
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.455,
+          "p_near": 0.136,
+          "p_drier": 0.409,
+          "p_heavy": 0.182,
+          "p_dryspell": 0.318,
+          "p_hot": 0.636
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.591,
+          "p_near": 0.0,
+          "p_drier": 0.409,
+          "p_heavy": 0.364,
+          "p_dryspell": 0.318,
+          "p_hot": 0.455
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.5,
+          "p_near": 0.136,
+          "p_drier": 0.364,
+          "p_heavy": 0.273,
+          "p_dryspell": 0.227,
+          "p_hot": 0.364
+        }
+      ]
+    }
   },
   {
     "state": "Uttar Pradesh",
     "district": "Varanasi",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": -15,
     "rainfall_last_7_days_pct_departure": 0,
     "rainfall_last_14_days_pct_departure": -25,
     "monsoon_onset_status": "normal",
-    "week1_rainfall_signal": "below_normal",
-    "week2_rainfall_signal": "near_normal",
+    "week1_rainfall_signal": "near_normal",
+    "week2_rainfall_signal": "below_normal",
     "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "normal",
+    "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "above_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 6.0,
-    "week2_tmax_anomaly_degC": 1.0,
-    "week3_tmax_anomaly_degC": 0.2,
-    "week4_tmax_anomaly_degC": 0.2,
-    "week1_rainfall_anomaly_mm_day": -3.0,
-    "week2_rainfall_anomaly_mm_day": -1.0,
-    "week3_rainfall_anomaly_mm_day": 0.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
+    "week1_tmax_anomaly_degC": 5.741,
+    "week2_tmax_anomaly_degC": 2.826,
+    "week3_tmax_anomaly_degC": 1.274,
+    "week4_tmax_anomaly_degC": 0.291,
+    "week1_rainfall_anomaly_mm_day": -2.944,
+    "week2_rainfall_anomaly_mm_day": -6.116,
+    "week3_rainfall_anomaly_mm_day": -4.695,
+    "week4_rainfall_anomaly_mm_day": 8.771,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: EAST U.P. row - Deficient week of 17-Jun then Normal recovery 24-Jun. Forecast: rfanom map Wk1=-3mm/d (below normal), tmaxanom Wk1=+6°C (severe heat)."
+    "imd_source_notes": "Observed: EAST U.P. row - Deficient week of 17-Jun then Normal recovery 24-Jun. Forecast: rfanom map Wk1=-3mm/d (below normal), tmaxanom Wk1=+6\u00b0C (severe heat). [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.10)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.10)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: EAST U.P. row - Deficient week of 17-Jun then Normal recovery 24-Jun. Forecast: rfanom map Wk1=-3mm/d (below normal), tmaxanom Wk1=+6\u00b0C (severe heat).",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.10)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -2.944,
+            "tmax_degC": 5.741
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -6.116,
+            "tmax_degC": 2.826
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -4.695,
+            "tmax_degC": 1.274
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 8.771,
+            "tmax_degC": 0.291
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 1.412,
+            "tmax_degC": 0.006
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -4.324,
+            "tmax_degC": 6.919
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -6.789,
+            "tmax_degC": 1.804
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -8.693,
+            "tmax_degC": 0.459
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 17.328,
+            "tmax_degC": -0.815
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -1.19,
+            "tmax_degC": -1.292
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.563,
+            "tmax_degC": 4.563
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.443,
+            "tmax_degC": 3.849
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -0.697,
+            "tmax_degC": 2.089
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 0.214,
+            "tmax_degC": 1.396
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 4.014,
+            "tmax_degC": 1.303
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.182,
+          "p_near": 0.227,
+          "p_drier": 0.591,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.5,
+          "p_hot": 0.955
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.045,
+          "p_near": 0.091,
+          "p_drier": 0.864,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.773,
+          "p_hot": 0.909
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.5,
+          "p_near": 0.045,
+          "p_drier": 0.455,
+          "p_heavy": 0.182,
+          "p_dryspell": 0.318,
+          "p_hot": 0.545
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.409,
+          "p_near": 0.091,
+          "p_drier": 0.5,
+          "p_heavy": 0.318,
+          "p_dryspell": 0.455,
+          "p_hot": 0.455
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.591,
+          "p_near": 0.045,
+          "p_drier": 0.364,
+          "p_heavy": 0.364,
+          "p_dryspell": 0.273,
+          "p_hot": 0.455
+        }
+      ]
+    }
   },
   {
     "state": "Uttar Pradesh",
     "district": "Lucknow",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": -50,
     "rainfall_last_7_days_pct_departure": 0,
     "rainfall_last_14_days_pct_departure": -40,
     "monsoon_onset_status": "delayed",
     "week1_rainfall_signal": "below_normal",
-    "week2_rainfall_signal": "near_normal",
+    "week2_rainfall_signal": "below_normal",
     "week3_4_rainfall_signal": "near_normal",
     "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "above_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 6.0,
-    "week2_tmax_anomaly_degC": 2.0,
-    "week3_tmax_anomaly_degC": 0.2,
-    "week4_tmax_anomaly_degC": 0.2,
-    "week1_rainfall_anomaly_mm_day": -3.0,
-    "week2_rainfall_anomaly_mm_day": -1.0,
-    "week3_rainfall_anomaly_mm_day": 0.0,
-    "week4_rainfall_anomaly_mm_day": 0.0,
+    "week1_tmax_anomaly_degC": 8.185,
+    "week2_tmax_anomaly_degC": 4.622,
+    "week3_tmax_anomaly_degC": 3.28,
+    "week4_tmax_anomaly_degC": 3.04,
+    "week1_rainfall_anomaly_mm_day": -5.596,
+    "week2_rainfall_anomaly_mm_day": -6.301,
+    "week3_rainfall_anomaly_mm_day": -1.302,
+    "week4_rainfall_anomaly_mm_day": -2.651,
     "heat_wave_warning": true,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: WEST U.P. row - No Rain early Jun, Deficient then Normal recovery. Forecast: rfanom Wk1=-3mm/d, tmaxanom Wk1=+6°C, Wk2=+2°C. Delayed monsoon + severe heat."
+    "imd_source_notes": "Observed: WEST U.P. row - No Rain early Jun, Deficient then Normal recovery. Forecast: rfanom Wk1=-3mm/d, tmaxanom Wk1=+6\u00b0C, Wk2=+2\u00b0C. Delayed monsoon + severe heat. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.25)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.25)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: WEST U.P. row - No Rain early Jun, Deficient then Normal recovery. Forecast: rfanom Wk1=-3mm/d, tmaxanom Wk1=+6\u00b0C, Wk2=+2\u00b0C. Delayed monsoon + severe heat.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.25)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -5.596,
+            "tmax_degC": 8.185
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -6.301,
+            "tmax_degC": 4.622
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.302,
+            "tmax_degC": 3.28
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -2.651,
+            "tmax_degC": 3.04
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.358,
+            "tmax_degC": 4.233
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -7.646,
+            "tmax_degC": 10.907
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -7.004,
+            "tmax_degC": 4.528
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -4.626,
+            "tmax_degC": 3.81
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -5.193,
+            "tmax_degC": 3.673
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -6.873,
+            "tmax_degC": 6.057
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.546,
+            "tmax_degC": 5.462
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.598,
+            "tmax_degC": 4.715
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 2.023,
+            "tmax_degC": 2.75
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -0.109,
+            "tmax_degC": 2.406
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": 2.157,
+            "tmax_degC": 2.409
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.091,
+          "p_near": 0.045,
+          "p_drier": 0.864,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.727,
+          "p_hot": 1.0
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.273,
+          "p_near": 0.045,
+          "p_drier": 0.682,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.682,
+          "p_hot": 0.909
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.591,
+          "p_near": 0.045,
+          "p_drier": 0.364,
+          "p_heavy": 0.273,
+          "p_dryspell": 0.318,
+          "p_hot": 0.5
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.455,
+          "p_near": -0.0,
+          "p_drier": 0.545,
+          "p_heavy": 0.182,
+          "p_dryspell": 0.409,
+          "p_hot": 0.636
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.455,
+          "p_near": -0.0,
+          "p_drier": 0.545,
+          "p_heavy": 0.227,
+          "p_dryspell": 0.455,
+          "p_hot": 0.5
+        }
+      ]
+    }
   },
   {
     "state": "Maharashtra",
     "district": "Yavatmal",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": 0,
     "rainfall_last_7_days_pct_departure": 0,
     "rainfall_last_14_days_pct_departure": 0,
     "monsoon_onset_status": "active",
-    "week1_rainfall_signal": "below_normal",
+    "week1_rainfall_signal": "near_normal",
     "week2_rainfall_signal": "above_normal",
     "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "normal",
+    "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "near_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 0.5,
-    "week2_tmax_anomaly_degC": -1.0,
-    "week3_tmax_anomaly_degC": 2.0,
-    "week4_tmax_anomaly_degC": 2.0,
-    "week1_rainfall_anomaly_mm_day": -3.0,
-    "week2_rainfall_anomaly_mm_day": 10.0,
-    "week3_rainfall_anomaly_mm_day": -1.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
+    "week1_tmax_anomaly_degC": -0.478,
+    "week2_tmax_anomaly_degC": -2.515,
+    "week3_tmax_anomaly_degC": -0.097,
+    "week4_tmax_anomaly_degC": -0.791,
+    "week1_rainfall_anomaly_mm_day": 2.826,
+    "week2_rainfall_anomaly_mm_day": 19.154,
+    "week3_rainfall_anomaly_mm_day": -6.583,
+    "week4_rainfall_anomaly_mm_day": 3.303,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: VIDARBHA row - Normal, Deficient, Normal, Normal (near-normal cumulative). Forecast: rfanom Wk1=-3mm/d then Wk2=+10mm/d (strong above-normal rainfall expected Wk2). Temps near normal."
+    "imd_source_notes": "Observed: VIDARBHA row - Normal, Deficient, Normal, Normal (near-normal cumulative). Forecast: rfanom Wk1=-3mm/d then Wk2=+10mm/d (strong above-normal rainfall expected Wk2). Temps near normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: VIDARBHA row - Normal, Deficient, Normal, Normal (near-normal cumulative). Forecast: rfanom Wk1=-3mm/d then Wk2=+10mm/d (strong above-normal rainfall expected Wk2). Temps near normal.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 0.5
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 10.0,
+            "tmax_degC": -1.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 2.826,
+            "tmax_degC": -0.478
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 19.154,
+            "tmax_degC": -2.515
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -6.583,
+            "tmax_degC": -0.097
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 3.303,
+            "tmax_degC": -0.791
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -7.64,
+            "tmax_degC": 1.14
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -0.398,
+            "tmax_degC": 0.473
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 35.821,
+            "tmax_degC": -3.961
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -9.709,
+            "tmax_degC": -0.587
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 12.362,
+            "tmax_degC": -2.545
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -9.418,
+            "tmax_degC": 0.441
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 6.05,
+            "tmax_degC": -1.429
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 2.487,
+            "tmax_degC": -1.07
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -3.458,
+            "tmax_degC": 0.394
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -5.757,
+            "tmax_degC": 0.963
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -5.861,
+            "tmax_degC": 1.84
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.864,
+          "p_near": 0.045,
+          "p_drier": 0.091,
+          "p_heavy": 0.318,
+          "p_dryspell": 0.045,
+          "p_hot": 0.0
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.409,
+          "p_near": 0.227,
+          "p_drier": 0.364,
+          "p_heavy": 0.409,
+          "p_dryspell": 0.136,
+          "p_hot": 0.045
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.136,
+          "p_near": 0.046,
+          "p_drier": 0.818,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.591,
+          "p_hot": 0.273
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.091,
+          "p_near": 0.091,
+          "p_drier": 0.818,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.773,
+          "p_hot": 0.318
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.091,
+          "p_near": 0.091,
+          "p_drier": 0.818,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.818,
+          "p_hot": 0.591
+        }
+      ]
+    }
   },
   {
     "state": "Maharashtra",
     "district": "Nagpur",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": 0,
     "rainfall_last_7_days_pct_departure": 0,
     "rainfall_last_14_days_pct_departure": 0,
     "monsoon_onset_status": "active",
-    "week1_rainfall_signal": "below_normal",
+    "week1_rainfall_signal": "near_normal",
     "week2_rainfall_signal": "above_normal",
-    "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "normal",
+    "week3_4_rainfall_signal": "below_normal",
+    "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "near_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 1.0,
-    "week2_tmax_anomaly_degC": 0.0,
-    "week3_tmax_anomaly_degC": 2.0,
-    "week4_tmax_anomaly_degC": 2.0,
-    "week1_rainfall_anomaly_mm_day": -3.0,
-    "week2_rainfall_anomaly_mm_day": 14.9,
-    "week3_rainfall_anomaly_mm_day": 0.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
+    "week1_tmax_anomaly_degC": 0.42,
+    "week2_tmax_anomaly_degC": -2.41,
+    "week3_tmax_anomaly_degC": -0.369,
+    "week4_tmax_anomaly_degC": -0.434,
+    "week1_rainfall_anomaly_mm_day": 2.714,
+    "week2_rainfall_anomaly_mm_day": 12.561,
+    "week3_rainfall_anomaly_mm_day": -7.356,
+    "week4_rainfall_anomaly_mm_day": -4.311,
     "heat_wave_warning": false,
     "heavy_rain_warning": true,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: VIDARBHA row - same as Yavatmal (near-normal cumulative). Forecast: rfanom Wk2=+14.9mm/d (very heavy above-normal rainfall expected). Heavy rain warning issued for Wk2."
+    "imd_source_notes": "Observed: VIDARBHA row - same as Yavatmal (near-normal cumulative). Forecast: rfanom Wk2=+14.9mm/d (very heavy above-normal rainfall expected). Heavy rain warning issued for Wk2. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.20)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.20)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: VIDARBHA row - same as Yavatmal (near-normal cumulative). Forecast: rfanom Wk2=+14.9mm/d (very heavy above-normal rainfall expected). Heavy rain warning issued for Wk2.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 1.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 14.9,
+            "tmax_degC": 0.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.20)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 2.714,
+            "tmax_degC": 0.42
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 12.561,
+            "tmax_degC": -2.41
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -7.356,
+            "tmax_degC": -0.369
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -4.311,
+            "tmax_degC": -0.434
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -9.207,
+            "tmax_degC": 1.624
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.041,
+            "tmax_degC": 1.522
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 19.783,
+            "tmax_degC": -3.769
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -11.155,
+            "tmax_degC": -1.044
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -0.424,
+            "tmax_degC": -1.602
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -11.663,
+            "tmax_degC": 1.927
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 8.469,
+            "tmax_degC": -0.682
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 5.338,
+            "tmax_degC": -1.05
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -3.557,
+            "tmax_degC": 0.306
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -8.198,
+            "tmax_degC": 0.733
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -6.752,
+            "tmax_degC": 1.322
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 1.0,
+          "p_near": 0.0,
+          "p_drier": 0.0,
+          "p_heavy": 0.682,
+          "p_dryspell": 0.0,
+          "p_hot": 0.0
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.682,
+          "p_near": 0.091,
+          "p_drier": 0.227,
+          "p_heavy": 0.455,
+          "p_dryspell": 0.091,
+          "p_hot": 0.045
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.136,
+          "p_near": 0.091,
+          "p_drier": 0.773,
+          "p_heavy": 0.091,
+          "p_dryspell": 0.545,
+          "p_hot": 0.273
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.091,
+          "p_near": 0.0,
+          "p_drier": 0.909,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.864,
+          "p_hot": 0.227
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.273,
+          "p_near": 0.0,
+          "p_drier": 0.727,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.636,
+          "p_hot": 0.455
+        }
+      ]
+    }
   },
   {
     "state": "Rajasthan",
     "district": "Jaipur",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": 30,
     "rainfall_last_7_days_pct_departure": 80,
     "rainfall_last_14_days_pct_departure": 50,
     "monsoon_onset_status": "active",
     "week1_rainfall_signal": "near_normal",
     "week2_rainfall_signal": "near_normal",
-    "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "normal",
+    "week3_4_rainfall_signal": "below_normal",
+    "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "above_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 3.0,
-    "week2_tmax_anomaly_degC": 2.0,
-    "week3_tmax_anomaly_degC": 2.0,
-    "week4_tmax_anomaly_degC": 1.0,
-    "week1_rainfall_anomaly_mm_day": 0.0,
-    "week2_rainfall_anomaly_mm_day": -1.0,
-    "week3_rainfall_anomaly_mm_day": -1.0,
-    "week4_rainfall_anomaly_mm_day": -1.0,
+    "week1_tmax_anomaly_degC": 4.453,
+    "week2_tmax_anomaly_degC": 2.947,
+    "week3_tmax_anomaly_degC": 3.331,
+    "week4_tmax_anomaly_degC": 3.75,
+    "week1_rainfall_anomaly_mm_day": -1.903,
+    "week2_rainfall_anomaly_mm_day": -2.881,
+    "week3_rainfall_anomaly_mm_day": -6.691,
+    "week4_rainfall_anomaly_mm_day": -5.69,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: WEST RAJASTHAN row - No Rain early, then Excess + Large Excess recent weeks (strong late-June surge). Forecast: rfanom near-normal all weeks. Tmax Wk1=+3°C (above normal heat)."
+    "imd_source_notes": "Observed: WEST RAJASTHAN row - No Rain early, then Excess + Large Excess recent weeks (strong late-June surge). Forecast: rfanom near-normal all weeks. Tmax Wk1=+3\u00b0C (above normal heat). [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.40)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.40)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: WEST RAJASTHAN row - No Rain early, then Excess + Large Excess recent weeks (strong late-June surge). Forecast: rfanom near-normal all weeks. Tmax Wk1=+3\u00b0C (above normal heat).",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 3.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.40)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.903,
+            "tmax_degC": 4.453
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -2.881,
+            "tmax_degC": 2.947
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -6.691,
+            "tmax_degC": 3.331
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -5.69,
+            "tmax_degC": 3.75
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -5.025,
+            "tmax_degC": 3.369
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -3.504,
+            "tmax_degC": 6.51
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -5.23,
+            "tmax_degC": 3.753
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -8.088,
+            "tmax_degC": 4.528
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -7.31,
+            "tmax_degC": 5.474
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -6.282,
+            "tmax_degC": 4.504
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -0.303,
+            "tmax_degC": 2.397
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -0.532,
+            "tmax_degC": 2.142
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -5.294,
+            "tmax_degC": 2.134
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -4.071,
+            "tmax_degC": 2.026
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -3.767,
+            "tmax_degC": 2.235
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.091,
+          "p_near": 0.273,
+          "p_drier": 0.636,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.364,
+          "p_hot": 0.955
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.227,
+          "p_near": 0.137,
+          "p_drier": 0.636,
+          "p_heavy": 0.091,
+          "p_dryspell": 0.455,
+          "p_hot": 0.682
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.045,
+          "p_near": 0.046,
+          "p_drier": 0.909,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.818,
+          "p_hot": 0.682
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.091,
+          "p_near": 0.091,
+          "p_drier": 0.818,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.773,
+          "p_hot": 0.682
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.136,
+          "p_near": 0.137,
+          "p_drier": 0.727,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.682,
+          "p_hot": 0.727
+        }
+      ]
+    }
   },
   {
     "state": "Rajasthan",
     "district": "Jodhpur",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": 30,
     "rainfall_last_7_days_pct_departure": 80,
     "rainfall_last_14_days_pct_departure": 50,
@@ -199,74 +1431,602 @@
     "week1_rainfall_signal": "near_normal",
     "week2_rainfall_signal": "near_normal",
     "week3_4_rainfall_signal": "near_normal",
-    "seasonal_monsoon_context": "normal",
-    "tmax_signal": "near_normal",
+    "seasonal_monsoon_context": "below_normal_risk",
+    "tmax_signal": "above_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": 1.0,
-    "week2_tmax_anomaly_degC": 2.0,
-    "week3_tmax_anomaly_degC": 0.2,
-    "week4_tmax_anomaly_degC": 0.2,
-    "week1_rainfall_anomaly_mm_day": 0.0,
-    "week2_rainfall_anomaly_mm_day": 0.0,
-    "week3_rainfall_anomaly_mm_day": -1.0,
-    "week4_rainfall_anomaly_mm_day": 0.0,
+    "week1_tmax_anomaly_degC": 2.014,
+    "week2_tmax_anomaly_degC": 2.66,
+    "week3_tmax_anomaly_degC": 1.264,
+    "week4_tmax_anomaly_degC": 1.618,
+    "week1_rainfall_anomaly_mm_day": -1.181,
+    "week2_rainfall_anomaly_mm_day": -1.563,
+    "week3_rainfall_anomaly_mm_day": -2.974,
+    "week4_rainfall_anomaly_mm_day": -3.019,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: WEST RAJASTHAN row - same as Jaipur (late excess surge). Forecast: rfanom near-normal all weeks, temps near normal."
+    "imd_source_notes": "Observed: WEST RAJASTHAN row - same as Jaipur (late excess surge). Forecast: rfanom near-normal all weeks, temps near normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.44)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.44)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: WEST RAJASTHAN row - same as Jaipur (late excess surge). Forecast: rfanom near-normal all weeks, temps near normal.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 1.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 2.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.44)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.181,
+            "tmax_degC": 2.014
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.563,
+            "tmax_degC": 2.66
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -2.974,
+            "tmax_degC": 1.264
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -3.019,
+            "tmax_degC": 1.618
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.455,
+            "tmax_degC": 1.571
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.356,
+            "tmax_degC": 2.824
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -2.059,
+            "tmax_degC": 3.479
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -3.141,
+            "tmax_degC": 1.675
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -3.263,
+            "tmax_degC": 2.267
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.67,
+            "tmax_degC": 1.622
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.007,
+            "tmax_degC": 1.204
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -1.067,
+            "tmax_degC": 1.84
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -2.807,
+            "tmax_degC": 0.853
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -2.776,
+            "tmax_degC": 0.969
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.24,
+            "tmax_degC": 1.521
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.045,
+          "p_near": 0.137,
+          "p_drier": 0.818,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.0,
+          "p_hot": 0.455
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.091,
+          "p_near": 0.182,
+          "p_drier": 0.727,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.773
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.045,
+          "p_near": 0.0,
+          "p_drier": 0.955,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.727,
+          "p_hot": 0.182
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.045,
+          "p_near": 0.046,
+          "p_drier": 0.909,
+          "p_heavy": 0.045,
+          "p_dryspell": 0.773,
+          "p_hot": 0.318
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.091,
+          "p_near": 0.0,
+          "p_drier": 0.909,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.5
+        }
+      ]
+    }
   },
   {
     "state": "Andhra Pradesh",
     "district": "Anantapur",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": -30,
     "rainfall_last_7_days_pct_departure": -40,
     "rainfall_last_14_days_pct_departure": -20,
     "monsoon_onset_status": "active",
-    "week1_rainfall_signal": "above_normal",
+    "week1_rainfall_signal": "near_normal",
     "week2_rainfall_signal": "near_normal",
     "week3_4_rainfall_signal": "near_normal",
     "seasonal_monsoon_context": "below_normal_risk",
-    "tmax_signal": "below_normal",
+    "tmax_signal": "near_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": -2.0,
-    "week2_tmax_anomaly_degC": -3.0,
-    "week3_tmax_anomaly_degC": -2.0,
-    "week4_tmax_anomaly_degC": -1.0,
-    "week1_rainfall_anomaly_mm_day": 3.0,
-    "week2_rainfall_anomaly_mm_day": 0.0,
-    "week3_rainfall_anomaly_mm_day": 3.0,
-    "week4_rainfall_anomaly_mm_day": -3.0,
+    "week1_tmax_anomaly_degC": 0.241,
+    "week2_tmax_anomaly_degC": 0.578,
+    "week3_tmax_anomaly_degC": 1.286,
+    "week4_tmax_anomaly_degC": 1.192,
+    "week1_rainfall_anomaly_mm_day": -1.266,
+    "week2_rainfall_anomaly_mm_day": -2.634,
+    "week3_rainfall_anomaly_mm_day": -2.236,
+    "week4_rainfall_anomaly_mm_day": -1.689,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: RAYALASEEMA row - Deficient 3 of 4 weeks (cumulative deficient). Forecast: rfanom Wk1=+3mm/d (above normal), Wk4=-3mm/d. Tmax below normal (cooler due to cloud cover)."
+    "imd_source_notes": "Observed: RAYALASEEMA row - Deficient 3 of 4 weeks (cumulative deficient). Forecast: rfanom Wk1=+3mm/d (above normal), Wk4=-3mm/d. Tmax below normal (cooler due to cloud cover). [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: RAYALASEEMA row - Deficient 3 of 4 weeks (cumulative deficient). Forecast: rfanom Wk1=+3mm/d (above normal), Wk4=-3mm/d. Tmax below normal (cooler due to cloud cover).",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": -3.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": -1.0
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.266,
+            "tmax_degC": 0.241
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -2.634,
+            "tmax_degC": 0.578
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -2.236,
+            "tmax_degC": 1.286
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.689,
+            "tmax_degC": 1.192
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -1.54,
+            "tmax_degC": 1.992
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.803,
+            "tmax_degC": 0.128
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -2.523,
+            "tmax_degC": -0.223
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -2.61,
+            "tmax_degC": 1.362
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -2.076,
+            "tmax_degC": 0.81
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.307,
+            "tmax_degC": 2.096
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -0.73,
+            "tmax_degC": 0.353
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -2.745,
+            "tmax_degC": 1.379
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.861,
+            "tmax_degC": 1.21
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.302,
+            "tmax_degC": 1.573
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -0.773,
+            "tmax_degC": 1.887
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.091,
+          "p_near": 0.136,
+          "p_drier": 0.773,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.045
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.0,
+          "p_near": 0.0,
+          "p_drier": 1.0,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.091,
+          "p_hot": 0.455
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.136,
+          "p_near": 0.091,
+          "p_drier": 0.773,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.364
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.045,
+          "p_near": 0.182,
+          "p_drier": 0.773,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.5
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.136,
+          "p_near": 0.137,
+          "p_drier": 0.727,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.545
+        }
+      ]
+    }
   },
   {
     "state": "Andhra Pradesh",
     "district": "Kurnool",
-    "forecast_date": "2026-06-28",
+    "forecast_date": "2026-06-29",
     "rainfall_since_june_1_pct_departure": -30,
     "rainfall_last_7_days_pct_departure": -40,
     "rainfall_last_14_days_pct_departure": -20,
     "monsoon_onset_status": "active",
-    "week1_rainfall_signal": "above_normal",
-    "week2_rainfall_signal": "near_normal",
+    "week1_rainfall_signal": "near_normal",
+    "week2_rainfall_signal": "below_normal",
     "week3_4_rainfall_signal": "near_normal",
     "seasonal_monsoon_context": "below_normal_risk",
-    "tmax_signal": "below_normal",
+    "tmax_signal": "near_normal",
     "tmin_signal": null,
-    "week1_tmax_anomaly_degC": -2.0,
-    "week2_tmax_anomaly_degC": -3.0,
-    "week3_tmax_anomaly_degC": -2.0,
-    "week4_tmax_anomaly_degC": 0.0,
-    "week1_rainfall_anomaly_mm_day": 3.0,
-    "week2_rainfall_anomaly_mm_day": 0.0,
-    "week3_rainfall_anomaly_mm_day": 1.0,
-    "week4_rainfall_anomaly_mm_day": -3.0,
+    "week1_tmax_anomaly_degC": 1.241,
+    "week2_tmax_anomaly_degC": 1.551,
+    "week3_tmax_anomaly_degC": 2.32,
+    "week4_tmax_anomaly_degC": 2.331,
+    "week1_rainfall_anomaly_mm_day": -1.731,
+    "week2_rainfall_anomaly_mm_day": -3.634,
+    "week3_rainfall_anomaly_mm_day": -2.691,
+    "week4_rainfall_anomaly_mm_day": -2.659,
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": null,
-    "imd_source_notes": "Observed: RAYALASEEMA row - same as Anantapur (cumulative deficient). Forecast: rfanom Wk1=+3mm/d, Wk4=-3mm/d. Tmax below normal."
+    "imd_source_notes": "Observed: RAYALASEEMA row - same as Anantapur (cumulative deficient). Forecast: rfanom Wk1=+3mm/d, Wk4=-3mm/d. Tmax below normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.21)",
+    "forecast_source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.21)",
+    "forecast_variants": [
+      {
+        "key": "IMD",
+        "label": "Official IMD guidance",
+        "source": "Observed: RAYALASEEMA row - same as Anantapur (cumulative deficient). Forecast: rfanom Wk1=+3mm/d, Wk4=-3mm/d. Tmax below normal.",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": -3.0
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": 1.0,
+            "tmax_degC": -2.0
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 0.0
+          }
+        ]
+      },
+      {
+        "key": "MME",
+        "label": "Multi-model mean (CFSv2,GEFS)",
+        "source": "S2S multi-model mean (CFSv2,GEFS) init 2026-06-29; seasonal SEAS5+SFS -> below_normal_risk (net -0.21)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -1.731,
+            "tmax_degC": 1.241
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -3.634,
+            "tmax_degC": 1.551
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -2.691,
+            "tmax_degC": 2.32
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -2.659,
+            "tmax_degC": 2.331
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -2.609,
+            "tmax_degC": 3.7
+          }
+        ]
+      },
+      {
+        "key": "CFSv2",
+        "label": "CFSv2 (NOAA)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -2.863,
+            "tmax_degC": 2.668
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -4.159,
+            "tmax_degC": 1.945
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -4.021,
+            "tmax_degC": 3.566
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -3.44,
+            "tmax_degC": 3.012
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -3.909,
+            "tmax_degC": 5.119
+          }
+        ]
+      },
+      {
+        "key": "GEFS",
+        "label": "GEFS (NOAA 35-day)",
+        "weeks": [
+          {
+            "week": 1,
+            "rainfall_mm_day": -0.599,
+            "tmax_degC": -0.186
+          },
+          {
+            "week": 2,
+            "rainfall_mm_day": -3.108,
+            "tmax_degC": 1.158
+          },
+          {
+            "week": 3,
+            "rainfall_mm_day": -1.361,
+            "tmax_degC": 1.075
+          },
+          {
+            "week": 4,
+            "rainfall_mm_day": -1.878,
+            "tmax_degC": 1.65
+          },
+          {
+            "week": 5,
+            "rainfall_mm_day": -1.309,
+            "tmax_degC": 2.282
+          }
+        ]
+      }
+    ],
+    "weekly_probabilities": {
+      "source": "GEFS ensemble",
+      "n_members": 22,
+      "init": "20260629",
+      "weeks": [
+        {
+          "week": 1,
+          "p_wetter": 0.182,
+          "p_near": 0.182,
+          "p_drier": 0.636,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.0,
+          "p_hot": 0.0
+        },
+        {
+          "week": 2,
+          "p_wetter": 0.0,
+          "p_near": 0.045,
+          "p_drier": 0.955,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.591,
+          "p_hot": 0.318
+        },
+        {
+          "week": 3,
+          "p_wetter": 0.227,
+          "p_near": 0.182,
+          "p_drier": 0.591,
+          "p_heavy": 0.091,
+          "p_dryspell": 0.318,
+          "p_hot": 0.364
+        },
+        {
+          "week": 4,
+          "p_wetter": 0.091,
+          "p_near": 0.136,
+          "p_drier": 0.773,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.409,
+          "p_hot": 0.5
+        },
+        {
+          "week": 5,
+          "p_wetter": 0.091,
+          "p_near": 0.136,
+          "p_drier": 0.773,
+          "p_heavy": 0.0,
+          "p_dryspell": 0.455,
+          "p_hot": 0.727
+        }
+      ]
+    }
   }
 ]

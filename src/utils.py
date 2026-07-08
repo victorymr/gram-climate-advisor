@@ -6,7 +6,7 @@ from typing import Dict, List, Any
 def load_district_data(state: str, district: str) -> Dict[str, Any]:
     """Load district forecast data from JSON file."""
     try:
-        with open('data/district_forecasts.json', 'r') as f:
+        with open('data/district_forecasts.json', 'r', encoding='utf-8') as f:
             all_forecasts = json.load(f)
         
         # Find matching district
@@ -23,7 +23,7 @@ def load_district_data(state: str, district: str) -> Dict[str, Any]:
 def load_icar_data(state: str, district: str) -> Dict[str, Any]:
     """Load ICAR contingency data from JSON file."""
     try:
-        with open('data/icar_contingency_actions.json', 'r') as f:
+        with open('data/icar_contingency_actions.json', 'r', encoding='utf-8') as f:
             all_icar = json.load(f)
         
         # Find matching district
@@ -40,7 +40,7 @@ def load_icar_data(state: str, district: str) -> Dict[str, Any]:
 def get_district_list() -> List[Dict[str, str]]:
     """Get list of all available districts."""
     try:
-        with open('data/district_metadata.csv', 'r') as f:
+        with open('data/district_metadata.csv', 'r', encoding='utf-8') as f:
             df = pd.read_csv(f)
             return df.to_dict('records')
     except FileNotFoundError:

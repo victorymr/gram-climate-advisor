@@ -22,6 +22,61 @@ The system follows a strict 4-tier source hierarchy:
 3. **Tier 3**: Health, disaster, and community preparedness guidance
 4. **Tier 4**: International adaptation references (background only)
 
+## 🛰️ Model-based forecasts (subseasonal & seasonal)
+
+By default the forecast fields are extracted by hand from IMD imagery (see **Admin Updates** below).
+The advisor can instead be driven by **numerical model forecasts** produced by the companion
+`india_forecasts` pipeline (at `../enso_india/india_forecasts`), which pulls real subseasonal and
+seasonal models and collapses them to each district.
+
+### What the models provide
+
+- **Subseasonal (weekly, weeks 1–4/5)** — a multi-model mean of GEFS + CFSv2 (+ EC46 when the inits
+  match) as weekly rainfall and temperature anomalies per district.
+- **Weekly threshold odds** — genuine probabilities from the **GEFS ensemble members** (chance of a
+  wetter/drier-than-normal week, heavy rain, a dry spell, or a hot week).
+- **Seasonal (monthly)** — a SEAS5 + SFS tercile signal distilled into `seasonal_monsoon_context`.
+
+Model output **augments** the IMD data: the weekly *forecast* fields are replaced by the model
+multi-model mean, while the *observed* IMD fields (rainfall departures, monsoon onset, official
+heat/heavy-rain warnings — which models cannot provide) are **preserved**.
+
+### Refresh (one command, from the advisor project root)
+
+```bash
+python scripts/run_forecast_pipeline.py                                # reprocess with existing model files
+python scripts/run_forecast_pipeline.py --download --init 2026-06-29   # pull the models first
+python scripts/run_forecast_pipeline.py --download --no-members        # skip the (slow) ensemble odds
+```
+
+The orchestrator runs the `india_forecasts` producers (ERA5 climatology → weekly multi-model CSV →
+GEFS ensemble members → seasonal terciles), then the bridge, writing `data/district_forecasts.json`.
+It is idempotent (skips stages whose outputs exist; `--force` rebuilds) and download-tolerant.
+
+Under the hood:
+- `scripts/import_model_forecasts.py` — the **bridge**: reads the `india_forecasts` outputs
+  (`s2s_region_weekly.csv`, `s2s_region_probs.csv`, `forecast_<district>.csv`) and merges them into
+  `district_forecasts.json`, preserving the IMD fields.
+- `india_forecasts/forecast_region_s2s.py` — collapses the weekly model grids to each district
+  (multi-model mean, per-model values, and per-member threshold probabilities).
+
+### What the app shows
+
+- **4-Week Outlook** — plain-language **categories** per week (e.g. *Slightly drier*, *Very warm*),
+  with a note pointing to Source Data for the detail.
+- **Source Data** — a **source switcher** (Official IMD guidance · Multi-model mean · individual
+  models, each with exact weekly values) and the **weekly threshold odds** from the GEFS ensemble.
+
+Each district record gains three optional keys, all consumed by the app with graceful fallbacks:
+- `forecast_variants` — the IMD / MME / per-model weekly values behind the source switcher.
+- `weekly_probabilities` — the per-week threshold odds (fraction of ensemble members crossing each
+  threshold), with the member count.
+- `forecast_source` — a provenance string shown in the app.
+
+If these keys are absent (e.g. a fresh IMD-only `district_forecasts.json` from `update_forecasts.py`),
+the app falls back to the numeric outlook and hides the switcher/odds — so the model layer is fully
+optional.
+
 ## 📁 Project Structure
 
 ```
@@ -40,7 +95,9 @@ gram-climate-advisor/
 │   ├── rules.py                   # Scenario classification engine
 │   └── advisory.py                # Advisory generation logic
 ├── scripts/                       # Admin and utility scripts
-│   └── update_forecasts.py        # CSV to JSON conversion script
+│   ├── update_forecasts.py        # IMD CSV -> district_forecasts.json
+│   ├── import_model_forecasts.py  # Merge india_forecasts model output into district_forecasts.json
+│   └── run_forecast_pipeline.py   # One command: run the whole model pipeline + refresh forecasts
 ├── tests/                         # Test suite
 │   └── test_scenarios.py          # Main scenario tests
 └── docs/                          # Documentation

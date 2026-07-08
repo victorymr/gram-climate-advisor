@@ -42,7 +42,7 @@ class AdvisoryGenerator:
             "actions_avoid": actions["avoid"],
             "general_guidance": actions["general_guidance"],
             "source_notes": {
-                "forecast_source": "IMD forecast products",
+                "forecast_source": forecast_data.get("forecast_source", "IMD forecast products"),
                 "agriculture_source": "ICAR/CRIDA district contingency plan and local agromet guidance where available",
                 "health_source": "NDMA / state heat action / health guidance where available",
                 "last_updated": datetime.now().strftime("%Y-%m-%d")
