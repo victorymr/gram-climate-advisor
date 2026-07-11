@@ -190,61 +190,43 @@ def _weeks_list(wk_by_week):
 # --------------------------------------------------------------------------
 # Seasonal terciles -> monsoon context
 # --------------------------------------------------------------------------
-def build_seasonal_index(seasonal_dir):
-    """Map (norm_state, norm_district) -> csv path by reading each forecast_*.csv's
-    'region' column ('<District> district, <State>'). Robust to slug/state spelling
-    quirks (GADM stores e.g. 'UttarPradesh')."""
-    index = {}
-    for path in sorted(Path(seasonal_dir).glob("forecast_*.csv")):
-        if path.name == "s2s_region_weekly.csv":
-            continue
-        try:
-            with open(path, newline="") as fh:
-                row = next(csv.DictReader(fh), None)
-        except OSError:
-            continue
-        region = (row or {}).get("region", "")
-        if " district," not in region:
-            continue  # state-level file, not a district
-        dpart, _, spart = region.partition(" district,")
-        index[(_norm(spart), _norm(dpart))] = path
-    return index
-
-
-def seasonal_context(seasonal_index, state, district, monsoon_leads=(0, 1, 2, 3)):
-    """Classify the monsoon-season precip signal from the seasonal tercile CSV by
-    averaging p_above/p_below across the monsoon leads and models. Returns one of
-    'below_normal_risk' / 'normal' / 'above_normal', or None if no CSV."""
-    path = seasonal_index.get((_norm(state), _norm(district)))
-    if path is None or not path.exists():
-        return None, None
-    above, below, n = [], [], 0
-    with open(path, newline="") as fh:
+def load_seasonal(path):
+    """-> {(state_lc, district_lc): [(lead, p_above, p_below)]} for precip, from the
+    combined seasonal CSV written by forecast_region.py --districts."""
+    out = {}
+    with open(path, newline="", encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             if r.get("variable") != "p":
                 continue
+            key = (r["state"].strip().lower(), r["district"].strip().lower())
             try:
                 lead = int(r["lead"])
             except (KeyError, ValueError):
                 continue
-            if lead not in monsoon_leads:
-                continue
             pa, pb = _f(r.get("p_above")), _f(r.get("p_below"))
             if pa is None or pb is None:
                 continue
-            above.append(pa)
-            below.append(pb)
-            n += 1
-    if not above:
+            out.setdefault(key, []).append((lead, pa, pb))
+    return out
+
+
+def seasonal_context(seasonal, state, district, monsoon_leads=(0, 1, 2, 3)):
+    """Classify the monsoon-season precip signal by averaging the tercile probabilities
+    across the monsoon leads (and models). -> 'below_normal_risk'/'normal'/'above_normal'."""
+    rows = seasonal.get((str(state).strip().lower(), str(district).strip().lower()))
+    if not rows:
         return None, None
-    net = sum(above) / len(above) - sum(below) / len(below)
+    sel = [(pa, pb) for lead, pa, pb in rows if lead in monsoon_leads]
+    if not sel:
+        return None, None
+    net = sum(a for a, _ in sel) / len(sel) - sum(b for _, b in sel) / len(sel)
     if net >= SEASONAL_TERCILE_MARGIN:
         ctx = "above_normal"
     elif net <= -SEASONAL_TERCILE_MARGIN:
         ctx = "below_normal_risk"
     else:
         ctx = "normal"
-    return ctx, {"net": round(net, 3), "leads": n}
+    return ctx, {"net": round(net, 3), "leads": len(sel)}
 
 
 # --------------------------------------------------------------------------
@@ -330,8 +312,8 @@ def main():
     ap = argparse.ArgumentParser(description="Import india_forecasts model output into district_forecasts.json.")
     ap.add_argument("--s2s", default=str(DEFAULT_PLOTS / "s2s_region_weekly.csv"),
                     help="S2S weekly CSV from forecast_region_s2s.py.")
-    ap.add_argument("--seasonal-dir", default=str(DEFAULT_PLOTS),
-                    help="Directory holding forecast_<slug>.csv seasonal outputs.")
+    ap.add_argument("--seasonal", default=str(DEFAULT_PLOTS / "seasonal_region.csv"),
+                    help="Combined seasonal tercile CSV from forecast_region.py --districts (optional).")
     ap.add_argument("--probs", default=str(DEFAULT_PLOTS / "s2s_region_probs.csv"),
                     help="Weekly threshold-probability CSV from forecast_region_s2s.py --probs (optional).")
     ap.add_argument("--observed", default=str(DEFAULT_PLOTS / "observed_departures.csv"),
@@ -365,9 +347,9 @@ def main():
     if seeded:
         print(f"seeded {seeded} new district record(s)")
 
-    seasonal_index = build_seasonal_index(args.seasonal_dir)
-    print(f"seasonal CSVs indexed: {len(seasonal_index)}")
-    updated, skipped = merge(forecasts, s2s, seasonal_index)
+    seasonal = load_seasonal(args.seasonal) if os.path.exists(args.seasonal) else {}
+    print(f"seasonal districts: {len(seasonal)}")
+    updated, skipped = merge(forecasts, s2s, seasonal)
 
     # attach weekly threshold probabilities (additive; optional)
     if os.path.exists(args.probs):

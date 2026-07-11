@@ -173,21 +173,18 @@ def main():
                  cwd=FORECASTS_DIR, check=False)
         summary.append(("observed", "ok" if rc == 0 else "FAILED (default observed kept)"))
 
-    # ---- seasonal: tercile CSV per advisor district -------------------------
+    # ---- seasonal: one combined tercile CSV for all districts (batched) ------
     if args.skip_seasonal:
         summary.append(("seasonal", "skipped (--skip-seasonal)"))
     else:
-        have = set() if args.force else seasonal_have()
-        districts = load_districts()
-        done = 0
-        for state, district in districts:
-            if (_norm(state), _norm(district)) in have:
-                print(f"[skip] seasonal exists: {district}, {state}")
-                continue
-            run([py_fc, "forecast_region.py", "--state", state, "--district", district, "--no-fig"],
-                cwd=FORECASTS_DIR, check=False)
-            done += 1
-        summary.append(("seasonal", f"generated {done}, reused {len(districts) - done}"))
+        seasonal_out = PLOTS_DIR / "seasonal_region.csv"
+        if seasonal_out.exists() and not args.force:
+            print(f"\n[skip] seasonal exists: {seasonal_out.name}")
+            summary.append(("seasonal", "skipped (exists)"))
+        else:
+            rc = run([py_fc, "forecast_region.py", "--districts", DISTRICTS_CSV],
+                     cwd=FORECASTS_DIR, check=False)
+            summary.append(("seasonal", "ok" if rc == 0 else "FAILED (default context kept)"))
 
     # ---- import: merge into district_forecasts.json -------------------------
     bridge_cmd = [py_here, str(BRIDGE)]

@@ -237,16 +237,144 @@ def make_figure(label, slug, results):
     print(f"  saved -> {out}")
 
 
+def _geom_for(gadm, state, district):
+    """District polygon by normalized (state, district) name, or None."""
+    sel = gadm[gadm["NAME_2"].map(_norm) == _norm(district)]
+    s2 = sel[sel["NAME_1"].map(_norm) == _norm(state)]
+    sel = s2 if not s2.empty else sel
+    if sel.empty:
+        return None
+    return sel.geometry.union_all() if hasattr(sel.geometry, "union_all") else sel.geometry.unary_union
+
+
+def _weight_skill(acc, weights):
+    """Region-weight a precomputed ACC map (avoids recomputing the map per district)."""
+    if acc is None:
+        return None
+    latn, lonn = acc.dims[-2], acc.dims[-1]
+    w = weights.rename({weights.dims[0]: latn, weights.dims[1]: lonn})
+    w = w.reindex({latn: acc[latn], lonn: acc[lonn]}, method="nearest").fillna(0.0)
+    return acc.weighted(w).mean((latn, lonn)).values
+
+
+def run_batch(districts_csv, out_path):
+    """Seasonal tercile forecast for EVERY district in districts_csv -> one combined CSV.
+    Models and the (district-independent) skill maps are computed once; only the
+    region-weighting varies per district, so 600+ districts stay fast."""
+    s5_path, sfs_path = latest_seas5(), latest_sfs()
+    ref = pd.Timestamp(np.atleast_1d(xr.open_dataset(s5_path)["forecast_reference_time"].values)[0])
+    mm = ref.strftime("%m")
+    s5_clim, sfs_clim = find_seas5_clim(mm), find_sfs_clim(mm)
+    if not s5_clim or not sfs_clim:
+        sys.exit("Need both hindcast climatologies (June init):\n"
+                 "  python download_seas5.py --hindcast --month 6\n"
+                 "  python download_sfs.py --reforecast --init-month 6")
+    obs = {"t": find_obs("t"), "p": find_obs("p")}
+    models = [seas5_raw(s5_path, s5_clim), sfs_raw(sfs_path, sfs_clim)]
+    clim_of = {"SEAS5": s5_clim, "SFS Beta": sfs_clim}
+    kind_of = {"SEAS5": "seas5", "SFS Beta": "sfs"}
+
+    skill_maps = {}                                    # (model, var) -> ACC map (computed once)
+    for m in models:
+        for var in ("t", "p"):
+            try:
+                skill_maps[(m["name"], var)] = (compute_skill(kind_of[m["name"]], clim_of[m["name"]],
+                                                              int(mm), var, obs[var]) if obs[var] else None)
+            except Exception as e:
+                print(f"  (skill unavailable {m['name']}/{var}: {e})")
+                skill_maps[(m["name"], var)] = None
+
+    gadm = gadm_districts()
+    districts = pd.read_csv(districts_csv)
+    print(f"Seasonal batch (vectorized): {len(districts)} districts, init {label_of(ref)}")
+
+    rows, skipped_names = [], set()
+    for m in models:
+        latn, lonn, pool, memb = m["lat"], m["lon"], m["pool"], m["member_dim"]
+        latvals = m["fc"]["t"][latn].values
+        lonvals = m["fc"]["t"][lonn].values
+
+        # district x (lat,lon) NORMALISED weight tensor, built once per model.
+        # Collapsing every district then becomes a single xr.dot instead of a 600x loop.
+        Wnp = np.zeros((len(districts), latvals.size, lonvals.size))
+        valid = []
+        for i, (_, d) in enumerate(districts.iterrows()):
+            geom = _geom_for(gadm, d["state"], d["district"])
+            if geom is None:
+                skipped_names.add((d["state"], d["district"]))
+                continue
+            w, _, _ = region_weights(latvals, lonvals, latn, lonn, geom)
+            wv = np.nan_to_num(w.values, nan=0.0)
+            tot = wv.sum()
+            if tot > 0:
+                Wnp[i] = wv / tot            # normalised -> xr.dot gives the weighted mean
+                valid.append(i)
+        W = xr.DataArray(Wnp, dims=("d", latn, lonn), coords={latn: latvals, lonn: lonvals})
+
+        for var in ("t", "p"):
+            fc = m["fc"][var]
+            clim = m["clim"][var].reindex({latn: latvals, lonn: lonvals}, method="nearest")
+            lead_dim = next(dd for dd in fc.dims if dd not in (memb, latn, lonn))
+
+            fc_c = xr.dot(W, fc, dims=[latn, lonn])        # (d, member, lead)
+            clim_c = xr.dot(W, clim, dims=[latn, lonn])    # (d, pool..., lead)
+            q33 = clim_c.quantile(1 / 3, dim=pool).drop_vars("quantile")
+            q67 = clim_c.quantile(2 / 3, dim=pool).drop_vars("quantile")
+            below = (fc_c < q33).mean(memb).transpose("d", lead_dim)
+            above = (fc_c > q67).mean(memb).transpose("d", lead_dim)
+            near = (1.0 - below - above)
+            anom = (fc_c.mean(memb) - clim_c.mean(pool)).transpose("d", lead_dim)
+            if var == "p":
+                anom = anom * PRECIP_FACTOR[m["name"]]
+
+            acc_v = None
+            acc = skill_maps[(m["name"], var)]
+            if acc is not None:
+                la, lo = acc.dims[-2], acc.dims[-1]
+                Wa = W.rename({latn: la, lonn: lo}).reindex({la: acc[la], lo: acc[lo]}, method="nearest").fillna(0.0)
+                Wa = Wa / Wa.sum([la, lo])                 # renormalise on the obs grid
+                acc_v = xr.dot(Wa, acc, dims=[la, lo]).transpose("d", acc.dims[0]).values
+
+            bv, nv, av, anv = below.values, near.values, above.values, anom.values
+            unit = "degC" if var == "t" else "mm/day"
+            for i in valid:
+                d = districts.iloc[i]
+                for k, lab in enumerate(m["labels"]):
+                    b, n, a = bv[i, k], nv[i, k], av[i, k]
+                    cat = CATS[var][int(np.argmax([b, n, a]))]
+                    rows.append({"state": d["state"], "district": d["district"], "variable": var,
+                                 "model": m["name"], "lead": k, "valid_month": lab, "units": unit,
+                                 "anomaly": round(float(anv[i, k]), 3),
+                                 "p_below": round(float(b), 3), "p_near": round(float(n), 3),
+                                 "p_above": round(float(a), 3), "category": cat,
+                                 "acc": "" if acc_v is None else round(float(acc_v[i, k]), 3)})
+    skipped = len(skipped_names)
+    fields = ["state", "district", "variable", "model", "lead", "valid_month", "units",
+              "anomaly", "p_below", "p_near", "p_above", "category", "acc"]
+    with open(out_path, "w", newline="", encoding="utf-8") as fh:
+        wr = csv.DictWriter(fh, fieldnames=fields)
+        wr.writeheader()
+        wr.writerows(rows)
+    print(f"saved -> {out_path}  ({len(rows)} rows, {len(districts) - skipped} districts, {skipped} skipped)")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Area-averaged tercile forecast for an Indian state/district.")
     ap.add_argument("--state", default=None, help="State name, e.g. Maharashtra or 'Tamil Nadu'.")
     ap.add_argument("--district", default=None, help="District name, e.g. Pune.")
+    ap.add_argument("--districts", default=None,
+                    help="CSV of state,district — batch every district into one combined seasonal CSV.")
+    ap.add_argument("--out", default=str(PLOTS_DIR / "seasonal_region.csv"), help="Batch output CSV path.")
     ap.add_argument("--list-districts", metavar="STATE", default=None, help="List districts in a state and exit.")
     ap.add_argument("--no-fig", action="store_true", help="Skip the figure (text + CSV only).")
     args = ap.parse_args()
 
     if args.list_districts:
         list_districts(args.list_districts)
+        return
+
+    if args.districts:
+        run_batch(args.districts, args.out)
         return
 
     geom, label, slug = resolve_region(args.state, args.district)
