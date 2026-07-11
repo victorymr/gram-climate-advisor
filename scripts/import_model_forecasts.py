@@ -98,7 +98,8 @@ def load_s2s(path):
     with open(path, newline="", encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             key = (r["state"].strip().lower(), r["district"].strip().lower())
-            d = out.setdefault(key, {"init": r.get("init_date", ""), "by_model": {}})
+            d = out.setdefault(key, {"init": r.get("init_date", ""), "by_model": {},
+                                     "state": r.get("state", ""), "district": r.get("district", "")})
             model = r.get("model") or "MME"
             d["by_model"].setdefault(model, {})[int(r["week"])] = {
                 "precip": _f(r.get("precip_anom_mm_day")),
@@ -136,6 +137,46 @@ def load_probs(path):
     for d in out.values():
         d["weeks"].sort(key=lambda x: x["week"])
     return out
+
+
+def _int(x, default=0):
+    try:
+        return int(round(float(x)))
+    except (TypeError, ValueError):
+        return default
+
+
+def load_observed(path):
+    """-> {(state_lc, district_lc): {observed fields}} from observed_departures.csv."""
+    out = {}
+    with open(path, newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            key = (r["state"].strip().lower(), r["district"].strip().lower())
+            clip = lambda v: max(-100, min(300, _int(v)))   # keep departures display-sane
+            out[key] = {
+                "rainfall_since_june_1_pct_departure": clip(r.get("rainfall_since_june_1_pct_departure")),
+                "rainfall_last_7_days_pct_departure": clip(r.get("rainfall_last_7_days_pct_departure")),
+                "rainfall_last_14_days_pct_departure": clip(r.get("rainfall_last_14_days_pct_departure")),
+                "monsoon_onset_status": r.get("monsoon_onset_status") or "normal",
+                "obs_asof": r.get("obs_asof", ""),
+            }
+    return out
+
+
+def _default_record(state, district):
+    """Baseline record for a district not yet in district_forecasts.json (mirrors
+    src/utils.get_default_forecast). merge() then fills the model forecast fields;
+    observed fields stay at these neutral defaults until an observed producer sets them."""
+    return {
+        "state": state, "district": district, "forecast_date": "",
+        "rainfall_since_june_1_pct_departure": 0, "rainfall_last_7_days_pct_departure": 0,
+        "rainfall_last_14_days_pct_departure": 0, "monsoon_onset_status": "normal",
+        "week1_rainfall_signal": "near_normal", "week2_rainfall_signal": "near_normal",
+        "week3_4_rainfall_signal": "near_normal", "seasonal_monsoon_context": "normal",
+        "tmax_signal": "near_normal", "tmin_signal": "near_normal",
+        "heat_wave_warning": False, "heavy_rain_warning": False,
+        "humidity_heat_index_signal": "normal", "imd_source_notes": "",
+    }
 
 
 def _weeks_list(wk_by_week):
@@ -293,6 +334,8 @@ def main():
                     help="Directory holding forecast_<slug>.csv seasonal outputs.")
     ap.add_argument("--probs", default=str(DEFAULT_PLOTS / "s2s_region_probs.csv"),
                     help="Weekly threshold-probability CSV from forecast_region_s2s.py --probs (optional).")
+    ap.add_argument("--observed", default=str(DEFAULT_PLOTS / "observed_departures.csv"),
+                    help="Observed rainfall-departures CSV from observed_departures.py (optional).")
     ap.add_argument("--json", default=str(DEFAULT_JSON), help="district_forecasts.json to update in place.")
     ap.add_argument("--no-backup", action="store_true", help="Do not write a .bak of the JSON first.")
     args = ap.parse_args()
@@ -311,6 +354,17 @@ def main():
         shutil.copyfile(args.json, args.json + ".bak")
         print(f"backup -> {args.json}.bak")
 
+    # seed default records for districts with model data but no JSON record yet
+    existing = {(fc.get("state", "").strip().lower(), fc.get("district", "").strip().lower())
+                for fc in forecasts}
+    seeded = 0
+    for key, d in s2s.items():
+        if key not in existing:
+            forecasts.append(_default_record(d.get("state", ""), d.get("district", "")))
+            seeded += 1
+    if seeded:
+        print(f"seeded {seeded} new district record(s)")
+
     seasonal_index = build_seasonal_index(args.seasonal_dir)
     print(f"seasonal CSVs indexed: {len(seasonal_index)}")
     updated, skipped = merge(forecasts, s2s, seasonal_index)
@@ -327,6 +381,24 @@ def main():
         print(f"weekly_probabilities attached to {n_prob} district(s)")
     else:
         print(f"(no probabilities CSV at {args.probs}; skipping weekly odds)")
+
+    # observed rainfall departures (fills the fields the drought/monsoon scenarios key on)
+    if os.path.exists(args.observed):
+        obs = load_observed(args.observed)
+        n_obs = 0
+        for fc in forecasts:
+            key = (fc.get("state", "").strip().lower(), fc.get("district", "").strip().lower())
+            if key in obs:
+                o = obs[key]
+                for f in ("rainfall_since_june_1_pct_departure", "rainfall_last_7_days_pct_departure",
+                          "rainfall_last_14_days_pct_departure", "monsoon_onset_status"):
+                    fc[f] = o[f]
+                fc["observed_source"] = (f"IMD 0.25deg gridded rainfall vs 1991-2020 normal, "
+                                         f"asof {o['obs_asof']}")
+                n_obs += 1
+        print(f"observed departures applied to {n_obs} district(s)")
+    else:
+        print(f"(no observed CSV at {args.observed}; keeping default observed fields)")
 
     with open(args.json, "w", encoding="utf-8") as fh:
         json.dump(forecasts, fh, indent=2)

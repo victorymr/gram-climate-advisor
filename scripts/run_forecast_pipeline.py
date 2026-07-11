@@ -108,6 +108,7 @@ def main():
                     help="Skip the GEFS ensemble-member pull (weekly probability odds) during --download.")
     ap.add_argument("--force", action="store_true", help="Rebuild clim + seasonal even if outputs exist.")
     ap.add_argument("--skip-seasonal", action="store_true", help="Skip the seasonal per-district stage.")
+    ap.add_argument("--no-observed", action="store_true", help="Skip the observed rainfall-departures stage.")
     ap.add_argument("--no-backup", action="store_true", help="Pass through to the bridge (no .bak).")
     ap.add_argument("--python", default=sys.executable, help="Interpreter for india_forecasts scripts.")
     args = ap.parse_args()
@@ -163,6 +164,14 @@ def main():
     run([py_fc, "forecast_region_s2s.py", "--init", ymd, "--districts", DISTRICTS_CSV],
         cwd=FORECASTS_DIR)
     summary.append(("s2s", "ok"))
+
+    # ---- observed: gridded rainfall departures (feeds drought/monsoon scenarios) ----
+    if args.no_observed:
+        summary.append(("observed", "skipped (--no-observed)"))
+    else:
+        rc = run([py_fc, "observed_departures.py", "--districts", DISTRICTS_CSV],
+                 cwd=FORECASTS_DIR, check=False)
+        summary.append(("observed", "ok" if rc == 0 else "FAILED (default observed kept)"))
 
     # ---- seasonal: tercile CSV per advisor district -------------------------
     if args.skip_seasonal:

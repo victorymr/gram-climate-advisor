@@ -226,6 +226,32 @@ def _temp_category(v):
     return "Very cool"
 
 
+def _red_scale(frac):
+    """Map 0..1 to a white -> dark-red background CSS, with readable text in both themes.
+    Text is pinned (dark maroon on light red, white on deep red) so it doesn't depend on
+    the viewer's light/dark theme."""
+    frac = max(0.0, min(1.0, frac))
+    r = int(round(255 + frac * (139 - 255)))
+    g = int(round(255 + frac * (0 - 255)))
+    b = int(round(255 + frac * (0 - 255)))
+    txt = "#ffffff" if frac >= 0.5 else "#5a1a1a"
+    return f"background-color:rgb({r},{g},{b}); color:{txt};"
+
+
+def _temp_red(v):
+    """Warmer weeks get deeper red (full at +6 °C); near-normal/cool stay uncolored."""
+    if v is None or v < 1:
+        return ""
+    return _red_scale(v / 6.0)
+
+
+def _precip_red(v):
+    """Drier weeks get deeper red (full at −10 mm/day); near-normal/wetter stay uncolored."""
+    if v is None or v > -1:
+        return ""
+    return _red_scale(-v / 10.0)
+
+
 # App header
 st.markdown("""
 <div class="app-header">
@@ -379,15 +405,24 @@ if st.session_state.get("advisory_shown"):
             outlook = advisory['extended_outlook']
             st.write(outlook['narrative'])
 
+            weeks = outlook['weeks']
             df_out = pd.DataFrame([
                 {
                     "Week": f"Week {wk['week']}",
                     "Rainfall": _rain_category(wk.get('anomaly_mm_day')),
                     "Temperature": _temp_category(wk.get('tmax_anomaly_degC')),
                 }
-                for wk in outlook['weeks']
+                for wk in weeks
             ]).set_index("Week")
-            st.dataframe(df_out, use_container_width=True)
+
+            # Heat-map the cells: hotter and drier weeks shade increasingly dark red.
+            cell_styles = pd.DataFrame("", index=df_out.index, columns=df_out.columns)
+            for i, wk in enumerate(weeks):
+                idx = df_out.index[i]
+                cell_styles.loc[idx, "Rainfall"] = _precip_red(wk.get('anomaly_mm_day'))
+                cell_styles.loc[idx, "Temperature"] = _temp_red(wk.get('tmax_anomaly_degC'))
+            st.dataframe(df_out.style.apply(lambda _: cell_styles, axis=None),
+                         use_container_width=True)
 
             st.info(
                 "ℹ️ These are broad categories relative to the seasonal normal. "

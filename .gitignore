@@ -37,3 +37,4 @@ india_forecasts/plots/
 *.grib
 *.grb2
 *.idx
+*.bak
