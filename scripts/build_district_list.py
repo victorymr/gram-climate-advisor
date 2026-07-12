@@ -121,9 +121,21 @@ def main():
         w = csv.DictWriter(fh, fieldnames=["state", "district", "latitude", "longitude", "region"])
         w.writeheader(); w.writerows(rows)
 
+    # simplified district polygons for the app's clickable map (kept small so the app
+    # renders them fast and needs no geo dependency — just reads this GeoJSON).
+    g2 = g.copy()
+    g2["state"] = g2["NAME_1"].map(lambda s: STATES.get(s, (prettify_district(s), "India"))[0])
+    g2["district"] = g2["NAME_2"].map(prettify_district)
+    g2["geometry"] = g2.geometry.simplify(0.02, preserve_topology=True)
+    geojson = DATA / "districts.geojson"
+    if geojson.exists():
+        geojson.unlink()
+    g2[["state", "district", "geometry"]].to_file(geojson, driver="GeoJSON")
+
     print(f"[OK] {len(rows)} districts across {len({r['state'] for r in rows})} states/UTs")
     print(f"     -> {DATA/'district_metadata.csv'}")
     print(f"     -> {DATA/'district_coordinates.csv'}")
+    print(f"     -> {geojson}  ({geojson.stat().st_size // 1024} KB)")
     if unknown:
         print(f"[warn] GADM states not in the display map (used fallback): {sorted(unknown)}")
     # sanity: pilots still present with matching keys

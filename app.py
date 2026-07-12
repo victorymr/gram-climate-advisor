@@ -13,6 +13,37 @@ from rules import ScenarioClassifier
 from advisory import AdvisoryGenerator
 from utils import load_district_data, load_icar_data, get_district_list
 
+try:
+    import folium
+    from streamlit_folium import st_folium
+    _HAS_MAP = True
+except Exception:
+    _HAS_MAP = False
+
+
+@st.cache_data
+def load_district_geojson():
+    """Simplified district polygons for the clickable map (built by build_district_list.py)."""
+    p = os.path.join("data", "districts.geojson")
+    if not os.path.exists(p):
+        return None
+    with open(p, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+@st.cache_data
+def _district_points():
+    """(state, district, lat, lon) for map-click nearest-district lookup."""
+    import csv as _csv
+    with open(os.path.join("data", "district_coordinates.csv"), encoding="utf-8") as fh:
+        return [(r["state"], r["district"], float(r["latitude"]), float(r["longitude"]))
+                for r in _csv.DictReader(fh)]
+
+
+def nearest_district(lat, lng):
+    s, d, _, _ = min(_district_points(), key=lambda p: (p[2] - lat) ** 2 + (p[3] - lng) ** 2)
+    return s, d
+
 st.set_page_config(
     page_title="Gram Climate Advisor",
     page_icon="🌾",
@@ -270,15 +301,27 @@ def load_data():
     return districts
 
 districts = load_data()
-
-# State selection
 states = sorted(list(set(d['state'] for d in districts)))
-selected_state = st.sidebar.selectbox("Select State", states)
 
-# District selection (filtered by state)
-state_districts = [d for d in districts if d['state'] == selected_state]
-district_names = sorted([d['district'] for d in state_districts])
-selected_district = st.sidebar.selectbox("Select District", district_names)
+# Choose how to pick the district: dropdowns, or click a map (rendered in the main panel).
+input_mode = st.sidebar.radio(
+    "Select by", ["Dropdowns", "Map"], horizontal=True, disabled=not _HAS_MAP,
+    help=None if _HAS_MAP else "Install streamlit-folium to enable the map.",
+)
+
+if input_mode == "Map" and _HAS_MAP:
+    sel = st.session_state.get("map_sel")
+    if sel:
+        selected_state, selected_district = sel
+        st.sidebar.success(f"📍 {selected_district}, {selected_state}")
+    else:
+        selected_state = selected_district = None
+        st.sidebar.caption("👉 Click a district on the map in the main panel.")
+else:
+    selected_state = st.sidebar.selectbox("Select State", states)
+    state_districts = [d for d in districts if d['state'] == selected_state]
+    district_names = sorted([d['district'] for d in state_districts])
+    selected_district = st.sidebar.selectbox("Select District", district_names)
 
 st.sidebar.markdown("### 👤 Your Context")
 
@@ -321,6 +364,11 @@ crop_stages = [
 selected_crop_stage = st.sidebar.selectbox("Crop Stage (Optional)", ["Not specified"] + crop_stages)
 
 st.sidebar.markdown("&nbsp;")
+show_actions = st.sidebar.checkbox(
+    "Show adaptation actions", value=True,
+    help="Uncheck for a forecast-only view — hides the Do Now / Prepare / Avoid cards "
+         "and general guidance (which are still generic for most districts).",
+)
 
 # Generate advisory button. We gate rendering on session_state (not the button's
 # transient True) so widgets *inside* the results — e.g. the Source Data source
@@ -329,7 +377,32 @@ st.sidebar.markdown("&nbsp;")
 if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=True):
     st.session_state["advisory_shown"] = True
 
-if st.session_state.get("advisory_shown"):
+# --- Clickable district map (Map mode): click a district -> select + show advisory ---
+if input_mode == "Map" and _HAS_MAP:
+    st.markdown("<div class='sec-title'>🗺️ Click a district to select it</div>", unsafe_allow_html=True)
+    geo = load_district_geojson()
+    if not geo:
+        st.warning("Map data not found — run `python scripts/build_district_list.py`.")
+    else:
+        fmap = folium.Map(location=[22.5, 80.5], zoom_start=4, tiles="cartodbpositron", control_scale=True)
+        folium.GeoJson(
+            geo, name="districts",
+            style_function=lambda f: {"fillColor": "#74a9cf", "color": "#5a5a5a",
+                                      "weight": 0.4, "fillOpacity": 0.30},
+            highlight_function=lambda f: {"fillColor": "#fd8d3c", "fillOpacity": 0.75, "weight": 1.2},
+            tooltip=folium.GeoJsonTooltip(fields=["district", "state"],
+                                          aliases=["District", "State"], sticky=True),
+        ).add_to(fmap)
+        _ret = st_folium(fmap, height=440, use_container_width=True,
+                         returned_objects=["last_clicked"], key="district_map")
+        if _ret and _ret.get("last_clicked"):
+            _s, _d = nearest_district(_ret["last_clicked"]["lat"], _ret["last_clicked"]["lng"])
+            if st.session_state.get("map_sel") != (_s, _d):
+                st.session_state["map_sel"] = (_s, _d)
+                st.session_state["advisory_shown"] = True
+                st.rerun()
+
+if st.session_state.get("advisory_shown") and selected_state and selected_district:
     # Load forecast and adaptation data
     forecast_data = load_district_data(selected_state, selected_district)
     icar_data = load_icar_data(selected_state, selected_district)
@@ -372,26 +445,27 @@ if st.session_state.get("advisory_shown"):
         st.markdown(f"<div style='margin-bottom:0.6rem;'>{chips}</div>", unsafe_allow_html=True)
 
     # ----- Recommended actions (above the fold) -----
-    st.markdown("<div class='sec-title'>📋 Recommended Actions</div>", unsafe_allow_html=True)
-    ac1, ac2, ac3 = st.columns(3)
-    with ac1:
-        render_action_card("Do Now", "�", advisory['actions_do_now'],
-                           "card-do", "No immediate actions flagged.")
-    with ac2:
-        render_action_card("Prepare (Weeks 2-4)", "🟡", advisory['actions_prepare'],
-                           "card-prep", "No preparatory actions flagged.")
-    with ac3:
-        render_action_card("Avoid", "⛔", advisory['actions_avoid'],
-                           "card-avoid", "No specific cautions flagged.")
+    if show_actions:
+        st.markdown("<div class='sec-title'>📋 Recommended Actions</div>", unsafe_allow_html=True)
+        ac1, ac2, ac3 = st.columns(3)
+        with ac1:
+            render_action_card("Do Now", "�", advisory['actions_do_now'],
+                               "card-do", "No immediate actions flagged.")
+        with ac2:
+            render_action_card("Prepare (Weeks 2-4)", "🟡", advisory['actions_prepare'],
+                               "card-prep", "No preparatory actions flagged.")
+        with ac3:
+            render_action_card("Avoid", "⛔", advisory['actions_avoid'],
+                               "card-avoid", "No specific cautions flagged.")
 
-    # ----- General guidance -----
-    if advisory.get('general_guidance'):
-        guidance = " · ".join(escape(str(g)) for g in advisory['general_guidance'])
-        st.markdown(
-            f"<div class='sec-title'>ℹ️ General Guidance</div>"
-            f"<div class='guidance-box'>{guidance}</div>",
-            unsafe_allow_html=True,
-        )
+        # ----- General guidance -----
+        if advisory.get('general_guidance'):
+            guidance = " · ".join(escape(str(g)) for g in advisory['general_guidance'])
+            st.markdown(
+                f"<div class='sec-title'>ℹ️ General Guidance</div>"
+                f"<div class='guidance-box'>{guidance}</div>",
+                unsafe_allow_html=True,
+            )
 
     # ----- Detail tabs -----
     st.markdown("<div style='margin-top:1.4rem'></div>", unsafe_allow_html=True)
@@ -553,6 +627,8 @@ if st.session_state.get("advisory_shown"):
         """)
         st.warning(advisory['disclaimer'])
 
+elif st.session_state.get("advisory_shown"):
+    st.info("👆 Click a district on the map (or switch to Dropdowns) to see its advisory.")
 else:
     st.info("👈 Select your location and context in the sidebar, then click **Get Advisory**.")
 
