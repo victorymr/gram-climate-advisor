@@ -6,8 +6,15 @@ from html import escape
 import sys
 import os
 
+# Anchor to the app's own directory so every relative data path (here and in
+# src/utils.py) resolves no matter where `streamlit run app.py` is launched from.
+# Without this, launching from another directory makes the data files unreachable
+# and the app silently falls back to the 10 hard-coded pilot districts.
+_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(_APP_DIR)
+
 # Add src directory to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.append(os.path.join(_APP_DIR, 'src'))
 
 from rules import ScenarioClassifier
 from advisory import AdvisoryGenerator
@@ -24,7 +31,7 @@ except Exception:
 @st.cache_data
 def load_district_geojson():
     """Simplified district polygons for the clickable map (built by build_district_list.py)."""
-    p = os.path.join("data", "districts.geojson")
+    p = os.path.join(_APP_DIR, "data", "districts.geojson")
     if not os.path.exists(p):
         return None
     with open(p, encoding="utf-8") as fh:
@@ -35,7 +42,7 @@ def load_district_geojson():
 def _district_points():
     """(state, district, lat, lon) for map-click nearest-district lookup."""
     import csv as _csv
-    with open(os.path.join("data", "district_coordinates.csv"), encoding="utf-8") as fh:
+    with open(os.path.join(_APP_DIR, "data", "district_coordinates.csv"), encoding="utf-8") as fh:
         return [(r["state"], r["district"], float(r["latitude"]), float(r["longitude"]))
                 for r in _csv.DictReader(fh)]
 
@@ -283,6 +290,139 @@ def _precip_red(v):
     return _red_scale(-v / 10.0)
 
 
+# --- nationwide forecast map (Source Data overview) ------------------------
+def _mnorm(s):
+    """Match geojson polygons to forecast records regardless of spacing/case."""
+    return "".join(ch for ch in str(s).lower() if ch.isalnum())
+
+
+@st.cache_data
+def _forecast_index():
+    """(norm_state, norm_district) -> full forecast record, for the nationwide map."""
+    p = os.path.join(_APP_DIR, "data", "district_forecasts.json")
+    if not os.path.exists(p):
+        return {}
+    with open(p, encoding="utf-8") as fh:
+        recs = json.load(fh)
+    return {(_mnorm(r.get("state")), _mnorm(r.get("district"))): r for r in recs}
+
+
+# map variable -> where to read the value + diverging colour ramp (white ≈ near-normal,
+# saturating to a hue at |value| == span). RGB endpoints. Weekly variables read a per-source
+# value from forecast_variants (wkey), falling back to the top-level MME field (topfield).
+MAP_VARIABLES = {
+    "Rainfall": dict(
+        weekly=True, wkey="rainfall_mm_day", topfield="week{w}_rainfall_anomaly_mm_day",
+        unit="mm/day", span=8.0, neg=(166, 97, 26), pos=(33, 102, 172),   # dry=brown, wet=blue
+        neg_lab="Drier", pos_lab="Wetter", fmt="{:+.1f}"),
+    "Temperature": dict(
+        weekly=True, wkey="tmax_degC", topfield="week{w}_tmax_anomaly_degC",
+        unit="°C", span=5.0, neg=(33, 102, 172), pos=(178, 24, 43),       # cool=blue, hot=red
+        neg_lab="Cooler", pos_lab="Hotter", fmt="{:+.1f}"),
+    "Season rainfall departure": dict(
+        weekly=False, field="rainfall_since_june_1_pct_departure",
+        unit="%", span=60.0, neg=(166, 97, 26), pos=(33, 102, 172),       # deficit=brown, surplus=blue
+        neg_lab="Deficit", pos_lab="Surplus", fmt="{:+.0f}"),
+}
+
+_MONTHS = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def _variant_week_value(rec, source_key, wkey, week, topfield):
+    """A weekly value for one district: the chosen source's forecast_variant if present,
+    else the top-level MME field (also the fallback when data predates variants)."""
+    if source_key and rec:
+        var = next((v for v in rec.get("forecast_variants", []) if v.get("key") == source_key), None)
+        if var:
+            w = next((x for x in var.get("weeks", []) if x.get("week") == week), None)
+            if w is not None:
+                return w.get(wkey)
+    return rec.get(topfield.format(w=week)) if rec else None
+
+
+def _season_range(rec):
+    """'Jun 1 – Jul 8, 2026' from a record's observed_source ('... asof YYYY-MM-DD')."""
+    src = (rec or {}).get("observed_source", "") or ""
+    if "asof" not in src:
+        return None
+    try:
+        y, mo, d = src.split("asof")[-1].strip().split()[0].split("-")
+        return f"Jun 1 – {_MONTHS[int(mo)]} {int(d)}, {y}"
+    except Exception:
+        return None
+
+
+def _parse_init(s):
+    """date from an init string, '2026-07-11' or '20260711' (None if unparseable)."""
+    s = str(s or "").strip()
+    for fmt in ("%Y-%m-%d", "%Y%m%d"):
+        try:
+            return datetime.strptime(s, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _week_dates(init, week):
+    """(start, end) valid dates for forecast week W (week 1 = init+1 … init+7)."""
+    from datetime import timedelta
+    d = _parse_init(init)
+    if not d:
+        return None
+    return d + timedelta(days=7 * (week - 1) + 1), d + timedelta(days=7 * week)
+
+
+def _fmt_range(start, end):
+    """'Jul 12–18' (same month) or 'Jul 26 – Aug 1' (spanning months)."""
+    if start.month == end.month:
+        return f"{_MONTHS[start.month]} {start.day}–{end.day}"
+    return f"{_MONTHS[start.month]} {start.day} – {_MONTHS[end.month]} {end.day}"
+
+
+def _week_label(init, week, sep=" · "):
+    """'Week 1 · Jul 12–18' (falls back to 'Week N' if init is unparseable)."""
+    r = _week_dates(init, week)
+    return f"Week {week}{sep}{_fmt_range(*r)}" if r else f"Week {week}"
+
+
+def _map_color(v, cfg):
+    """Diverging hex colour for a value under a variable's ramp (grey if missing)."""
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return "#e6e6e6"
+    t = max(-1.0, min(1.0, float(v) / cfg["span"]))
+    end = cfg["pos"] if t >= 0 else cfg["neg"]
+    a = abs(t)
+    r = round(255 + a * (end[0] - 255))
+    g = round(255 + a * (end[1] - 255))
+    b = round(255 + a * (end[2] - 255))
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
+@st.cache_data
+def _enriched_geojson(variable_key, week, source_key):
+    """District polygons deep-copied with the chosen variable/week/source value + a label.
+    source_key selects a forecast_variant for weekly variables; it's ignored for the
+    (observed, single-source) season departure."""
+    import copy
+    base = load_district_geojson()
+    if not base:
+        return None
+    cfg = MAP_VARIABLES[variable_key]
+    idx = _forecast_index()
+    geo = copy.deepcopy(base)
+    for feat in geo.get("features", []):
+        pr = feat.setdefault("properties", {})
+        rec = idx.get((_mnorm(pr.get("state")), _mnorm(pr.get("district"))))
+        if cfg.get("weekly"):
+            v = _variant_week_value(rec, source_key, cfg["wkey"], week, cfg["topfield"])
+        else:
+            v = rec.get(cfg["field"]) if rec else None
+        pr["_val"] = v
+        pr["_label"] = "n/a" if v is None else f"{cfg['fmt'].format(v)} {cfg['unit']}"
+    return geo
+
+
 # App header
 st.markdown("""
 <div class="app-header">
@@ -302,6 +442,17 @@ def load_data():
 
 districts = load_data()
 states = sorted(list(set(d['state'] for d in districts)))
+
+# Visible load indicator: the full dataset is 666 districts. If only the 10-district
+# fallback loaded, the data files weren't found — surface that instead of failing silently.
+if len(districts) <= 10:
+    st.sidebar.warning(
+        f"⚠️ Only {len(districts)} districts loaded — data files not found, using the "
+        f"built-in fallback. Fully stop Streamlit (Ctrl-C) and rerun `streamlit run app.py` "
+        f"from the project root."
+    )
+else:
+    st.sidebar.caption(f"✅ {len(districts)} districts · {len(states)} states/UTs loaded")
 
 # Choose how to pick the district: dropdowns, or click a map (rendered in the main panel).
 input_mode = st.sidebar.radio(
@@ -447,12 +598,16 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
     # ----- Recommended actions (above the fold) -----
     if show_actions:
         st.markdown("<div class='sec-title'>📋 Recommended Actions</div>", unsafe_allow_html=True)
+        # date span for the "prepare" window (start of week 2 → end of week 4)
+        _w2 = _week_dates(forecast_data.get("forecast_date"), 2)
+        _w4 = _week_dates(forecast_data.get("forecast_date"), 4)
+        _prep = f"Prepare (Weeks 2-4 · {_fmt_range(_w2[0], _w4[1])})" if _w2 and _w4 else "Prepare (Weeks 2-4)"
         ac1, ac2, ac3 = st.columns(3)
         with ac1:
             render_action_card("Do Now", "�", advisory['actions_do_now'],
                                "card-do", "No immediate actions flagged.")
         with ac2:
-            render_action_card("Prepare (Weeks 2-4)", "🟡", advisory['actions_prepare'],
+            render_action_card(_prep, "🟡", advisory['actions_prepare'],
                                "card-prep", "No preparatory actions flagged.")
         with ac3:
             render_action_card("Avoid", "⛔", advisory['actions_avoid'],
@@ -480,9 +635,10 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
             st.write(outlook['narrative'])
 
             weeks = outlook['weeks']
+            _init = forecast_data.get("forecast_date")
             df_out = pd.DataFrame([
                 {
-                    "Week": f"Week {wk['week']}",
+                    "Week": _week_label(_init, wk['week']),
                     "Rainfall": _rain_category(wk.get('anomaly_mm_day')),
                     "Temperature": _temp_category(wk.get('tmax_anomaly_degC')),
                 }
@@ -525,7 +681,12 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
         # Source switcher: official IMD guidance, the downloaded multi-model mean,
         # or an individual model. Falls back to the active top-level fields if the
         # data predates the model import (no forecast_variants present).
-        variants = forecast_data.get("forecast_variants") or []
+        # Only offer sources that actually carry numeric weekly values — this hides the
+        # hand-curated "Official IMD guidance" variant for the districts where it's empty
+        # (IMD publishes no per-district numeric extended forecast; kept for the pilots).
+        variants = [v for v in (forecast_data.get("forecast_variants") or [])
+                    if any((w.get("rainfall_mm_day") is not None or
+                            w.get("tmax_degC") is not None) for w in v.get("weeks", []))]
         selected_variant = None
         if variants:
             labels = [v.get("label", v.get("key", "?")) for v in variants]
@@ -543,8 +704,9 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                       "tmax_degC": forecast_data.get(f"week{wk}_tmax_anomaly_degC")}
                      for wk in range(1, 5)]
 
+        _init = forecast_data.get("forecast_date")
         df_src = pd.DataFrame([
-            {"Week": f"Week {w['week']}",
+            {"Week": _week_label(_init, w['week']),
              "Rainfall (mm/day)": w.get("rainfall_mm_day"),
              "Tmax (°C)": w.get("tmax_degC")}
             for w in weeks
@@ -563,10 +725,11 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
         wprob = forecast_data.get("weekly_probabilities")
         if wprob and wprob.get("weeks"):
             pweeks = wprob["weeks"]
+            _pinit = wprob.get("init") or forecast_data.get("forecast_date")
             st.markdown("<div class='sec-title'>🎲 Weekly threshold odds</div>", unsafe_allow_html=True)
             df_p = pd.DataFrame([
                 {
-                    "Week": f"Week {w['week']}",
+                    "Week": _week_label(_pinit, w['week']),
                     "Rainfall lean": _rain_lean(w),
                     "Heavy rain": _odds(w.get("p_heavy")),
                     "Dry spell": _odds(w.get("p_dryspell")),
@@ -578,7 +741,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
 
             split = pd.DataFrame([
                 {
-                    "Week": f"Week {w['week']}",
+                    "Week": _week_label(_pinit, w['week']),
                     "Wetter": round((w.get('p_wetter') or 0) * 100),
                     "Near": round((w.get('p_near') or 0) * 100),
                     "Drier": round((w.get('p_drier') or 0) * 100),
@@ -613,6 +776,84 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
             st.caption(f"Forecast source: {forecast_data['forecast_source']}")
         if forecast_data.get("imd_source_notes"):
             st.caption(f"Source note: {forecast_data['imd_source_notes']}")
+
+        # --- Nationwide overview map: the same national picture for every district,
+        # with the current district outlined so it's placed in context. ---
+        geo_base = load_district_geojson() if _HAS_MAP else None
+        if _HAS_MAP and geo_base:
+            st.divider()
+            st.markdown("<div class='sec-title'>🗺️ Nationwide outlook</div>", unsafe_allow_html=True)
+            st.caption("A country-wide view of the same forecast, with your district outlined.")
+            variable_key = st.radio("Variable", list(MAP_VARIABLES.keys()),
+                                    horizontal=True, label_visibility="collapsed",
+                                    key="natmap_var")
+            cfg = MAP_VARIABLES[variable_key]
+            _minit = forecast_data.get("forecast_date")
+
+            # Data-source options: the model forecast_variants that carry numeric weekly
+            # values (MME, CFSv2, EC46, GEFS); the qualitative IMD guidance can't be mapped.
+            _src_variants = [v for v in (forecast_data.get("forecast_variants") or [])
+                             if any((w.get("rainfall_mm_day") is not None or
+                                     w.get("tmax_degC") is not None) for w in v.get("weeks", []))]
+            _src_labels = [v["label"] for v in _src_variants]
+            _key_by_label = {v["label"]: v["key"] for v in _src_variants}
+
+            mcol1, mcol2 = st.columns(2)
+            with mcol1:
+                if _src_labels:
+                    source_label = st.selectbox("Data source", _src_labels,
+                                                disabled=not cfg.get("weekly"),
+                                                key="natmap_src")
+                    source_key = _key_by_label.get(source_label)
+                else:
+                    source_label, source_key = None, None
+            with mcol2:
+                week = st.selectbox("Week", [1, 2, 3, 4],
+                                    format_func=lambda w: _week_label(_minit, w, sep=" — "),
+                                    disabled=not cfg.get("weekly"),
+                                    key="natmap_week")
+            geo = _enriched_geojson(variable_key, week, source_key)
+            sel = (_mnorm(selected_state), _mnorm(selected_district))
+
+            def _nat_style(feat, _sel=sel, _cfg=cfg):
+                pr = feat["properties"]
+                here = (_mnorm(pr.get("state")), _mnorm(pr.get("district"))) == _sel
+                return {"fillColor": _map_color(pr.get("_val"), _cfg),
+                        "color": "#111111" if here else "#8a8a8a",
+                        "weight": 2.8 if here else 0.3,
+                        "fillOpacity": 0.82}
+
+            fmap = folium.Map(location=[22.4, 80.5], zoom_start=4,
+                              tiles="cartodbpositron", control_scale=False)
+            folium.GeoJson(
+                geo, name="forecast", style_function=_nat_style,
+                tooltip=folium.GeoJsonTooltip(
+                    fields=["district", "state", "_label"],
+                    aliases=["District", "State", "Outlook:"], sticky=True),
+            ).add_to(fmap)
+            st_folium(fmap, height=460, use_container_width=True,
+                      returned_objects=[], key="national_forecast_map")
+
+            if cfg.get("weekly"):
+                _wr = _week_dates(_minit, week)
+                _dates = f" ({_fmt_range(*_wr)})" if _wr else ""
+                _src = f" · {source_label}" if source_label else ""
+                scope = f"{variable_key} — Week {week}{_dates} vs seasonal normal{_src}"
+            else:
+                rng = _season_range(forecast_data)
+                scope = "Season rainfall departure (observed, IMD)" + (f" · {rng}" if rng else "")
+            neg, pos = f"rgb{cfg['neg']}", f"rgb{cfg['pos']}"
+            st.markdown(
+                f"<div style='font-size:0.92rem;font-weight:600;margin-bottom:5px;'>{scope}</div>"
+                f"<div style='display:flex;align-items:center;gap:10px;font-size:0.85rem;'>"
+                f"<span>{cfg['neg_lab']}</span>"
+                f"<span style='flex:1;height:12px;border-radius:3px;border:1px solid #bbb;"
+                f"background:linear-gradient(to right,{neg},#ffffff,{pos});'></span>"
+                f"<span>{cfg['pos_lab']}</span></div>"
+                f"<div style='font-size:0.75rem;color:#888;margin-top:2px;'>"
+                f"White ≈ near normal · full colour at ±{cfg['span']:g} {cfg['unit']} · "
+                f"your district is outlined in black. Hover any district for its value.</div>",
+                unsafe_allow_html=True)
 
     # --- Sources & disclaimer tab ---
     with tab_sources:

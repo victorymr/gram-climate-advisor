@@ -138,7 +138,12 @@ def main():
     if args.download:
         ok = []
         for sub, script in S2S_MODELS.items():
-            rc = run([py_fc, script, "--date", dash], cwd=FORECASTS_DIR, check=False)
+            if sub == "ec46":
+                # Live ECMWF EC46 via Open-Meteo (no account, no embargo, ~50 members).
+                # Ignores --date (always ~today's init) and writes the mean + a members file.
+                rc = run([py_fc, "download_ec46_openmeteo.py"], cwd=FORECASTS_DIR, check=False)
+            else:
+                rc = run([py_fc, script, "--date", dash], cwd=FORECASTS_DIR, check=False)
             (ok.append(sub) if rc == 0 else None)
             summary.append((f"download {sub}", "ok" if rc == 0 else "FAILED (continuing)"))
         # GEFS ensemble members -> weekly threshold probabilities

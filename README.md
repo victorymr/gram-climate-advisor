@@ -31,10 +31,14 @@ seasonal models and collapses them to each district.
 
 ### What the models provide
 
-- **Subseasonal (weekly, weeks 1–4/5)** — a multi-model mean of GEFS + CFSv2 (+ EC46 when the inits
-  match) as weekly rainfall and temperature anomalies per district.
-- **Weekly threshold odds** — genuine probabilities from the **GEFS ensemble members** (chance of a
-  wetter/drier-than-normal week, heavy rain, a dry spell, or a hot week).
+- **Subseasonal (weekly, weeks 1–4/5)** — a multi-model mean of **GEFS + CFSv2 + EC46** as weekly
+  rainfall and temperature anomalies per district. EC46 (ECMWF's 46-day extended ensemble) is pulled
+  **live from the Open-Meteo seasonal API** (no account, no ~3-week embargo, ~50 members); it joins the
+  mean for any init it shares with the other models.
+- **Weekly threshold odds** — genuine probabilities from the **ensemble members, pooled across every
+  model** that posts members for the init (GEFS members and/or EC46's ~50 members): the chance of a
+  wetter/drier-than-normal week, heavy rain, a dry spell, or a hot week. The contributing model(s) and
+  member count are recorded alongside the odds.
 - **Seasonal (monthly)** — a SEAS5 + SFS tercile signal distilled into `seasonal_monsoon_context`.
 
 Model output **augments** the IMD data: the weekly *forecast* fields are replaced by the model
@@ -64,8 +68,20 @@ Under the hood:
 
 - **4-Week Outlook** — plain-language **categories** per week (e.g. *Slightly drier*, *Very warm*),
   with a note pointing to Source Data for the detail.
-- **Source Data** — a **source switcher** (Official IMD guidance · Multi-model mean · individual
-  models, each with exact weekly values) and the **weekly threshold odds** from the GEFS ensemble.
+- **Source Data** — a **source switcher** (Multi-model mean · individual models, each with exact weekly
+  values; *Official IMD guidance* appears only for the pilot districts that have hand-read IMD numbers,
+  since IMD publishes no per-district numeric extended forecast), the **weekly threshold odds**, and a
+  **nationwide map** at the bottom.
+- **Nationwide map** — a country-wide choropleth of the same forecast, with the selected district
+  outlined. Three dropdowns drive it: **variable** (Rainfall / Temperature / Season rainfall departure),
+  **week** (1–4), and **data source** (MME / CFSv2 / EC46 / GEFS). The season-departure view is observed
+  IMD data and labels its date range.
+- Every "Week N" in the tables, odds, and map is labelled with the **actual valid dates** (e.g.
+  *Week 1 · Jul 12–18*), derived from the init date.
+
+The app pins its working directory to its own location on startup and reads all data via
+repo-anchored paths, so `streamlit run app.py` works from any directory (the sidebar shows how many
+districts loaded). The clickable map and choropleth need `streamlit-folium` (in `requirements.txt`).
 
 Each district record gains three optional keys, all consumed by the app with graceful fallbacks:
 - `forecast_variants` — the IMD / MME / per-model weekly values behind the source switcher.

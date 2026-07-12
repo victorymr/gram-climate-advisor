@@ -211,39 +211,51 @@ DRYSPELL_MM = -3.0             # dry week / dry spell (matches the below-normal 
 HOT_C = 1.5                    # hot week (matches the app's temp threshold)
 
 PROB_FIELDS = ["region", "state", "district", "week", "p_wetter", "p_near", "p_drier",
-               "p_heavy", "p_dryspell", "p_hot", "n_members", "init_date"]
+               "p_heavy", "p_dryspell", "p_hot", "n_members", "models", "init_date"]
 
 
-def find_members_file(init, explicit=None):
-    """GEFS member-resolved weekly NetCDF for this init, or None."""
+def find_member_files(init, explicit=None):
+    """Every model member-resolved weekly NetCDF for this init (GEFS, EC46, ...) — pooled
+    into one multi-model ensemble for the odds. Returns [(model_name, path), ...]."""
     if explicit:
-        return explicit
-    cands = sorted(glob.glob(str(DATA_DIR / "gefs" / f"gefs_{init}_india_weekly_members.nc")))
-    return cands[-1] if cands else None
+        return [("members", explicit)]
+    out = []
+    for name, sub in MODEL_DIRS.items():
+        for f in sorted(glob.glob(str(DATA_DIR / sub / f"*_{init}_india_weekly_members.nc"))):
+            out.append((name, f))
+    return out
 
 
-def compute_probs(members_path, clim_path, districts, gadm, init):
-    """Per district/week threshold-exceedance probabilities from the pooled ensemble.
-    Each member is anomalised vs the ERA5 weekly clim, region-collapsed, then the
-    fraction of members crossing each threshold is the genuine forecast probability."""
-    ds = xr.open_dataset(members_path)
+def compute_probs(member_files, clim_path, districts, gadm, init):
+    """Per district/week threshold-exceedance probabilities from the POOLED multi-model
+    ensemble. Each model's members are anomalised vs the ERA5 weekly clim and region-
+    collapsed; members are pooled across whichever models are available for this init, and
+    the fraction crossing each threshold is the forecast probability."""
     clim = xr.open_dataset(clim_path)
-    anom = {v: anomalise(ds[v], clim[v]) for v in VARS if v in ds and v in clim}
-    n_members = int(ds.sizes.get("member", 1))
+    models = []
+    for mname, path in member_files:
+        ds = xr.open_dataset(path)
+        anom = {v: anomalise(ds[v], clim[v]) for v in VARS if v in ds and v in clim}
+        if anom:
+            models.append((mname, anom))
     rows = []
     for _, d in districts.iterrows():
         state, name = d["state"], d["district"]
         geom, _ = resolve_geom(gadm, state, name, d["latitude"], d["longitude"])
-        coll = {}
-        for v, a in anom.items():
-            lon, lat = _lonlat(a)
-            weights, _, _ = region_weights(a[lat].values, a[lon].values, lat, lon, geom)
-            coll[v] = a.weighted(weights.fillna(0.0)).mean((lat, lon))   # (member, week)
-        weeks = sorted(int(w) for w in coll["precip"]["week"].values) if "precip" in coll else []
-        for w in weeks:
-            pa = np.asarray(coll["precip"].sel(week=w).values).ravel() if "precip" in coll else np.array([])
-            ta = np.asarray(coll["t2m"].sel(week=w).values).ravel() if "t2m" in coll else np.array([])
-            pa, ta = pa[np.isfinite(pa)], ta[np.isfinite(ta)]
+        pooled = {"precip": {}, "t2m": {}}   # var -> {week: [member values...]}
+        contrib = set()
+        for mname, anom in models:
+            for v, a in anom.items():
+                lon, lat = _lonlat(a)
+                w, _, _ = region_weights(a[lat].values, a[lon].values, lat, lon, geom)
+                coll = a.weighted(w.fillna(0.0)).mean((lat, lon))    # (member, week)
+                for wk in coll["week"].values:
+                    vals = np.asarray(coll.sel(week=int(wk)).values).ravel()
+                    pooled[v].setdefault(int(wk), []).extend(vals[np.isfinite(vals)].tolist())
+                contrib.add(mname)
+        for w in sorted(pooled["precip"].keys()):
+            pa = np.array(pooled["precip"].get(w, []))
+            ta = np.array(pooled["t2m"].get(w, []))
 
             def frac(arr, mask):
                 return round(float(mask.mean()), 3) if arr.size else ""
@@ -257,7 +269,7 @@ def compute_probs(members_path, clim_path, districts, gadm, init):
                 "p_heavy": frac(pa, pa >= HEAVY_MM),
                 "p_dryspell": frac(pa, pa <= DRYSPELL_MM),
                 "p_hot": frac(ta, ta >= HOT_C),
-                "n_members": int(pa.size) if pa.size else n_members, "init_date": init,
+                "n_members": int(pa.size), "models": ",".join(sorted(contrib)), "init_date": init,
             })
     return rows
 
@@ -345,19 +357,20 @@ def main():
         wr.writerows(rows)
     print(f"\nsaved -> {args.out}  ({len(rows)} rows, {len(districts)} districts)")
 
-    # probabilistic odds from ensemble members (auto when a members file exists)
-    mpath = find_members_file(init, args.members_file)
-    if args.probs or mpath:
-        if not mpath:
-            print("  [probs] no GEFS members file for this init; skip "
-                  "(run: python download_gefs.py --date <YYYY-MM-DD> --members all)")
+    # probabilistic odds from the pooled multi-model ensemble (auto when member files exist)
+    mfiles = find_member_files(init, args.members_file)
+    if args.probs or mfiles:
+        if not mfiles:
+            print("  [probs] no member files for this init; skip "
+                  "(run: download_gefs.py --members all, and/or download_ec46_openmeteo.py)")
         else:
-            prob_rows = compute_probs(mpath, clim_path, districts, gadm, init)
+            prob_rows = compute_probs(mfiles, clim_path, districts, gadm, init)
             with open(args.probs_out, "w", newline="", encoding="utf-8") as fh:
                 wr = csv.DictWriter(fh, fieldnames=PROB_FIELDS)
                 wr.writeheader()
                 wr.writerows(prob_rows)
-            print(f"saved -> {args.probs_out}  ({len(prob_rows)} rows) from {mpath}")
+            print(f"saved -> {args.probs_out}  ({len(prob_rows)} rows) "
+                  f"from {[m for m, _ in mfiles]}")
 
 
 if __name__ == "__main__":

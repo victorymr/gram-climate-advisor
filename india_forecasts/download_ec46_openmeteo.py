@@ -26,6 +26,7 @@ USAGE
 
 import sys
 import json
+import time
 import argparse
 import numpy as np
 import pandas as pd
@@ -60,10 +61,17 @@ def query(lats, lons, args, timeout=60):
         "forecast_days": args.forecast_days,
         "timezone": "UTC",
     }
-    r = requests.get(args.url, params=params, timeout=timeout)
-    r.raise_for_status()
-    js = r.json()
-    return js if isinstance(js, list) else [js]   # multi-location -> list; single -> dict
+    for attempt in range(6):
+        r = requests.get(args.url, params=params, timeout=timeout)
+        if r.status_code == 429:        # free-tier rate limit resets each minute
+            wait = 65
+            print(f"    429 rate-limited; waiting {wait}s (attempt {attempt + 1}/6)")
+            time.sleep(wait)
+            continue
+        r.raise_for_status()
+        js = r.json()
+        return js if isinstance(js, list) else [js]   # multi-location -> list; single -> dict
+    r.raise_for_status()   # exhausted retries
 
 
 def probe(args):
@@ -83,9 +91,11 @@ def probe(args):
 
 def main():
     ap = argparse.ArgumentParser(description="Live EC46 from Open-Meteo over India, weekly NetCDF.")
-    ap.add_argument("--res", type=float, default=0.5, help="India grid resolution in deg (default 0.5).")
+    ap.add_argument("--res", type=float, default=1.0,
+                    help="India grid resolution in deg (default 1.0; EC46 native res is coarse).")
     ap.add_argument("--forecast-days", type=int, default=46)
-    ap.add_argument("--batch", type=int, default=150, help="Grid points per API request.")
+    ap.add_argument("--batch", type=int, default=100, help="Grid points per API request.")
+    ap.add_argument("--sleep", type=float, default=12.0, help="Seconds between requests (free-tier throttle).")
     ap.add_argument("--url", default=API_URL)
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--tvar", default=TVAR)
@@ -103,7 +113,10 @@ def main():
     n = flat_lat.size
     print(f"India grid {len(lats)}x{len(lons)} = {n} points; {args.forecast_days}-day EC46 ...")
 
+    # The ensemble model returns the mean AND every member in one response, so we
+    # collect both (no extra API calls) and write a mean file + a members file.
     tcol, pcol, times = [None] * n, [None] * n, None
+    tmem = pmem = mem_names = None
     for i in range(0, n, args.batch):
         sl = slice(i, i + args.batch)
         recs = query(flat_lat[sl], flat_lon[sl], args)
@@ -111,27 +124,57 @@ def main():
             daily = rec["daily"]
             if times is None:
                 times = pd.to_datetime(daily["time"])
+                tks = sorted(k for k in daily if k.startswith(args.tvar + "_member"))
+                pks = sorted(k for k in daily if k.startswith(args.pvar + "_member"))
+                mem_names = [k.split("_member")[-1] for k in tks]
+                tmem = {m: [None] * n for m in mem_names}
+                pmem = {m: [None] * n for m in mem_names}
             tcol[i + j] = np.asarray(daily[args.tvar], float)
             pcol[i + j] = np.asarray(daily[args.pvar], float)
+            for m, k in zip(mem_names, tks):
+                tmem[m][i + j] = np.asarray(daily.get(k, daily[args.tvar]), float)
+            for m, k in zip(mem_names, pks):
+                pmem[m][i + j] = np.asarray(daily.get(k, daily[args.pvar]), float)
         print(f"  {min(i+args.batch, n)}/{n} points")
+        if i + args.batch < n and args.sleep:
+            time.sleep(args.sleep)
 
     nt = len(times)
-    t_arr = np.array(tcol, float).reshape(len(lats), len(lons), nt).transpose(2, 0, 1)
-    p_arr = np.array(pcol, float).reshape(len(lats), len(lons), nt).transpose(2, 0, 1)
     lead_h = (np.arange(nt) + 1) * 24
     coords = {"lead_hours": ("step", lead_h), "latitude": lats, "longitude": lons}
-    t = xr.DataArray(t_arr, dims=("step", "latitude", "longitude"), coords=coords)
-    p = xr.DataArray(p_arr, dims=("step", "latitude", "longitude"), coords=coords)
+    # Open-Meteo returns the forecast starting on day 1 (tomorrow); label by the CYCLE date
+    # (day-1 minus a day) so this init matches GEFS/CFSv2 (which label by cycle) and pools with them.
+    init = pd.Timestamp(times[0]) - pd.Timedelta(days=1)
+    tag = init.strftime("%Y%m%d")
 
-    t2m = to_weekly(t, method="mean")          # already degC
-    precip = to_weekly(p, method="mean")       # daily sums (mm) -> weekly mean mm/day
-    init = pd.Timestamp(times[0])              # day-1 valid date ~ init+1; label by day-1 date
-    out = xr.Dataset({"t2m": t2m, "precip": precip},
-                     attrs={"model": "EC46", "init_date": init.strftime("%Y%m%d"),
-                            "kind": "forecast", "source": f"Open-Meteo {args.model}"})
-    out_path = EC46_DIR / f"ec46om_{init.strftime('%Y%m%d')}_india_weekly.nc"
-    save_netcdf(out, out_path)
-    print(f"Done -> {out_path}")
+    def _grid(col):
+        return np.array(col, float).reshape(len(lats), len(lons), nt).transpose(2, 0, 1)
+
+    def _da(arr, extra_dims=(), extra_coords=None):
+        return xr.DataArray(arr, dims=extra_dims + ("step", "latitude", "longitude"),
+                            coords={**coords, **(extra_coords or {})})
+
+    # ensemble mean -> weekly
+    out = xr.Dataset({"t2m": to_weekly(_da(_grid(tcol)), method="mean"),
+                      "precip": to_weekly(_da(_grid(pcol)), method="mean")},
+                     attrs={"model": "EC46", "init_date": tag, "kind": "forecast",
+                            "source": f"Open-Meteo {args.model}"})
+    mean_path = EC46_DIR / f"ec46om_{tag}_india_weekly.nc"
+    save_netcdf(out, mean_path)
+    print(f"Done (mean) -> {mean_path}")
+
+    # members -> weekly (for the probabilistic odds)
+    if mem_names:
+        mc = {"member": [f"m{m}" for m in mem_names]}
+        t_m = _da(np.stack([_grid(tmem[m]) for m in mem_names]), ("member",), mc)
+        p_m = _da(np.stack([_grid(pmem[m]) for m in mem_names]), ("member",), mc)
+        out_m = xr.Dataset({"t2m": to_weekly(t_m, method="mean"),
+                            "precip": to_weekly(p_m, method="mean")},
+                           attrs={"model": "EC46", "init_date": tag, "kind": "forecast_members",
+                                  "n_members": len(mem_names), "source": f"Open-Meteo {args.model}"})
+        mem_path = EC46_DIR / f"ec46om_{tag}_india_weekly_members.nc"
+        save_netcdf(out_m, mem_path)
+        print(f"Done (members) -> {mem_path}  ({len(mem_names)} members)")
 
 
 if __name__ == "__main__":

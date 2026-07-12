@@ -123,7 +123,7 @@ def load_probs(path):
     with open(path, newline="", encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             key = (r["state"].strip().lower(), r["district"].strip().lower())
-            d = out.setdefault(key, {"source": "GEFS ensemble", "n_members": None,
+            d = out.setdefault(key, {"n_members": None, "models": r.get("models", ""),
                                      "init": r.get("init_date", ""), "weeks": []})
             d["weeks"].append({
                 "week": int(r["week"]),
@@ -136,6 +136,7 @@ def load_probs(path):
                 d["n_members"] = int(nm)
     for d in out.values():
         d["weeks"].sort(key=lambda x: x["week"])
+        d["source"] = f"{d['models']} ensemble" if d.get("models") else "ensemble"
     return out
 
 
