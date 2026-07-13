@@ -58,8 +58,10 @@ def fetch(date, member, step_hours, inspect=False):
     from herbie import FastHerbie
 
     fxx = fxx_list(step_hours)
+    # Pin to AWS (s3://noaa-gefs-pds). Herbie's default also tries the Azure Planetary
+    # Computer mirror, which needs SAS-token signing and SSL-fails under concurrency.
     FH = FastHerbie([pd.Timestamp(date)], model="gefs", fxx=fxx,
-                    member=member, product="atmos.5")
+                    member=member, product="atmos.5", priority=["aws"])
     if inspect:
         H0 = FH.objects[0]
         print(H0.inventory().head(40).to_string())
@@ -90,8 +92,10 @@ def fetch(date, member, step_hours, inspect=False):
     t = grab(["t2m", "2t"])
     p = grab(["tp", "apcp", "unknown"])
     if t is None or p is None:
-        sys.exit(f"Could not extract TMP/APCP. Vars seen: "
-                 f"{[list(d.data_vars) for d in dss]}. Use --inspect.")
+        # RuntimeError (not sys.exit): callers run this in worker threads, where
+        # SystemExit would bypass their `except Exception` and abort the whole run.
+        raise RuntimeError(f"Could not extract TMP/APCP. Vars seen: "
+                           f"{[list(d.data_vars) for d in dss]}.")
     return t, p
 
 
@@ -129,6 +133,10 @@ def main():
                          "Writes gefs_<date>_india_weekly_members.nc (dims member,week,lat,lon).")
     ap.add_argument("--step-hours", type=int, default=6, help="Lead sampling cadence (default 6h).")
     ap.add_argument("--precip-accum", choices=["bucket", "cumulative"], default="bucket")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="Concurrent members to fetch with --members. Default 1 (sequential): "
+                         "measured fastest + most reliable, since cfgrib decoding is GIL-bound "
+                         "and >1 worker triggers AWS throttling. >1 is available but was slower.")
     ap.add_argument("--inspect", action="store_true", help="Print one GEFS inventory and stop.")
     args = ap.parse_args()
 
@@ -142,23 +150,34 @@ def main():
     if args.members:
         import glob
         import re as _re
+        from concurrent.futures import ThreadPoolExecutor, as_completed
         members = expand_members(args.members)
         tag = d.strftime("%Y%m%d")
-        for m in members:
+
+        def _get_member(m):
+            """Fetch+save one member (cached members skip; one retry). Thread-safe:
+            each member is a distinct GRIB and writes its own per-member file."""
             mf = GEFS_DIR / f"gefs_{tag}_member_{m}.nc"
             if mf.exists():
-                print(f"  member {m}: cached"); continue
+                return f"member {m}: cached"
             for attempt in (1, 2):
                 try:
                     t, p = fetch(args.date, m, args.step_hours)
                     t2m, precip = to_weekly_fields(t, p, args.precip_accum)
                     save_netcdf(xr.Dataset({"t2m": t2m, "precip": precip},
                                            attrs={"model": "GEFS", "init_date": tag, "member": m}), mf)
-                    print(f"  member {m}: saved (try {attempt})")
-                    break
+                    return f"member {m}: saved (try {attempt})"
                 except Exception as e:
-                    print(f"  member {m}: {type(e).__name__} (try {attempt}); "
-                          f"{'retrying' if attempt == 1 else 'skipping'}")
+                    if attempt == 2:
+                        return f"member {m}: {type(e).__name__} - skipped"
+            return f"member {m}: skipped"
+
+        # Members are fetched concurrently (the download is S3-latency bound, so this
+        # is the dominant speed-up); FastHerbie still parallelises steps within a member.
+        with ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
+            futs = [ex.submit(_get_member, m) for m in members]
+            for fut in as_completed(futs):
+                print(f"  {fut.result()}", flush=True)
 
         parts = sorted(glob.glob(str(GEFS_DIR / f"gefs_{tag}_member_*.nc")))
         if not parts:
