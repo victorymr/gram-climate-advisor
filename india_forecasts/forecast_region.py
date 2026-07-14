@@ -35,7 +35,8 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-from config import GEO_DIR, GADM_IND_L2_URL
+from config import (GEO_DIR, GADM_IND_L2_URL, GEO_SOURCE,
+                    LGD_DISTRICTS_LOCAL, LGD_DISTRICTS_URL)
 from plot_seas5 import (
     PLOTS_DIR, M_S_TO_MMDAY, KG_M2_S_TO_MMDAY,
     latest_seas5, latest_sfs, find_seas5_clim, find_sfs_clim, find_obs,
@@ -57,13 +58,35 @@ def _slug(s):
                     for w in str(s).replace(",", " ").split())
 
 
-def gadm_districts():
-    """Load GADM India level-2 (districts), caching the download locally."""
+def _load_gadm():
     local = GEO_DIR / "gadm41_IND_2.json.zip"
     if not local.exists():
         print(f"Downloading GADM India districts -> {local} (one-time) ...")
         urllib.request.urlretrieve(GADM_IND_L2_URL, local)
     return gpd.read_file(local)
+
+
+def _load_lgd():
+    """LGD_Districts (785, current roster). Presented with GADM-style NAME_1 (state) /
+    NAME_2 (district) columns so every downstream caller works unchanged; invalid
+    geometries are repaired with buffer(0)."""
+    if not LGD_DISTRICTS_LOCAL.exists():
+        print(f"Downloading LGD districts -> {LGD_DISTRICTS_LOCAL} (one-time) ...")
+        urllib.request.urlretrieve(LGD_DISTRICTS_URL, LGD_DISTRICTS_LOCAL)
+    g = gpd.read_parquet(LGD_DISTRICTS_LOCAL)
+    g = g.rename(columns={"stname": "NAME_1", "dtname": "NAME_2"})[["NAME_1", "NAME_2", "geometry"]]
+    bad = ~g.geometry.is_valid
+    if bad.any():
+        g.loc[bad, "geometry"] = g.loc[bad, "geometry"].buffer(0)
+    return g
+
+
+def gadm_districts(source=None):
+    """India district polygons as a GeoDataFrame with NAME_1 (state) / NAME_2 (district).
+    Source defaults to config.GEO_SOURCE (env GRAM_GEO): 'lgd' (785, current) or 'gadm'
+    (666, 2022). Name kept for backward compatibility with existing callers."""
+    src = (source or GEO_SOURCE).lower()
+    return _load_lgd() if src == "lgd" else _load_gadm()
 
 
 def list_districts(state):

@@ -34,6 +34,11 @@ HERE = Path(__file__).resolve().parent
 FC = HERE.parent                       # india_forecasts/
 sys.path.insert(0, str(FC))
 
+# The backtest is pinned to the original GADM 666-district geometry + a frozen coords
+# snapshot, so it stays self-consistent even after the operational pipeline swaps to the
+# newer LGD 785-district boundaries (which changes the default the loader returns).
+os.environ.setdefault("GRAM_GEO", "gadm")
+
 from config import DATA_DIR             # noqa: E402
 from forecast_region import gadm_districts, region_weights          # noqa: E402
 from forecast_region_s2s import anomalise, resolve_geom, _lonlat, VARS  # noqa: E402
@@ -41,7 +46,7 @@ from forecast_region_s2s import anomalise, resolve_geom, _lonlat, VARS  # noqa: 
 COLL = HERE / "collapsed"
 COLL.mkdir(exist_ok=True)
 INITS_CSV = HERE / "inits.csv"
-DISTRICTS_CSV = FC.parent / "data" / "district_coordinates.csv"     # advisor's 666
+DISTRICTS_CSV = HERE / "districts_gadm666.csv"     # frozen GADM 666 snapshot (see above)
 CLIM_DIR = DATA_DIR / "clim"
 PY = sys.executable
 
