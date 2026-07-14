@@ -1146,7 +1146,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.16)",
+    "imd_source_notes": "Observed: RAYALASEEMA row - Deficient 3 of 4 weeks (cumulative deficient). Forecast: rfanom Wk1=+3mm/d (above normal), Wk4=-3mm/d. Tmax below normal (cooler due to cloud cover). [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
     "week1_rainfall_anomaly_mm_day": -2.809,
     "week1_tmax_anomaly_degC": 1.495,
     "week2_rainfall_anomaly_mm_day": -1.287,
@@ -1160,27 +1160,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: RAYALASEEMA row - Deficient 3 of 4 weeks (cumulative deficient). Forecast: rfanom Wk1=+3mm/d (above normal), Wk4=-3mm/d. Tmax below normal (cooler due to cloud cover).",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": -3.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": -1.0
           }
         ]
       },
@@ -3406,7 +3406,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.19)",
+    "imd_source_notes": "Observed: RAYALASEEMA row - same as Anantapur (cumulative deficient). Forecast: rfanom Wk1=+3mm/d, Wk4=-3mm/d. Tmax below normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.21)",
     "week1_rainfall_anomaly_mm_day": -3.85,
     "week1_tmax_anomaly_degC": 1.771,
     "week2_rainfall_anomaly_mm_day": -0.833,
@@ -3420,27 +3420,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: RAYALASEEMA row - same as Anantapur (cumulative deficient). Forecast: rfanom Wk1=+3mm/d, Wk4=-3mm/d. Tmax below normal.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 3.0,
+            "tmax_degC": -2.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": -3.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 1.0,
+            "tmax_degC": -2.0
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 0.0
           }
         ]
       },
@@ -22387,10 +22387,10 @@
     "seasonal_monsoon_context": "normal",
     "tmax_signal": "near_normal",
     "tmin_signal": "near_normal",
-    "heat_wave_warning": false,
+    "heat_wave_warning": true,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> normal (net +0.02)",
+    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-3mm/d, tmaxanom map Wk1=+6\u00b0C. Extreme heat + delayed monsoon. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> normal (net +0.02)",
     "week1_rainfall_anomaly_mm_day": -0.956,
     "week1_tmax_anomaly_degC": 1.031,
     "week2_rainfall_anomaly_mm_day": 3.753,
@@ -22404,27 +22404,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-3mm/d, tmaxanom map Wk1=+6\u00b0C. Extreme heat + delayed monsoon.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
           }
         ]
       },
@@ -26003,10 +26003,10 @@
     "seasonal_monsoon_context": "normal",
     "tmax_signal": "near_normal",
     "tmin_signal": "near_normal",
-    "heat_wave_warning": false,
+    "heat_wave_warning": true,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> normal (net -0.04)",
+    "imd_source_notes": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-1mm/d, tmaxanom map Wk1=+6\u00b0C. Near-normal rainfall forecast but extreme heat. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> normal (net -0.04)",
     "week1_rainfall_anomaly_mm_day": -1.301,
     "week1_tmax_anomaly_degC": 1.334,
     "week2_rainfall_anomaly_mm_day": 3.193,
@@ -26020,27 +26020,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: IMD Weekly Rainfall table (BIHAR row: all White/No Rain since Jun 1). Forecast: rfanom map Wk1=-1mm/d, tmaxanom map Wk1=+6\u00b0C. Near-normal rainfall forecast but extreme heat.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 6.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 1.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
           }
         ]
       },
@@ -92448,9 +92448,9 @@
     "tmax_signal": "near_normal",
     "tmin_signal": "near_normal",
     "heat_wave_warning": false,
-    "heavy_rain_warning": false,
+    "heavy_rain_warning": true,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.20)",
+    "imd_source_notes": "Observed: VIDARBHA row - same as Yavatmal (near-normal cumulative). Forecast: rfanom Wk2=+14.9mm/d (very heavy above-normal rainfall expected). Heavy rain warning issued for Wk2. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.20)",
     "week1_rainfall_anomaly_mm_day": -8.192,
     "week1_tmax_anomaly_degC": 0.939,
     "week2_rainfall_anomaly_mm_day": 6.003,
@@ -92464,27 +92464,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: VIDARBHA row - same as Yavatmal (near-normal cumulative). Forecast: rfanom Wk2=+14.9mm/d (very heavy above-normal rainfall expected). Heavy rain warning issued for Wk2.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 1.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 14.9,
+            "tmax_degC": 0.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           }
         ]
       },
@@ -96292,7 +96292,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
+    "imd_source_notes": "Observed: VIDARBHA row - Normal, Deficient, Normal, Normal (near-normal cumulative). Forecast: rfanom Wk1=-3mm/d then Wk2=+10mm/d (strong above-normal rainfall expected Wk2). Temps near normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.18)",
     "week1_rainfall_anomaly_mm_day": -7.91,
     "week1_tmax_anomaly_degC": 0.984,
     "week2_rainfall_anomaly_mm_day": 0.872,
@@ -96306,27 +96306,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: VIDARBHA row - Normal, Deficient, Normal, Normal (near-normal cumulative). Forecast: rfanom Wk1=-3mm/d then Wk2=+10mm/d (strong above-normal rainfall expected Wk2). Temps near normal.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 0.5
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 10.0,
+            "tmax_degC": -1.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           }
         ]
       },
@@ -127028,7 +127028,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.41)",
+    "imd_source_notes": "Observed: WEST RAJASTHAN row - No Rain early, then Excess + Large Excess recent weeks (strong late-June surge). Forecast: rfanom near-normal all weeks. Tmax Wk1=+3\u00b0C (above normal heat). [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.40)",
     "week1_rainfall_anomaly_mm_day": -7.248,
     "week1_tmax_anomaly_degC": 2.842,
     "week2_rainfall_anomaly_mm_day": -4.058,
@@ -127042,27 +127042,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: WEST RAJASTHAN row - No Rain early, then Excess + Large Excess recent weeks (strong late-June surge). Forecast: rfanom near-normal all weeks. Tmax Wk1=+3\u00b0C (above normal heat).",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 3.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
           }
         ]
       },
@@ -128384,7 +128384,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.43)",
+    "imd_source_notes": "Observed: WEST RAJASTHAN row - same as Jaipur (late excess surge). Forecast: rfanom near-normal all weeks, temps near normal. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.44)",
     "week1_rainfall_anomaly_mm_day": -4.75,
     "week1_tmax_anomaly_degC": 0.873,
     "week2_rainfall_anomaly_mm_day": -4.572,
@@ -128398,27 +128398,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: WEST RAJASTHAN row - same as Jaipur (late excess surge). Forecast: rfanom near-normal all weeks, temps near normal.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 1.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           }
         ]
       },
@@ -163185,10 +163185,10 @@
     "seasonal_monsoon_context": "below_normal_risk",
     "tmax_signal": "above_normal",
     "tmin_signal": "near_normal",
-    "heat_wave_warning": false,
+    "heat_wave_warning": true,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.25)",
+    "imd_source_notes": "Observed: WEST U.P. row - No Rain early Jun, Deficient then Normal recovery. Forecast: rfanom Wk1=-3mm/d, tmaxanom Wk1=+6\u00b0C, Wk2=+2\u00b0C. Delayed monsoon + severe heat. [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.25)",
     "week1_rainfall_anomaly_mm_day": -4.814,
     "week1_tmax_anomaly_degC": 3.205,
     "week2_rainfall_anomaly_mm_day": 0.17,
@@ -163202,27 +163202,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: WEST U.P. row - No Rain early Jun, Deficient then Normal recovery. Forecast: rfanom Wk1=-3mm/d, tmaxanom Wk1=+6\u00b0C, Wk2=+2\u00b0C. Delayed monsoon + severe heat.",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 2.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           }
         ]
       },
@@ -169064,7 +169064,7 @@
     "heat_wave_warning": false,
     "heavy_rain_warning": false,
     "humidity_heat_index_signal": "normal",
-    "imd_source_notes": " [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.10)",
+    "imd_source_notes": "Observed: EAST U.P. row - Deficient week of 17-Jun then Normal recovery 24-Jun. Forecast: rfanom map Wk1=-3mm/d (below normal), tmaxanom Wk1=+6\u00b0C (severe heat). [forecast fields: model import]: S2S multi-model mean (CFSv2,EC46,GEFS) init 2026-07-11; seasonal SEAS5+SFS -> below_normal_risk (net -0.10)",
     "week1_rainfall_anomaly_mm_day": -3.958,
     "week1_tmax_anomaly_degC": 1.868,
     "week2_rainfall_anomaly_mm_day": 4.715,
@@ -169078,27 +169078,27 @@
       {
         "key": "IMD",
         "label": "Official IMD guidance",
-        "source": "IMD forecast products",
+        "source": "Observed: EAST U.P. row - Deficient week of 17-Jun then Normal recovery 24-Jun. Forecast: rfanom map Wk1=-3mm/d (below normal), tmaxanom Wk1=+6\u00b0C (severe heat).",
         "weeks": [
           {
             "week": 1,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -3.0,
+            "tmax_degC": 6.0
           },
           {
             "week": 2,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 1.0
           },
           {
             "week": 3,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": 0.0,
+            "tmax_degC": 0.2
           },
           {
             "week": 4,
-            "rainfall_mm_day": null,
-            "tmax_degC": null
+            "rainfall_mm_day": -1.0,
+            "tmax_degC": 0.2
           }
         ]
       },
