@@ -35,9 +35,9 @@ HERE = Path(__file__).resolve().parent
 FC = HERE.parent
 sys.path.insert(0, str(FC))
 
-# Pin to the GADM 666 geometry + frozen coords snapshot (matches run_backtest.py) so the
-# verification truth is built on the same districts as the collapsed forecasts.
-os.environ.setdefault("GRAM_GEO", "gadm")
+# Match run_backtest.py: LGD 785-district map, so truth is built on the same districts
+# as the collapsed forecasts.
+os.environ.setdefault("GRAM_GEO", "lgd")
 
 from config import DATA_DIR                                    # noqa: E402
 from forecast_region import gadm_districts, region_weights     # noqa: E402
@@ -47,7 +47,7 @@ from observed_departures import build_climatology, IMD_DIR     # noqa: E402  (ra
 TRUTH = HERE / "truth"
 TRUTH.mkdir(exist_ok=True)
 INITS_CSV = HERE / "inits.csv"
-DISTRICTS_CSV = HERE / "districts_gadm666.csv"
+DISTRICTS_CSV = FC.parent / "data" / "district_coordinates.csv"
 
 
 def _temp(ds, name):
