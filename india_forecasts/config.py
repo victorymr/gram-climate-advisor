@@ -48,9 +48,19 @@ GEO_DIR = DATA_DIR / "geo"     # administrative boundaries (states/districts)
 for _d in (DATA_DIR, SEAS5_DIR, SFS_DIR, OBS_DIR, GEO_DIR):
     _d.mkdir(parents=True, exist_ok=True)
 
-# GADM v4.1 India admin boundaries (level 2 = districts, carries NAME_1 state too).
-# Free for academic/non-commercial use. Cached locally on first use.
+# District boundaries. Two sources are supported (select via env GRAM_GEO):
+#   "lgd"  (default): ramSeraph LGD_Districts -- current LGD roster, 785 districts,
+#          CC0, hybrid 2011-2023 geometry. https://github.com/ramSeraph/indian_admin_boundaries
+#   "gadm" : GADM v4.1 level-2 -- 2022 vintage, 666 districts (kept for the backtest,
+#          which pins GRAM_GEO=gadm so it stays consistent across a boundary swap).
+import os as _os
+GEO_SOURCE = _os.environ.get("GRAM_GEO", "lgd").lower()
+# GADM v4.1 (academic/non-commercial); cached locally on first use.
 GADM_IND_L2_URL = "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_IND_2.json.zip"
+# LGD_Districts (CC0). Vendored parquet; direct release URL for one-time fetch.
+LGD_DISTRICTS_LOCAL = GEO_DIR / "LGD_Districts.parquet"
+LGD_DISTRICTS_URL = ("https://github.com/ramSeraph/indian_admin_boundaries/"
+                     "releases/download/districts/LGD_Districts.parquet")
 
 # --------------------------------------------------------------------------
 # Observation sources for the hindcast skill mask (land, monthly).
