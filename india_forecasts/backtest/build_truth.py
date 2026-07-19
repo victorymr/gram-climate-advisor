@@ -157,11 +157,23 @@ def main():
                 anom = weekly_anom(cur, clim, init_ts, args.weeks)
                 if anom is None:
                     continue
-                gkey = _lonlat(cur)
+                # Key the weight-tensor cache on the actual GRID, not just the dim names:
+                # IMD rain (0.25 deg) and temp (1 deg) share dim names, so a name-only key
+                # would reuse the rain tensor for temp and misalign the collapse.
+                _ln, _lt = _lonlat(cur)
+                gkey = (_lt, _ln, int(cur[_lt].size), int(cur[_ln].size),
+                        float(cur[_lt].values[0]), float(cur[_ln].values[0]))
                 if gkey not in wcache:
                     wcache[gkey] = weight_tensor(cur, districts, gadm)
                 W, latn, lonn = wcache[gkey]
-                dvars[f"obs_{var}_anom"] = xr.dot(W, anom, dims=[latn, lonn])   # (district, week)
+                # IMD fields are NaN over ocean / no-data. A plain xr.dot would propagate
+                # those NaNs (0 * NaN = NaN) and blank out every district, so take a
+                # valid-cell weighted mean instead: sum(W*x) / sum(W*isfinite(x)), which
+                # renormalises each district's weights onto its land cells.
+                valid = xr.where(anom.notnull(), 1.0, 0.0)
+                num = xr.dot(W, anom.fillna(0.0), dims=[latn, lonn])            # (district, week)
+                den = xr.dot(W, valid, dims=[latn, lonn])
+                dvars[f"obs_{var}_anom"] = num / den.where(den > 0)
             if not dvars:
                 print(f"  {row['init_date']}: no valid weeks -> skip")
                 continue
