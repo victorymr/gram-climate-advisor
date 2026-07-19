@@ -167,18 +167,65 @@ def resolve_geom(gadm, state, district, lat, lon):
 VARS = {"t2m": "t2m_anom_degC", "precip": "precip_anom_mm_day"}
 
 
-def load_anomaly_grids(specs, clim_path):
-    """Return {model_name: {var: weekly anomaly DataArray}} on each model's grid."""
-    clim = xr.open_dataset(clim_path)
+# Guards on using a model's own climatology (see model_clim): the nearest DOY node must
+# be close enough to be representative, and built from enough inits to be stable.
+MODEL_CLIM_MAX_DOY_GAP = 20      # days
+MODEL_CLIM_MIN_SAMPLES = 5       # inits pooled into that node
+
+
+def model_clim(model_name, init, fallback):
+    """Climatology to anomalise `model_name` against -> (dataset, label).
+
+    Prefers the model's OWN climatology (data/clim/<model>_model_clim.nc, built by
+    build_model_clim.py), selected at the nearest init day-of-year. This removes the
+    model's mean offset vs ERA5, so the anomaly -- and the "wetter / drier than normal"
+    wording it drives -- reflects the model against its own history. The backtest showed
+    why this matters: against the shared ERA5 climatology CFSv2 carried a -1.9 mm/day dry
+    offset and called weeks "drier than normal" 58% of the time vs a 46% base rate.
+
+    Falls back to the shared ERA5 climatology for any model with no hindcast-based
+    climatology (e.g. EC46, whose Open-Meteo feed is forecast-only).
+    """
+    key = str(model_name).split()[0].lower()
+    p = DATA_DIR / "clim" / f"{key}_model_clim.nc"
+    if not p.exists():
+        return fallback, "ERA5"
+    mc = xr.open_dataset(p)
+    if "doy" not in mc.dims or mc.sizes.get("doy", 0) == 0:
+        return fallback, "ERA5"
+    doy = int(pd.Timestamp(init).dayofyear)
+    nodes = mc["doy"].values.astype(float)
+    dist = np.minimum(np.abs(nodes - doy), 365.25 - np.abs(nodes - doy))
+    i = int(dist.argmin())
+    node, gap = int(nodes[i]), float(dist[i])
+    # Guards -- a partially-built climatology must not be used silently. Snapping to a
+    # node months away (or one averaged from a couple of inits) would be worse than the
+    # shared ERA5 reference, so fall back rather than pretend.
+    if gap > MODEL_CLIM_MAX_DOY_GAP:
+        return fallback, f"ERA5 ({key} clim has no node within {MODEL_CLIM_MAX_DOY_GAP}d of doy {doy})"
+    nsamp = int(mc["n_samples"].sel(doy=node).values) if "n_samples" in mc else None
+    if nsamp is not None and nsamp < MODEL_CLIM_MIN_SAMPLES:
+        return fallback, f"ERA5 ({key} clim doy {node} has only {nsamp} samples)"
+    return mc.sel(doy=node), f"{key} own (doy {node}, n={nsamp})"
+
+
+def load_anomaly_grids(specs, clim_path, init=None):
+    """Return {model_name: {var: weekly anomaly DataArray}} on each model's grid.
+
+    Each model is anomalised against its own climatology when one exists, else the
+    shared ERA5 climatology (see model_clim)."""
+    era5 = xr.open_dataset(clim_path)
     grids = {}
     for name, path in specs:
         ds = xr.open_dataset(path)
+        clim, label = model_clim(name, init, era5) if init else (era5, "ERA5")
         gv = {}
         for var in VARS:
             if var in ds and var in clim:
                 gv[var] = anomalise(ds[var], clim[var])
         if gv:
             grids[name] = gv
+            print(f"  {name}: anomalies vs {label}")
         else:
             print(f"  warning: {name} has none of {list(VARS)}; skipped")
     if not grids:
@@ -228,16 +275,19 @@ def find_member_files(init, explicit=None):
 
 def compute_probs(member_files, clim_path, districts, gadm, init):
     """Per district/week threshold-exceedance probabilities from the POOLED multi-model
-    ensemble. Each model's members are anomalised vs the ERA5 weekly clim and region-
-    collapsed; members are pooled across whichever models are available for this init, and
-    the fraction crossing each threshold is the forecast probability."""
-    clim = xr.open_dataset(clim_path)
+    ensemble. Each model's members are anomalised vs that model's OWN climatology when one
+    exists (else the shared ERA5 clim -- see model_clim) and region-collapsed; members are
+    pooled across whichever models are available for this init, and the fraction crossing
+    each threshold is the forecast probability."""
+    era5 = xr.open_dataset(clim_path)
     models = []
     for mname, path in member_files:
         ds = xr.open_dataset(path)
+        clim, label = model_clim(mname, init, era5)
         anom = {v: anomalise(ds[v], clim[v]) for v in VARS if v in ds and v in clim}
         if anom:
             models.append((mname, anom))
+            print(f"  odds: {mname} members vs {label}")
     rows = []
     for _, d in districts.iterrows():
         state, name = d["state"], d["district"]
@@ -293,7 +343,7 @@ def main():
     clim_path = find_clim(init, args.clim)
     print(f"init {init}  models {[n for n, _ in specs]}  clim {clim_path}")
 
-    grids = load_anomaly_grids(specs, clim_path)
+    grids = load_anomaly_grids(specs, clim_path, init=init)
     gadm = gadm_districts()
     districts = pd.read_csv(args.districts)
 
