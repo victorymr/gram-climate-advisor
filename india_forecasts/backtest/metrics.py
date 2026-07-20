@@ -30,6 +30,7 @@ Usage:
 
 import argparse
 import glob
+import os
 import sys
 from pathlib import Path
 
@@ -42,7 +43,9 @@ FC = HERE.parent
 sys.path.insert(0, str(FC))
 from forecast_region_s2s import WET_MM, DRY_MM, HEAVY_MM, DRYSPELL_MM, HOT_C  # noqa: E402
 
-COLL, TRUTH, SCORES = HERE / "collapsed", HERE / "truth", HERE / "scores"
+# COLL can be overridden (e.g. collapsed_reref, the own-climatology-referenced forecasts).
+COLL = Path(os.environ.get("BACKTEST_COLL", HERE / "collapsed"))
+TRUTH, SCORES = HERE / "truth", HERE / "scores"
 SCORES.mkdir(exist_ok=True)
 INITS_CSV = HERE / "inits.csv"
 
