@@ -209,6 +209,30 @@ def model_clim(model_name, init, fallback):
     return mc.sel(doy=node), f"{key} own (doy {node}, n={nsamp})"
 
 
+# Multi-model-mean weights (case-insensitive name prefix; default 1.0). CFSv2 is heavily
+# down-weighted: the district backtest found its skill <= climatology at every lead even
+# after per-model bias removal (its operational chain dates to ~2011), so an equal-weight
+# mean scored worse than GEFS alone -- down-weighting CFSv2 flipped several leads from
+# negative to positive RMSE skill. Backtest-optimal GEFS:CFSv2 was ~16:1; 0.1 keeps a
+# little week-1 ensemble diversity. GEFS and EC46 (ECMWF extended, a top S2S performer)
+# keep full weight; EC46's weight is not backtest-validated (no hindcast) but it is a
+# trusted global ensemble. Only affects the MME mean -- the odds pool real ensemble
+# members (GEFS/EC46), and CFSv2 has no members so it never entered the odds.
+MME_WEIGHTS = {"gefs": 1.0, "ec46": 1.0, "cfsv2": 0.1}
+
+# Physically-plausible weekly-mean anomaly limits; per-model values are clipped to these
+# before the MME (see the clip note where it's applied).
+ANOM_CLIP = {"precip": 50.0, "t2m": 15.0}
+
+
+def mme_weight(model_name):
+    key = str(model_name).split()[0].lower()
+    for k, w in MME_WEIGHTS.items():
+        if key.startswith(k):
+            return w
+    return 1.0
+
+
 def load_anomaly_grids(specs, clim_path, init=None):
     """Return {model_name: {var: weekly anomaly DataArray}} on each model's grid.
 
@@ -361,7 +385,13 @@ def main():
             for var in VARS:
                 if var in gv:
                     ser, ncell, fb = regional_series(gv[var], geom)
-                    per_var[var] = ser
+                    # Clip to a physically-plausible weekly-mean anomaly. Guards against
+                    # coarse-model / baseline-mismatch artifacts -- notably EC46 (1.0 deg,
+                    # ERA5-referenced with no hindcast), which can emit implausible extremes
+                    # over small heavy-rain districts that would then pull the MME.
+                    lim = ANOM_CLIP[var]
+                    per_var[var] = {w: max(-lim, min(lim, v)) for w, v in ser.items()
+                                    if v is not None and np.isfinite(v)}
                     fb_any = fb_any or fb
             per_model[model] = per_var
 
@@ -386,12 +416,14 @@ def main():
                 pv = per_model[model]
                 if any(w in pv.get(var, {}) for var in VARS):
                     _emit(model, w, _v(pv, "precip", w), _v(pv, "t2m", w), 1)
-            # ... plus the multi-model mean (mean over models covering the week)
+            # ... plus the multi-model mean: a WEIGHTED mean over models covering the week
+            # (MME_WEIGHTS down-weights CFSv2; see the backtest note above).
             agg, hits = {}, set()
             for var in VARS:
-                vals = [pv[var][w] for pv in per_model.values()
-                        if var in pv and w in pv[var] and np.isfinite(pv[var][w])]
-                agg[var] = round(float(np.mean(vals)), 3) if vals else ""
+                wv = [(mme_weight(m), pv[var][w]) for m, pv in per_model.items()
+                      if var in pv and w in pv[var] and np.isfinite(pv[var][w])]
+                wsum = sum(wt for wt, _ in wv)
+                agg[var] = round(sum(wt * v for wt, v in wv) / wsum, 3) if wsum > 0 else ""
                 hits |= {m for m, pv in per_model.items()
                          if var in pv and w in pv[var] and np.isfinite(pv[var][w])}
             _emit("MME", w, agg["precip"], agg["t2m"], len(hits))
