@@ -105,11 +105,12 @@ def _retrieve(client, rt, variable, ftype, steps, hyears, target):
     }, str(target))
 
 
-def fetch_date(client, rt, hyears):
-    """Fetch + weekly-aggregate one cycle date -> Dataset(t2m, precip) dims (hyear, week, lat, lon)."""
+def fetch_date(client, rt, hyears, ftype="control_forecast"):
+    """Fetch + weekly-aggregate one cycle date -> Dataset(t2m, precip); dims (hyear, [number,]
+    week, lat, lon). control_forecast has no member dim; perturbed_forecast has number 1..10."""
     gt, gp = EC46_DIR / f"_ec46_{rt:%Y%m%d}_t2m.grib", EC46_DIR / f"_ec46_{rt:%Y%m%d}_tp.grib"
-    _retrieve(client, rt, "2_m_temperature", "control_forecast", T2M_STEPS, hyears, gt)
-    _retrieve(client, rt, "total_precipitation", "control_forecast", TP_STEPS, hyears, gp)
+    _retrieve(client, rt, "2_m_temperature", ftype, T2M_STEPS, hyears, gt)
+    _retrieve(client, rt, "total_precipitation", ftype, TP_STEPS, hyears, gp)
     ds_t = xr.open_dataset(gt, engine="cfgrib", backend_kwargs={"indexpath": ""})
     ds_p = xr.open_dataset(gp, engine="cfgrib", backend_kwargs={"indexpath": ""})
     t2m = _to_weekly_t2m(ds_t)
@@ -147,6 +148,37 @@ def download(dates, hyears, limit=None):
         except Exception as e:
             print(f"    FAILED: {type(e).__name__}: {e}", flush=True)
     print(f"\n{got}/{len(dates)} dates available")
+
+
+def download_members(dates, hyears, limit=None):
+    """Fetch the 10 perturbed members and combine with the existing control (number=0) into
+    an 11-member weekly ensemble per date -> ec46rfm_<mmdd>_india_weekly_members.nc."""
+    import cdsapi
+    url, key = ecds_credentials()
+    client = cdsapi.Client(url=url, key=key)
+    dates = dates[:limit] if limit else dates
+    got = 0
+    for i, rt in enumerate(dates, 1):
+        cf_file = EC46_DIR / f"ec46rf_{rt:%m%d}_india_weekly.nc"
+        out = EC46_DIR / f"ec46rfm_{rt:%m%d}_india_weekly_members.nc"
+        if out.exists():
+            print(f"[{i}/{len(dates)}] {rt:%m-%d}: members cached"); got += 1; continue
+        if not cf_file.exists():
+            print(f"[{i}/{len(dates)}] {rt:%m-%d}: control missing -> skip"); continue
+        print(f"[{i}/{len(dates)}] {rt:%Y-%m-%d} perturbed (10 members) x {len(hyears)} yrs ...", flush=True)
+        try:
+            pf = fetch_date(client, rt, hyears, ftype="perturbed_forecast")       # number 1..10
+            cf = xr.open_dataset(cf_file).expand_dims(number=[0])                  # control -> number 0
+            ens = xr.concat([cf, pf], dim="number").sortby("number")              # 11 members
+            ens.attrs.update(model="EC46", kind="reforecast_members", cycle_date=f"{rt:%Y-%m-%d}",
+                             n_members=ens.sizes["number"],
+                             source="ECMWF S2S reforecast (ECDS), cf+pf, 1.5deg")
+            save_netcdf(ens, out)
+            print(f"    -> {out.name}  dims {dict(ens.sizes)}")
+            got += 1
+        except Exception as e:
+            print(f"    FAILED: {type(e).__name__}: {e}", flush=True)
+    print(f"\n{got}/{len(dates)} member files available")
 
 
 def _circ(a, b, period=365.25):
@@ -199,12 +231,18 @@ def main():
     ap.add_argument("--window", type=int, default=8, help="DOY pooling half-width (days).")
     ap.add_argument("--limit", type=int, default=None, help="Only the first N dates (probe).")
     ap.add_argument("--aggregate-only", action="store_true")
+    ap.add_argument("--members", action="store_true",
+                    help="Fetch the 10 perturbed members and build 11-member ensemble files "
+                         "(for probabilistic scoring); requires the control run first.")
     args = ap.parse_args()
 
     hyears = list(range(args.hyears[0], args.hyears[1] + 1))
     dates = cycle_dates(args.year, args.step_days)
     print(f"EC46 reforecast: {len(dates)} cycle dates ({args.year} monsoon, Mon/Thu ~{args.step_days}d) "
           f"x {len(hyears)} hindcast yrs")
+    if args.members:
+        download_members(dates, hyears, limit=args.limit)
+        return
     if not args.aggregate_only:
         download(dates, hyears, limit=args.limit)
     aggregate(args.window)
