@@ -19,6 +19,7 @@ sys.path.append(os.path.join(_APP_DIR, 'src'))
 from rules import ScenarioClassifier
 from advisory import AdvisoryGenerator
 from utils import load_district_data, load_icar_data, get_district_list
+from calibration import load_calibration, calibrate
 
 try:
     import folium
@@ -727,6 +728,36 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
             pweeks = wprob["weeks"]
             _pinit = wprob.get("init") or forecast_data.get("forecast_date")
             st.markdown("<div class='sec-title'>🎲 Weekly threshold odds</div>", unsafe_allow_html=True)
+
+            # Calibration: map the raw ensemble fractions to how often that probability has
+            # actually verified in the backtest (the ensemble is under-dispersed, so raw odds
+            # are over-confident). Toggle lets users see raw vs historically-calibrated.
+            _cal = load_calibration()
+            _cal_on = st.checkbox(
+                "Adjust odds for historical accuracy", value=bool(_cal), disabled=not _cal,
+                help="Raw odds are the % of ensemble members crossing a threshold (model "
+                     "confidence). With this on, each is mapped to how often that probability "
+                     "has actually verified in the 2021-25 backtest — the ensemble is "
+                     "under-dispersed, so raw odds run over-confident.")
+
+            def _cw(w):
+                """Week dict with calibrated + renormalised probabilities (or raw if off)."""
+                if not (_cal_on and _cal):
+                    return w
+                out = dict(w)
+                wk = w.get("week")
+                for ev, k in (("wetter", "p_wetter"), ("drier", "p_drier"), ("heavy", "p_heavy"),
+                              ("dryspell", "p_dryspell"), ("hot", "p_hot")):
+                    if w.get(k) is not None:
+                        out[k] = calibrate(_cal, ev, wk, w[k])
+                pw, pdr = out.get("p_wetter") or 0, out.get("p_drier") or 0
+                pn = max(0.0, 1.0 - pw - pdr)
+                tot = pw + pdr + pn
+                if tot > 0:
+                    out["p_wetter"], out["p_drier"], out["p_near"] = pw / tot, pdr / tot, pn / tot
+                return out
+
+            cweeks = [_cw(w) for w in pweeks]
             df_p = pd.DataFrame([
                 {
                     "Week": _week_label(_pinit, w['week']),
@@ -735,7 +766,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                     "Dry spell": _odds(w.get("p_dryspell")),
                     "Hot week": _odds(w.get("p_hot")),
                 }
-                for w in pweeks
+                for w in cweeks
             ]).set_index("Week")
             st.dataframe(df_p, use_container_width=True)
 
@@ -746,7 +777,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                     "Near": round((w.get('p_near') or 0) * 100),
                     "Drier": round((w.get('p_drier') or 0) * 100),
                 }
-                for w in pweeks
+                for w in cweeks
             ]).set_index("Week")
             st.caption("Rainfall category odds (%)")
             try:
@@ -757,7 +788,9 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
             n = wprob.get("n_members", "?")
             src = wprob.get("source", "ensemble")
             init = wprob.get("init") or forecast_data.get("forecast_date", "")
-            st.caption(f"Odds from the {src} ({n} members), init {init}; rounded to the nearest 10%.")
+            adj = ("historically calibrated (2021-25 backtest)" if (_cal_on and _cal)
+                   else "raw ensemble fractions")
+            st.caption(f"Odds from the {src} ({n} members), init {init}; {adj}; rounded to the nearest 10%.")
 
         obs_col1, obs_col2, obs_col3 = st.columns(3)
         with obs_col1:
