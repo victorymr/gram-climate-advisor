@@ -316,34 +316,46 @@ def compute_probs(member_files, clim_path, districts, gadm, init):
     for _, d in districts.iterrows():
         state, name = d["state"], d["district"]
         geom, _ = resolve_geom(gadm, state, name, d["latitude"], d["longitude"])
-        pooled = {"precip": {}, "t2m": {}}   # var -> {week: [member values...]}
-        contrib = set()
+        # keep each model's members separate so the threshold probability is a WEIGHTED
+        # mean of the per-model exceedance fractions (MME_WEIGHTS), rather than a raw pool
+        # -- otherwise a model just contributes in proportion to its member count.
+        pmv = {}                             # model -> {var: {week: np.array(member vals)}}
+        weeks_seen = set()
         for mname, anom in models:
+            mv = pmv.setdefault(mname, {"precip": {}, "t2m": {}})
             for v, a in anom.items():
                 lon, lat = _lonlat(a)
                 w, _, _ = region_weights(a[lat].values, a[lon].values, lat, lon, geom)
                 coll = a.weighted(w.fillna(0.0)).mean((lat, lon))    # (member, week)
                 for wk in coll["week"].values:
                     vals = np.asarray(coll.sel(week=int(wk)).values).ravel()
-                    pooled[v].setdefault(int(wk), []).extend(vals[np.isfinite(vals)].tolist())
-                contrib.add(mname)
-        for w in sorted(pooled["precip"].keys()):
-            pa = np.array(pooled["precip"].get(w, []))
-            ta = np.array(pooled["t2m"].get(w, []))
+                    mv[v][int(wk)] = vals[np.isfinite(vals)]
+                    if v == "precip":
+                        weeks_seen.add(int(wk))
+        for wk in sorted(weeks_seen):
+            def wfrac(var, mask_fn):
+                """Weight-averaged exceedance fraction across the models present this week."""
+                num = den = 0.0
+                for mname, mv in pmv.items():
+                    arr = mv[var].get(wk)
+                    if arr is None or arr.size == 0:
+                        continue
+                    wt = mme_weight(mname)
+                    num += wt * float(mask_fn(arr).mean())
+                    den += wt
+                return round(num / den, 3) if den > 0 else ""
 
-            def frac(arr, mask):
-                return round(float(mask.mean()), 3) if arr.size else ""
-
-            p_wetter = frac(pa, pa >= WET_MM)
-            p_drier = frac(pa, pa <= DRY_MM)
-            p_near = round(1.0 - p_wetter - p_drier, 3) if pa.size else ""
+            p_wetter = wfrac("precip", lambda a: a >= WET_MM)
+            p_drier = wfrac("precip", lambda a: a <= DRY_MM)
+            p_near = round(1.0 - p_wetter - p_drier, 3) if p_wetter != "" else ""
+            n_tot = sum(int(mv["precip"].get(wk, np.array([])).size) for mv in pmv.values())
             rows.append({
-                "region": f"{name}, {state}", "state": state, "district": name, "week": w,
+                "region": f"{name}, {state}", "state": state, "district": name, "week": wk,
                 "p_wetter": p_wetter, "p_near": p_near, "p_drier": p_drier,
-                "p_heavy": frac(pa, pa >= HEAVY_MM),
-                "p_dryspell": frac(pa, pa <= DRYSPELL_MM),
-                "p_hot": frac(ta, ta >= HOT_C),
-                "n_members": int(pa.size), "models": ",".join(sorted(contrib)), "init_date": init,
+                "p_heavy": wfrac("precip", lambda a: a >= HEAVY_MM),
+                "p_dryspell": wfrac("precip", lambda a: a <= DRYSPELL_MM),
+                "p_hot": wfrac("t2m", lambda a: a >= HOT_C),
+                "n_members": n_tot, "models": ",".join(sorted(pmv.keys())), "init_date": init,
             })
     return rows
 
