@@ -1,0 +1,21 @@
+# Core
+xarray>=2024.1
+netcdf4>=1.6
+numpy
+
+# ECMWF SEAS5 / C3S via Copernicus CDS
+cdsapi>=0.7
+
+# NOAA SFS via AWS S3 (anonymous)
+boto3>=1.34
+
+# Only needed if SFS files are GRIB2 (they usually are).
+# On Windows, installing eccodes via conda is the least painful route:
+#   conda install -c conda-forge cfgrib eccodes
+cfgrib>=0.9
+eccodes>=1.6
+
+# Subseasonal compare pipeline (EC46 + GEFS)
+herbie-data>=2024.1     # GEFS retrieval from AWS with GRIB idx byte-range subsetting
+# EC46 uses cdsapi (already listed) against the ECMWF Data Store (ecds.ecmwf.int)
+scipy>=1.10               # regridding the common climatology onto each model grid (xarray .interp)
