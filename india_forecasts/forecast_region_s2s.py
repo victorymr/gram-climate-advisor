@@ -94,12 +94,36 @@ def _init_of(path):
         return str(ds.attrs.get("init_date", "")) or None
 
 
-def _file_for_init(sub, init):
-    """Weekly file in data/<sub>/ whose filename init matches, else None."""
+# EC46 comes from Open-Meteo's LIVE run, so its cycle date can't be pinned to an arbitrary
+# (older) GEFS/CFSv2 init -- match its file within a few days of the target init (a small
+# weekly-window offset, negligible for weekly means). Archived models require an exact init.
+MODEL_INIT_TOLERANCE = {"EC46": 5}   # days
+
+
+def _nearest_within(cands, init, tol):
+    """From [(path, 'YYYYMMDD')], the path nearest to `init` within `tol` days, or None."""
+    if tol <= 0 or not cands:
+        return None
+    tgt = pd.Timestamp(init)
+    near = sorted((abs((pd.Timestamp(d) - tgt).days), f, d) for f, d in cands)
+    return near[0] if near and near[0][0] <= tol else None
+
+
+def _file_for_init(sub, init, tol=0):
+    """Weekly file in data/<sub>/ whose filename init == `init`; else the nearest within
+    `tol` days (for live models like EC46 whose cycle date can't match an older init)."""
+    cands = []
     for f in sorted(glob.glob(str(DATA_DIR / sub / "*_india_weekly.nc"))):
         m = re.search(r"_(\d{8})_india_weekly", os.path.basename(f))
-        if m and m.group(1) == init:
+        if not m:
+            continue
+        if m.group(1) == init:
             return f
+        cands.append((f, m.group(1)))
+    hit = _nearest_within(cands, init, tol)
+    if hit:
+        print(f"  {sub}: no {init} file; using nearest {hit[2]} (offset {hit[0]}d)")
+        return hit[1]
     return None
 
 
@@ -121,12 +145,14 @@ def discover_models(explicit, init):
                  "Run the download_*.py scripts first.")
     target = init or max(_init_of(p) for p in newest.values() if _init_of(p))
 
-    # for that init, pick EACH dir's matching file (a dir may hold a newer init too)
-    specs = [(name, _file_for_init(sub, target))
-             for name, sub in MODEL_DIRS.items() if _file_for_init(sub, target)]
+    # for that init, pick EACH dir's matching file (a dir may hold a newer init too; EC46
+    # is matched with tolerance since its live cycle date rarely equals an older GEFS init)
+    picks = {name: _file_for_init(sub, target, MODEL_INIT_TOLERANCE.get(name, 0))
+             for name, sub in MODEL_DIRS.items()}
+    specs = [(name, p) for name, p in picks.items() if p]
     if not specs:
         sys.exit(f"No weekly files for init {target} in data/{{gefs,cfsv2,ec46}}/.")
-    missing = [n for n, sub in MODEL_DIRS.items() if n in newest and not _file_for_init(sub, target)]
+    missing = [n for n in MODEL_DIRS if n in newest and not picks.get(n)]
     if missing:
         print(f"  init {target}: using {[n for n, _ in specs]}; no {target} file for {missing}")
     return specs, target
@@ -292,8 +318,20 @@ def find_member_files(init, explicit=None):
         return [("members", explicit)]
     out = []
     for name, sub in MODEL_DIRS.items():
-        for f in sorted(glob.glob(str(DATA_DIR / sub / f"*_{init}_india_weekly_members.nc"))):
-            out.append((name, f))
+        exact = sorted(glob.glob(str(DATA_DIR / sub / f"*_{init}_india_weekly_members.nc")))
+        if exact:
+            out.append((name, exact[0]))
+            continue
+        # EC46 members: accept the nearest within tolerance (its live cycle date rarely
+        # equals an older GEFS/CFSv2 init) so its ensemble still feeds the odds.
+        cands = []
+        for f in glob.glob(str(DATA_DIR / sub / "*_india_weekly_members.nc")):
+            m = re.search(r"_(\d{8})_india_weekly_members", os.path.basename(f))
+            if m:
+                cands.append((f, m.group(1)))
+        hit = _nearest_within(cands, init, MODEL_INIT_TOLERANCE.get(name, 0))
+        if hit:
+            out.append((name, hit[1]))
     return out
 
 
