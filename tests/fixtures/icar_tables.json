@@ -1,0 +1,598 @@
+{
+  "compact_measures_gaya": {
+    "pdf": "gaya.pdf",
+    "page_index": 9,
+    "table_index": 0,
+    "table": [
+      [
+        "Condition",
+        "",
+        "",
+        "Suggested Contingency measures",
+        null,
+        null
+      ],
+      [
+        "Early\nseason\ndrought\n(delayed\nonset)",
+        "Major Farming\nsituation",
+        "Normal Crop / Cropping\nsystem",
+        "Change in crop / cropping system\nincluding variety",
+        "Agronomic measures",
+        "Remarks on\nImplementation"
+      ],
+      [
+        "Delay by 2\nweeks\n1st week of\nJuly",
+        "Upland\nMedium deep,\nsandy to sandy\nloam soils",
+        "Pigeonpea\nMaize - Vegetables",
+        "Pigeonpea\nPigeonpea – Bahar, Pusa-9\nNarendra Arhar-I , ICPL 88039",
+        " No change in normal package\nof practices\n Balanced use of fertilizers\n Application of manures",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        "Pigeonpea –Finger millet\nPigeonpea – Bahar, Pusa-9\nNarendra Arhar-I , ICPL 88039\nFinger millet– Local",
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        "Maize – Vegetables\nMaize – Deoki . Ganga -2",
+        null,
+        null
+      ],
+      [
+        null,
+        "Medium land\nDeep Sandy loam\nto Clay loam soils",
+        "Rice- Wheat-\nGreengram\nRice –Vegetables\nRice-Wheat",
+        "Medium duration Rice-Wheat –\nGreengram/ Rice – Vegetables\nRice - Rajendra Bhaga\nwati, Rajendra Suwasni,\nPrabhat, Kuwan",
+        " Normal package of Practices\n Raise staggered community\nnursery preferably with\nmedium duration varieties in\nmid and lowlands\n Drum seedling\n Balanced use of fertilizers\n Interculture for timely weed\ncontrol in direct seeded rice\n Groundwater to be used for life\nsaving irrigation to upland\ncrops and transplanted rice",
+        null
+      ],
+      [
+        null,
+        "Low land\nDeep Sandy loam\nto Clay loam soils",
+        "Rice – Wheat\nRice – Wheat –\nGreengram\nRice – Lentil/Chickpea\nFallow – Lentil /\nChickpea",
+        "Rice – Wheat\nRice- Sita , RM -1, Rajendra\nSuwasni, Rajendra Sweta",
+        null,
+        null
+      ]
+    ],
+    "expect": {
+      "roles": [
+        "agro",
+        "change",
+        "condition",
+        "farming",
+        "normal",
+        "remarks"
+      ],
+      "data_start": 1,
+      "scenario": "early_season_dry_spell"
+    }
+  },
+  "wide_padded_kurnool": {
+    "pdf": "kurnool.pdf",
+    "page_index": 10,
+    "table_index": 0,
+    "table": [
+      [
+        "",
+        "Condition",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Suggested Contingency measures",
+        null,
+        null,
+        null,
+        ""
+      ],
+      [
+        "",
+        "Early season",
+        "",
+        "",
+        "Major",
+        "",
+        "Crop/cropping system",
+        null,
+        null,
+        "",
+        "Change in",
+        "",
+        "Agronomic measures",
+        "Remarks on\nImplementation",
+        null
+      ],
+      [
+        null,
+        "drought (delayed",
+        null,
+        null,
+        "Farming",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "crop/cropping",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "onset)",
+        null,
+        null,
+        "situationa",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "system",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Delay by 2\nweeks (June 3rd\nweek)",
+        null,
+        null,
+        "Rainfed –\nRed soils",
+        null,
+        null,
+        "Groundnut / Groundnut + Redgram\nintercropping",
+        null,
+        null,
+        "No change",
+        "Adopt short duration varieties like Kadiri 9, K-134",
+        null,
+        "Thin the crop to maintain optimum plant population",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Sunflower",
+        null,
+        null,
+        "-do-",
+        "Go for sunflower seed replacement with hybrid varieties",
+        null,
+        "Apply protective irrigation if available",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Redgram",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Castor / Castor + Redgram",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Jowar",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Bajra / Bajra + Groundnut",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        "Rainfed –\nblack\nsoils",
+        null,
+        null,
+        "Groundnut / Groundnut +\nRedgram",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Sunflower",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "",
+        "",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Cotton",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Redgram",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        "",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Castor / Castor + Redgram",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Jowar / Jowar +Groundnut",
+        null,
+        null,
+        "-do-",
+        null,
+        null,
+        "-",
+        "-",
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        "",
+        null
+      ]
+    ],
+    "expect": {
+      "roles": [
+        "agro",
+        "condition",
+        "normal",
+        "remarks"
+      ],
+      "data_start": 1,
+      "scenario": "early_season_dry_spell"
+    }
+  },
+  "stage_matrix_westbengal": {
+    "pdf": "west_bengal_alipurduar.pdf",
+    "page_index": 15,
+    "table_index": 1,
+    "table": [
+      [
+        "Condition - Continuous high rainfall in a short span leading to water logging",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Crop",
+        "Suggested contingency measure",
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "Vegetative stage",
+        "Flowering stage",
+        "Crop maturity stage",
+        "Post harvest"
+      ],
+      [
+        "Rice",
+        " Drain excess water\n Gap filling with seedlings if\npopulation is less than 75%\n Postpone topdressing N\nfertilizers till water recedes",
+        " Drain excess water\n Top dressing of N (20-30\nkg/ha) after draining excess\nwater",
+        " Drain excess water\n Spray 2% brine solution to\nprevent premature germination in\nfield",
+        " Shift produce to safer place\n Maintain optimum moisture of\nthe grain followed by bagging\nand marketing"
+      ],
+      [
+        "Potato",
+        " Drain excess water\n Postpone topdressing N\nfertilizers till water recedes\n Earthing up to provide\nsupport for the plants",
+        "Drain excess water",
+        " Drain excess water\n Spray mancozeb @3g/l to control\nfungal diseases",
+        "-"
+      ],
+      [
+        "Jute",
+        " Drain excess water\n Gap filling with improved",
+        " Drain excess water\n Top dressing of N (20-30",
+        "Drain excess water",
+        "-"
+      ]
+    ],
+    "expect": {
+      "roles": [
+        "condition",
+        "stage:crop maturity",
+        "stage:flowering stage",
+        "stage:post harvest",
+        "stage:vegetative stage"
+      ],
+      "data_start": 3,
+      "scenario": "excess_rainfall_waterlogging"
+    }
+  },
+  "header_condition_only_wb": {
+    "pdf": "west_bengal_alipurduar.pdf",
+    "page_index": 18,
+    "table_index": 0,
+    "table": [
+      [
+        "Condition - Transient water logging/ partial inundation",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "Crop",
+        "Suggested contingency measure",
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "Seedling / nursery stage",
+        "Vegetative stage",
+        "Reproductive stage",
+        "At harvest"
+      ],
+      [
+        "Aman Rice",
+        " Drain the excess water after\nrecession of flood\n Preserve extra amount of seed\nfor raising second seedbed\n Raise seed nursery in upland\ncondition\n Grow the variety like IET 5656\nand NC 490 which can\nwithstand submergence to some\nextent and suitable for late\ntransplanting",
+        " Drain the excess water after\nrecession of flood\n Double transplanting with aged\nseedling maybe done from\nupland to medium and low land\n May go for alternate crop like\nblack gram or green gram",
+        "Plan for alternate crops like Kalai, Mustard,\nWheat, Lentil, Potato, Gram, Maize and Boro\npaddy\nFor early flood, supply of seed/fertilizer\nminikit as follows: Paddy seed@5 kg/kit, Urea\n@10 kg/kit\nKalai @ 4 kg/kit\nFor late flood:\nBoro paddy @6 kg/kit\nMustard @ 1kh/kit\nWheat @15kg/kit\nPotato@15 kg/kit\nLentil @ 2kh/kit\nGram @ 4 kg/kit",
+        "Early harvest"
+      ],
+      [
+        "Sea water\nintrusion",
+        "NA",
+        null,
+        null,
+        null
+      ]
+    ],
+    "expect": {
+      "roles": [
+        "condition",
+        "stage:at harvest",
+        "stage:reproductive stage",
+        "stage:seedling",
+        "stage:vegetative stage"
+      ],
+      "data_start": 3,
+      "scenario": "excess_rainfall_waterlogging"
+    }
+  },
+  "mixed_header_row_goa": {
+    "pdf": "goa_north_goa.pdf",
+    "page_index": 15,
+    "table_index": 0,
+    "table": [
+      [
+        "Early season\ndrought\n(Normal\nonset)",
+        "Major\nFarming\nsituation",
+        "Normal Crop/cropping\nsystem",
+        "Crop\nmanagement",
+        "Soil nutrient&\nmoisture\nconservation\nmeasures",
+        "Remarks on\nImplementation"
+      ],
+      [
+        "Normal onset\nfollowed by\n15-20 days\ndry spell at\nthe time of\ntransplanting",
+        "Upland\n(Terrace\nSorad)\nshallow to\nmoderately\ndeep",
+        "Rice-pulses",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered"
+      ],
+      [
+        null,
+        "Mid-land\n(Morad)\nmoderately\ndeep to deep",
+        "Rice-groundnut",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered"
+      ],
+      [
+        null,
+        null,
+        "Sugarcane",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered"
+      ],
+      [
+        null,
+        "Low land\ndeep to very\ndeep soils",
+        "Rice-Rice",
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        "Coastal\nlowlands\ndeep to very\ndeep soils\n(Khazan)",
+        "Rice-Fallow",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered",
+        "Scenario not\nencountered"
+      ]
+    ],
+    "expect": {
+      "roles": [
+        "agro",
+        "change",
+        "farming",
+        "normal",
+        "remarks"
+      ],
+      "data_start": 0,
+      "scenario": "early_season_dry_spell"
+    }
+  },
+  "measures_continuation_andaman": {
+    "pdf": "andaman_nicobar_south_andaman.pdf",
+    "page_index": 10,
+    "table_index": 0,
+    "table": [
+      [
+        "At flowering/\nfruiting stage",
+        "",
+        "Rice–pulse/ vegetable",
+        " Harvest the green pods of\nmungbean for vegetable\npurpose",
+        "",
+        ""
+      ],
+      [
+        "Terminal drought\n(Early withdrawal\nof monsoon)",
+        "High rainfall\nuplands,eroded hill\nslopes, medium\nlands, valleys and\ncoastal areas with\nwinter and summer\nseason moisture\nstress.",
+        "Rice-pulse / groundnut /\nvegetable / maize",
+        "",
+        " Zero till sowing of\npost rice (rabi)\ncrops (including\npaira/utera\ncropping of pulse\ncrops)\n Use of short\nduration drought\ntolerant varieties\n Mulching with rice\nstubbles / residues\n Optimum plant\npopulation\nmaintenance\n Life saving\nirrigation",
+        " RKVY funds\nfor micro\nirrigation"
+      ],
+      [
+        null,
+        "",
+        "Coconut / areca nut / fruit crop\nbased homestead farming",
+        " Water shed based\ndevelopment\n De-silting and raising of\nembankment of existing\nwater bodies,\nestablishment of\ncommunity water\nharvesting structures\n Micro irrigation with\nconserved water\n Mulching with coconut /\nareca nut leaves, shells and\nother crop wastes in the\nplant basins\n Apply organic manures to\nenhance soil water storage",
+        "",
+        ""
+      ]
+    ],
+    "expect": {
+      "roles": null,
+      "data_start": null,
+      "scenario": null
+    }
+  }
+}

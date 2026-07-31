@@ -153,7 +153,15 @@ def render_risk_banner(district, state, risk, confidence, n_concerns, summary):
 
 def render_action_card(title, icon, items, css_class, empty_msg):
     if items:
-        lis = "".join(f"<li>{escape(str(i))}</li>" for i in items)
+        # Show first 6 items always; collapse the rest.
+        visible = items[:6]
+        overflow = items[6:]
+        vis_lis = "".join(f"<li>{escape(str(i))}</li>" for i in visible)
+        if overflow:
+            over_lis = "".join(f"<li>{escape(str(i))}</li>" for i in overflow)
+            lis = f"{vis_lis}<details><summary style='cursor:pointer;color:#566573;font-size:0.88rem;margin-top:0.3rem;'>Show {len(overflow)} more</summary><ul style='margin-top:0.3rem;'>{over_lis}</ul></details>"
+        else:
+            lis = vis_lis
     else:
         lis = f"<li style='opacity:0.55;list-style:none;margin-left:-1rem;'>{escape(empty_msg)}</li>"
     st.markdown(

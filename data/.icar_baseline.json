@@ -1,0 +1,12 @@
+{
+ "districts": 645,
+ "actions": 49645,
+ "full": 477,
+ "per_scen": {
+  "delayed_monsoon": 566,
+  "early_season_dry_spell": 630,
+  "mid_season_break": 568,
+  "terminal_drought": 535,
+  "excess_rainfall_waterlogging": 623
+ }
+}

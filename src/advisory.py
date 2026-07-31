@@ -43,7 +43,7 @@ class AdvisoryGenerator:
             "general_guidance": actions["general_guidance"],
             "source_notes": {
                 "forecast_source": forecast_data.get("forecast_source", "IMD forecast products"),
-                "agriculture_source": "ICAR/CRIDA district contingency plan and local agromet guidance where available",
+                "agriculture_source": "ICAR/CRIDA district agriculture contingency plans",
                 "health_source": "NDMA / state heat action / health guidance where available",
                 "last_updated": datetime.now().strftime("%Y-%m-%d")
             },
@@ -110,9 +110,7 @@ class AdvisoryGenerator:
             summary_parts.append("Above-normal temperatures are expected")
         
         # Combine parts
-        if len(summary_parts) == 1:
-            return summary_parts[0] + "."
-        elif len(summary_parts) == 2:
+        if len(summary_parts) == 2:
             return summary_parts[0] + ", " + summary_parts[1] + "."
         else:
             return summary_parts[0] + ", " + summary_parts[1] + ", and " + summary_parts[2] + "."
@@ -157,7 +155,7 @@ class AdvisoryGenerator:
         narrative_parts = []
         
         # Week 1
-        narrative_parts.append(f"This week: rainfall {_label(wk1)} ({wk1:+.0f} mm/day)")
+        narrative_parts.append(f"This week: rainfall {_label(wk1)} ({wk1:+.1f} mm/day)")
         
         # Weeks 2-4 trajectory — collapse repeated labels for readability
         wk234_avg = (wk2 + wk3 + wk4) / 3.0
@@ -211,11 +209,11 @@ class AdvisoryGenerator:
         # Temperature context
         if tmax_wk1 is not None and tmax_wk1 >= 2.0:
             narrative_parts.append(
-                f"Temperatures are elevated (+{tmax_wk1:.0f}°C above normal this week)."
+                f"Temperatures are elevated ({tmax_wk1:+.1f}°C above normal this week)."
             )
         elif tmax_wk1 is not None and tmax_wk1 <= -2.0:
             narrative_parts.append(
-                f"Temperatures are cooler than normal ({tmax_wk1:.0f}°C this week), likely due to cloud cover."
+                f"Temperatures are cooler than normal ({tmax_wk1:+.1f}°C this week), likely due to cloud cover."
             )
         
         return {
@@ -261,6 +259,27 @@ class AdvisoryGenerator:
         # Remove duplicates (exact + semantic) while preserving order
         for category in actions:
             actions[category] = self._deduplicate_actions(actions[category])
+        
+        # Cap long ICAR action lists so the advisory stays actionable.
+        # Keep the most relevant items (first N after dedup) and move the rest
+        # to general_guidance as a summary note.
+        max_do_now = 12
+        max_prepare = 8
+        if len(actions["do_now"]) > max_do_now:
+            overflow = actions["do_now"][max_do_now:]
+            actions["do_now"] = actions["do_now"][:max_do_now]
+            actions["general_guidance"].append(
+                f"Additional contingency measures ({len(overflow)} items) "
+                f"are available — consult your local KVK extension officer."
+            )
+        if len(actions["prepare"]) > max_prepare:
+            overflow = actions["prepare"][max_prepare:]
+            actions["prepare"] = actions["prepare"][:max_prepare]
+            if not any("Additional contingency measures" in g for g in actions["general_guidance"]):
+                actions["general_guidance"].append(
+                    f"Additional preparatory measures ({len(overflow)} items) "
+                    f"are available — consult your local KVK extension officer."
+                )
         
         return actions
     
@@ -312,26 +331,29 @@ class AdvisoryGenerator:
         
         # ICAR-specific actions for farmers — filtered by crop if specified
         if user_type == "farmer" and icar_actions:
+            # icar_pdf_actions (legacy flat list of strings) — pass through directly.
             if "icar_pdf_actions" in icar_actions:
                 actions["do_now"].extend(icar_actions["icar_pdf_actions"])
             if "crop_actions" in icar_actions:
-                crop_actions = icar_actions["crop_actions"]
+                crop_action_items = self._normalize_icar_items(icar_actions["crop_actions"])
                 if crop:
-                    # Prioritize actions mentioning the user's crop
                     crop_lower = crop.lower()
-                    relevant = [a for a in crop_actions if crop_lower in a.lower()]
-                    other = [a for a in crop_actions if crop_lower not in a.lower()]
+                    relevant = [a for a, c in crop_action_items
+                                if c and crop_lower in c.lower()]
+                    other = [a for a, c in crop_action_items
+                             if not (c and crop_lower in c.lower())]
                     actions["do_now"].extend(relevant)
-                    actions["prepare"].extend(other)  # others go to prepare
+                    actions["prepare"].extend(other)
                 else:
-                    actions["do_now"].extend(crop_actions)
+                    actions["do_now"].extend(a for a, _ in crop_action_items)
             # Livestock actions only shown to farmers if they have livestock
             # For now, skip for pure crop farmers — livestock_owner gets these
         
         # ICAR actions for livestock owners — livestock only, no crop advice
         elif user_type == "livestock_owner" and icar_actions:
             if "livestock_actions" in icar_actions:
-                actions["do_now"].extend(icar_actions["livestock_actions"])
+                livestock_items = self._normalize_icar_items(icar_actions["livestock_actions"])
+                actions["do_now"].extend(a for a, _ in livestock_items)
         
         # Village official/NGO actions
         elif user_type in ["village_official", "ngo_extension_worker"]:
@@ -352,6 +374,21 @@ class AdvisoryGenerator:
             actions["prepare"] = self._filter_by_crop_stage(actions["prepare"], crop_stage)
             actions["avoid"] = self._filter_by_crop_stage(actions["avoid"], crop_stage)
     
+    @staticmethod
+    def _normalize_icar_items(items: list) -> list[tuple[str, str]]:
+        """Normalize ICAR action items to (action_text, crop) tuples.
+
+        Handles both the legacy format (list of strings) and the new structured
+        format (list of dicts with 'action', 'crop', 'farming_situation').
+        """
+        result = []
+        for item in items:
+            if isinstance(item, dict):
+                result.append((item["action"], item.get("crop", "")))
+            else:
+                result.append((str(item), ""))
+        return result
+
     def _filter_by_crop_stage(self, action_list: List[str], crop_stage: str) -> List[str]:
         """Filter out actions that are irrelevant to the current crop stage.
         
@@ -581,7 +618,6 @@ class AdvisoryGenerator:
         return {
             "heat_stress": {
                 "do_now_all": [
-                    "Avoid heavy outdoor work during the hottest part of the day",
                     "Drink water frequently; use ORS where appropriate",
                     "Rest in shade or cooler spaces",
                     "Check on elderly people, children, pregnant women, and people with health conditions"
@@ -593,14 +629,17 @@ class AdvisoryGenerator:
                     "Keep basic heat illness response information available"
                 ],
                 "avoid_all": [
+                    "Heavy outdoor work during the hottest part of the day",
                     "Long outdoor work without rest breaks",
                     "Leaving children, elderly people, or animals in enclosed hot spaces",
                     "Unnecessary livestock transport during peak heat"
                 ],
                 "do_now_livestock_owner": [
                     "Provide shade and continuous drinking water for livestock",
-                    "Avoid grazing or transport during peak heat",
                     "Watch for panting, drooling, weakness, or reduced feed intake in animals"
+                ],
+                "avoid_livestock_owner": [
+                    "Grazing or transport during peak heat",
                 ],
                 "do_now_outdoor_worker": [
                     "Shift heavy work to early morning or evening",
@@ -708,7 +747,6 @@ class AdvisoryGenerator:
                 ],
                 "do_now_farmer": [
                     "Prioritize water for crops at critical reproductive stages",
-                    "Avoid spending scarce irrigation on failed or low-priority crops",
                     "Prepare for fodder shortage"
                 ],
                 "prepare_farmer": [
@@ -717,13 +755,13 @@ class AdvisoryGenerator:
                     "Coordinate village-level livestock water and fodder planning"
                 ],
                 "avoid_farmer": [
+                    "Spending scarce irrigation on failed or low-priority crops",
                     "Late fertilizer application without moisture",
                     "Replanting when the viable crop window has passed"
                 ]
             },
             "excess_rainfall_waterlogging": {
                 "do_now_all": [
-                    "Avoid unnecessary travel in flooded areas",
                     "Protect important documents and valuables"
                 ],
                 "prepare_all": [
@@ -731,12 +769,12 @@ class AdvisoryGenerator:
                     "Prepare emergency supplies"
                 ],
                 "avoid_all": [
+                    "Unnecessary travel in flooded areas",
                     "Entering flooded areas unnecessarily",
                     "Contaminated water consumption"
                 ],
                 "do_now_farmer": [
                     "Clear drainage channels",
-                    "Avoid field operations during heavy rain",
                     "Move livestock away from flood-prone areas"
                 ],
                 "prepare_farmer": [
@@ -745,6 +783,7 @@ class AdvisoryGenerator:
                     "Repair bunds after water recedes"
                 ],
                 "avoid_farmer": [
+                    "Field operations during heavy rain",
                     "Entering flooded fields unnecessarily",
                     "Applying fertilizer before heavy rainfall",
                     "Allowing livestock to drink contaminated stagnant water"
