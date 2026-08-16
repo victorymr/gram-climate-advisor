@@ -1,5 +1,6 @@
 from typing import Dict, List, Any
 from datetime import datetime
+from i18n import make_action, make_template_action
 
 class AdvisoryGenerator:
     """Generates climate risk advisories based on scenarios and user context."""
@@ -9,14 +10,14 @@ class AdvisoryGenerator:
     
     def generate_advisory(self, state: str, district: str, forecast_data: Dict[str, Any], 
                          icar_data: Dict[str, Any], scenarios: List[Dict[str, Any]], 
-                         user_context: Dict[str, Any]) -> Dict[str, Any]:
+                         user_context: Dict[str, Any], language: str = "en") -> Dict[str, Any]:
         """Generate a complete advisory for the given inputs."""
         
         # Determine overall risk level
         overall_risk = self._calculate_overall_risk(scenarios)
         
         # Generate forecast summary
-        forecast_summary = self._generate_forecast_summary(forecast_data, scenarios)
+        forecast_summary = self._generate_forecast_summary(forecast_data, scenarios, language)
         
         # Get main concerns
         main_concerns = [s['display_name'] for s in scenarios]
@@ -25,7 +26,7 @@ class AdvisoryGenerator:
         actions = self._generate_actions(scenarios, icar_data, user_context, forecast_data)
         
         # Generate extended 4-week outlook
-        extended_outlook = self._generate_extended_outlook(forecast_data)
+        extended_outlook = self._generate_extended_outlook(forecast_data, language)
         
         # Create advisory object
         advisory = {
@@ -62,8 +63,10 @@ class AdvisoryGenerator:
         
         return highest_risk["risk_level"]
     
-    def _generate_forecast_summary(self, forecast: Dict[str, Any], scenarios: List[Dict[str, Any]]) -> str:
+    def _generate_forecast_summary(self, forecast: Dict[str, Any], scenarios: List[Dict[str, Any]], language: str = "en") -> str:
         """Generate a plain-language forecast summary."""
+        if language == "hi":
+            return self._generate_forecast_summary_hi(forecast)
         summary_parts = []
         
         # Rainfall situation
@@ -115,8 +118,78 @@ class AdvisoryGenerator:
         else:
             return summary_parts[0] + ", " + summary_parts[1] + ", and " + summary_parts[2] + "."
     
-    def _generate_extended_outlook(self, forecast: Dict[str, Any]) -> Dict[str, Any]:
+    def _generate_forecast_summary_hi(self, forecast: Dict[str, Any]) -> str:
+        """Hindi version of the forecast summary; numeric thresholds stay identical."""
+        departure = forecast.get("rainfall_since_june_1_pct_departure", 0)
+        if departure < -20:
+            first = f"1 जून से वर्षा सामान्य से {abs(departure)}% कम रही है"
+        elif departure > 20:
+            first = f"1 जून से वर्षा सामान्य से {departure}% अधिक रही है"
+        else:
+            first = "1 जून से वर्षा सामान्य के आसपास रही है"
+
+        weeks = [forecast.get(f"week{i}_rainfall_anomaly_mm_day", 0.0) for i in range(1, 5)]
+        if all(v <= -3.0 for v in weeks):
+            second = "4 सप्ताह के पूर्वानुमान में लगातार सामान्य से कम वर्षा दिख रही है"
+        elif all(v >= 3.0 for v in weeks):
+            second = "4 सप्ताह के पूर्वानुमान में लगातार सामान्य से अधिक वर्षा दिख रही है"
+        else:
+            second = "4 सप्ताह का वर्षा पूर्वानुमान मिला-जुला है"
+
+        parts = [first, second]
+        if forecast.get("heat_wave_warning", False):
+            parts.append("लू का खतरा बढ़ा हुआ है और लू की चेतावनी लागू है")
+        elif forecast.get("tmax_signal") == "above_normal":
+            parts.append("सामान्य से अधिक तापमान की संभावना है")
+        return "। ".join(parts) + "।"
+
+    def _generate_extended_outlook_hi(self, forecast: Dict[str, Any]) -> Dict[str, Any]:
+        """Hindi extended outlook while retaining the same numeric data."""
+        values = [forecast.get(f"week{i}_rainfall_anomaly_mm_day", 0.0) for i in range(1, 5)]
+        tmax = [forecast.get(f"week{i}_tmax_anomaly_degC") for i in range(1, 5)]
+
+        def label(value):
+            if value >= 7: return "सामान्य से बहुत अधिक"
+            if value >= 3: return "सामान्य से अधिक"
+            if value <= -7: return "सामान्य से बहुत कम"
+            if value <= -3: return "सामान्य से कम"
+            return "सामान्य के आसपास"
+
+        weeks = []
+        for index, value in enumerate(values, 1):
+            item = {"week": index, "anomaly_mm_day": value, "label": label(value)}
+            if tmax[index - 1] is not None:
+                item["tmax_anomaly_degC"] = tmax[index - 1]
+            weeks.append(item)
+
+        narrative = [f"इस सप्ताह: वर्षा {label(values[0])} ({values[0]:+.1f} मिमी/दिन)"]
+        avg_later = sum(values[1:]) / 3
+        if values[0] <= -3 and avg_later > -1:
+            narrative.append("पूर्वानुमान में सुधार है; अगले सप्ताहों में कुछ राहत की उम्मीद है।")
+        elif values[0] >= -1 and avg_later <= -3:
+            narrative.append("सावधानी: आगे के सप्ताहों में वर्षा कम हो सकती है।")
+        elif all(value <= -3 for value in values):
+            narrative.append("सभी 4 सप्ताह में लगातार सूखी स्थिति की संभावना है।")
+        elif all(value >= 3 for value in values):
+            narrative.append("सभी 4 सप्ताह में लगातार सामान्य से अधिक वर्षा की संभावना है।")
+        else:
+            narrative.append(f"सप्ताह 2-4 में वर्षा {label(avg_later)} रहने की संभावना है।")
+
+        departure = forecast.get("rainfall_since_june_1_pct_departure", 0)
+        if departure <= -30:
+            narrative.append(f"अब तक की वर्षा सामान्य से {abs(departure)}% कम है; अधिक वर्षा से कमी की भरपाई में मदद मिलेगी।")
+        elif departure >= 20:
+            narrative.append(f"अब तक की वर्षा सामान्य से {departure}% अधिक है; अतिरिक्त भारी वर्षा से जलभराव का जोखिम बढ़ सकता है।")
+        if tmax[0] is not None and tmax[0] >= 2:
+            narrative.append(f"इस सप्ताह तापमान सामान्य से अधिक ({tmax[0]:+.1f}°C) रहने की संभावना है।")
+        elif tmax[0] is not None and tmax[0] <= -2:
+            narrative.append(f"इस सप्ताह तापमान सामान्य से कम ({tmax[0]:+.1f}°C) रहने की संभावना है।")
+        return {"weeks": weeks, "narrative": " ".join(narrative)}
+
+    def _generate_extended_outlook(self, forecast: Dict[str, Any], language: str = "en") -> Dict[str, Any]:
         """Generate a 4-week extended outlook with plain-language interpretation."""
+        if language == "hi":
+            return self._generate_extended_outlook_hi(forecast)
         wk1 = forecast.get("week1_rainfall_anomaly_mm_day", 0.0)
         wk2 = forecast.get("week2_rainfall_anomaly_mm_day", 0.0)
         wk3 = forecast.get("week3_rainfall_anomaly_mm_day", 0.0)
@@ -269,18 +342,21 @@ class AdvisoryGenerator:
             overflow = actions["do_now"][max_do_now:]
             actions["do_now"] = actions["do_now"][:max_do_now]
             actions["general_guidance"].append(
-                f"Additional contingency measures ({len(overflow)} items) "
-                f"are available — consult your local KVK extension officer."
+                make_template_action("additional_contingency", {"count": len(overflow)})
             )
         if len(actions["prepare"]) > max_prepare:
             overflow = actions["prepare"][max_prepare:]
             actions["prepare"] = actions["prepare"][:max_prepare]
             if not any("Additional contingency measures" in g for g in actions["general_guidance"]):
                 actions["general_guidance"].append(
-                    f"Additional preparatory measures ({len(overflow)} items) "
-                    f"are available — consult your local KVK extension officer."
+                    make_template_action("additional_preparatory", {"count": len(overflow)})
                 )
         
+        # Normalize legacy strings into bilingual, string-compatible records at the
+        # boundary. Existing callers can still treat these as strings, while the UI
+        # and future pipeline stages can use stable IDs and language-aware display.
+        for category in actions:
+            actions[category] = [make_action(item, source="action_pipeline") for item in actions[category]]
         return actions
     
     def _add_user_specific_actions(self, actions: Dict[str, List[str]], 

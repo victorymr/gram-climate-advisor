@@ -161,6 +161,23 @@ gram-climate-advisor/
 5. **Open in browser**
    Navigate to `http://localhost:8501`
 
+## 🌐 Offline translation catalog
+
+The app serves cached translations from `data/translations.json`. Missing translations
+fall back to English. To populate new Hindi action translations with IndicTrans2, use
+the separate IndicTrans2 inference environment and its checkpoint directory:
+
+```bash
+python scripts/translate_catalog.py \\
+  --language hi \\
+  --checkpoint-dir /path/to/indictrans2/checkpoint
+```
+
+The script scans the built-in action library and ICAR action records, adds only missing
+entries, and marks generated translations as `machine_translated`. Review them before
+changing their status to `approved`. IndicTrans2 is optional; the normal Streamlit app
+does not import its heavy model dependencies.
+
 ## 🧪 Testing
 
 Run the test suite to verify the system is working correctly:

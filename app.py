@@ -19,6 +19,7 @@ sys.path.append(os.path.join(_APP_DIR, 'src'))
 from rules import ScenarioClassifier
 from advisory import AdvisoryGenerator
 from utils import load_district_data, load_icar_data, get_district_list
+from i18n import LANGUAGES, category, display_action, option_labels, option_value, reason, risk_name, scenario_name, t
 
 try:
     import folium
@@ -136,22 +137,23 @@ RISK_THEME = {
 }
 
 
-def render_risk_banner(district, state, risk, confidence, n_concerns, summary):
+def render_risk_banner(district, state, risk, confidence, n_concerns, summary, language="en"):
     theme = RISK_THEME.get(risk, RISK_THEME["Low"])
+    localized_risk = risk_name(risk, language)
     st.markdown(f"""
     <div class="risk-banner" style="background:{theme['bg']};">
-        <h2>{theme['icon']} {escape(risk)} Risk &nbsp;·&nbsp; {escape(district)}, {escape(state)}</h2>
+        <h2>{theme['icon']} {escape(localized_risk)} {escape(t('risk', language))} &nbsp;·&nbsp; {escape(district)}, {escape(state)}</h2>
         <div class="sub">{escape(summary)}</div>
         <div class="risk-meta">
-            <div class="item">Overall Risk<b>{escape(risk)}</b></div>
-            <div class="item">Confidence<b>{escape(confidence)}</b></div>
-            <div class="item">Active Concerns<b>{n_concerns}</b></div>
+            <div class="item">{escape(t('overall_risk', language))}<b>{escape(localized_risk)}</b></div>
+            <div class="item">{escape(t('confidence', language))}<b>{escape(confidence)}</b></div>
+            <div class="item">{escape(t('active_concerns', language))}<b>{n_concerns}</b></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 
-def render_action_card(title, icon, items, css_class, empty_msg):
+def render_action_card(title, icon, items, css_class, empty_msg, more_label="Show {count} more"):
     if items:
         # Show first 6 items always; collapse the rest.
         visible = items[:6]
@@ -159,7 +161,7 @@ def render_action_card(title, icon, items, css_class, empty_msg):
         vis_lis = "".join(f"<li>{escape(str(i))}</li>" for i in visible)
         if overflow:
             over_lis = "".join(f"<li>{escape(str(i))}</li>" for i in overflow)
-            lis = f"{vis_lis}<details><summary style='cursor:pointer;color:#566573;font-size:0.88rem;margin-top:0.3rem;'>Show {len(overflow)} more</summary><ul style='margin-top:0.3rem;'>{over_lis}</ul></details>"
+            lis = f"{vis_lis}<details><summary style='cursor:pointer;color:#566573;font-size:0.88rem;margin-top:0.3rem;'>{escape(more_label.format(count=len(overflow)))}</summary><ul style='margin-top:0.3rem;'>{over_lis}</ul></details>"
         else:
             lis = vis_lis
     else:
@@ -234,7 +236,8 @@ def _rain_lean(w):
     return f"{lean} · {_round10(p)}%"
 
 
-def _rain_category(v):
+def _rain_category(v, language="en"):
+
     """Plain-language rainfall category from a weekly anomaly (mm/day)."""
     if v is None:
         return "—"
@@ -253,7 +256,8 @@ def _rain_category(v):
     return "Much drier than normal"
 
 
-def _temp_category(v):
+def _temp_category(v, language="en"):
+
     """Plain-language temperature category from a weekly anomaly (°C)."""
     if v is None:
         return "—"
@@ -431,16 +435,21 @@ def _enriched_geojson(variable_key, week, source_key):
     return geo
 
 
+# Language selector. Internal forecast keys and scenario logic remain English;
+# only presentation text changes with this selection.
+language_label = st.sidebar.selectbox(t("language"), list(LANGUAGES.keys()), index=0)
+language = LANGUAGES[language_label]
+
 # App header
-st.markdown("""
+st.markdown(f"""
 <div class="app-header">
-    <h1>🌾 Rural Weather & Climate Risk Advisory</h1>
-    <p>Forecast-informed guidance for heat, monsoon delay, dry spells, and excess rainfall.</p>
+    <h1>{escape(t("header", language))}</h1>
+    <p>{escape(t("header_subtitle", language))}</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Sidebar inputs
-st.sidebar.markdown("### 📍 Location")
+st.sidebar.markdown(f"### {escape(t('location', language))}")
 
 # Load district data
 @st.cache_data
@@ -463,10 +472,12 @@ else:
     st.sidebar.caption(f"✅ {len(districts)} districts · {len(states)} states/UTs loaded")
 
 # Choose how to pick the district: dropdowns, or click a map (rendered in the main panel).
-input_mode = st.sidebar.radio(
-    "Select by", ["Dropdowns", "Map"], horizontal=True, disabled=not _HAS_MAP,
+input_mode_label = st.sidebar.radio(
+    t("select_by", language), [t("dropdowns", language), t("map", language)],
+    horizontal=True, disabled=not _HAS_MAP,
     help=None if _HAS_MAP else "Install streamlit-folium to enable the map.",
 )
+input_mode = "Map" if input_mode_label == t("map", language) else "Dropdowns"
 
 if input_mode == "Map" and _HAS_MAP:
     sel = st.session_state.get("map_sel")
@@ -477,12 +488,12 @@ if input_mode == "Map" and _HAS_MAP:
         selected_state = selected_district = None
         st.sidebar.caption("👉 Click a district on the map in the main panel.")
 else:
-    selected_state = st.sidebar.selectbox("Select State", states)
+    selected_state = st.sidebar.selectbox(t("select_state", language), states)
     state_districts = [d for d in districts if d['state'] == selected_state]
     district_names = sorted([d['district'] for d in state_districts])
-    selected_district = st.sidebar.selectbox("Select District", district_names)
+    selected_district = st.sidebar.selectbox(t("select_district", language), district_names)
 
-st.sidebar.markdown("### 👤 Your Context")
+st.sidebar.markdown(f"### {escape(t('context', language))}")
 
 # User type
 user_types = [
@@ -493,14 +504,17 @@ user_types = [
     "NGO / extension worker",
     "Health worker"
 ]
-selected_user_type = st.sidebar.selectbox("User Type", user_types)
+selected_user_type_label = st.sidebar.selectbox(
+    t("user_type", language), option_labels("user_type", user_types, language)
+)
+selected_user_type = option_value("user_type", selected_user_type_label, language)
 
 # Crop information
 crop_types = [
     "Rice", "Maize", "Wheat", "Pulses", "Oilseeds", "Cotton", 
     "Sugarcane", "Vegetables", "Other"
 ]
-selected_crop = st.sidebar.selectbox("Crop Type (Optional)", ["Not specified"] + crop_types)
+selected_crop = st.sidebar.selectbox(t("crop_type", language), [t("not_specified", language)] + crop_types)
 
 # Irrigation status
 irrigation_status = [
@@ -509,7 +523,10 @@ irrigation_status = [
     "Assured irrigation",
     "Unknown"
 ]
-selected_irrigation = st.sidebar.selectbox("Irrigation Status", irrigation_status)
+selected_irrigation_label = st.sidebar.selectbox(
+    t("irrigation", language), option_labels("irrigation", irrigation_status, language)
+)
+selected_irrigation = option_value("irrigation", selected_irrigation_label, language)
 
 # Crop stage
 crop_stages = [
@@ -520,11 +537,17 @@ crop_stages = [
     "Harvesting",
     "Unknown"
 ]
-selected_crop_stage = st.sidebar.selectbox("Crop Stage (Optional)", ["Not specified"] + crop_stages)
+crop_stage_labels = [t("not_specified", language)] + option_labels("crop_stage", crop_stages, language)
+selected_crop_stage_label = st.sidebar.selectbox(t("crop_stage", language), crop_stage_labels)
+selected_crop_stage = (
+    option_value("crop_stage", selected_crop_stage_label, language)
+    if selected_crop_stage_label != t("not_specified", language)
+    else selected_crop_stage_label
+)
 
 st.sidebar.markdown("&nbsp;")
 show_actions = st.sidebar.checkbox(
-    "Show adaptation actions", value=True,
+    t("show_actions", language), value=True,
     help="Uncheck for a forecast-only view — hides the Do Now / Prepare / Avoid cards "
          "and general guidance (which are still generic for most districts).",
 )
@@ -533,7 +556,7 @@ show_actions = st.sidebar.checkbox(
 # transient True) so widgets *inside* the results — e.g. the Source Data source
 # switcher — don't clear the advisory when they trigger a rerun. The body recomputes
 # from the current sidebar selections on every run, so it always stays in sync.
-if st.sidebar.button("🌱 Get Advisory", type="primary", use_container_width=True):
+if st.sidebar.button(t("get_advisory", language), type="primary", use_container_width=True):
     st.session_state["advisory_shown"] = True
 
 # --- Clickable district map (Map mode): click a district -> select + show advisory ---
@@ -569,9 +592,9 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
     # Create user context
     user_context = {
         "user_type": selected_user_type.lower().replace(" ", "_"),
-        "crop": selected_crop.lower() if selected_crop != "Not specified" else None,
+        "crop": selected_crop.lower() if selected_crop != t("not_specified", language) else None,
         "irrigation_status": selected_irrigation.lower().replace(" ", "_"),
-        "crop_stage": selected_crop_stage.lower().replace(" / ", "_").replace(" ", "_") if selected_crop_stage != "Not specified" else None
+        "crop_stage": selected_crop_stage.lower().replace(" / ", "_").replace(" ", "_") if selected_crop_stage != t("not_specified", language) else None
     }
     
     # Classify scenarios
@@ -586,7 +609,8 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
         forecast_data, 
         icar_data, 
         scenarios, 
-        user_context
+        user_context,
+        language=language,
     )
     
     # ----- Hero risk banner -----
@@ -596,6 +620,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
         advisory['overall_risk'], confidence,
         len(advisory['main_concerns']),
         advisory['forecast_summary'],
+        language=language,
     )
 
     # ----- Concern chips -----
@@ -605,27 +630,32 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
 
     # ----- Recommended actions (above the fold) -----
     if show_actions:
-        st.markdown("<div class='sec-title'>📋 Recommended Actions</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='sec-title'>{escape(t('recommended_actions', language))}</div>", unsafe_allow_html=True)
         # date span for the "prepare" window (start of week 2 → end of week 4)
         _w2 = _week_dates(forecast_data.get("forecast_date"), 2)
         _w4 = _week_dates(forecast_data.get("forecast_date"), 4)
-        _prep = f"Prepare (Weeks 2-4 · {_fmt_range(_w2[0], _w4[1])})" if _w2 and _w4 else "Prepare (Weeks 2-4)"
+        _prep = f"{t('prepare', language)} (सप्ताह 2-4 · {_fmt_range(_w2[0], _w4[1])})" if language == "hi" and _w2 and _w4 else (f"Prepare (Weeks 2-4 · {_fmt_range(_w2[0], _w4[1])})" if _w2 and _w4 else t("prepare", language) + " (Weeks 2-4)")
         ac1, ac2, ac3 = st.columns(3)
         with ac1:
-            render_action_card("Do Now", "�", advisory['actions_do_now'],
-                               "card-do", "No immediate actions flagged.")
+            render_action_card(t("do_now", language), "🔴",
+                               [display_action(item, language) for item in advisory['actions_do_now']],
+                               "card-do", t("no_immediate", language), t("show_more", language))
         with ac2:
-            render_action_card(_prep, "🟡", advisory['actions_prepare'],
-                               "card-prep", "No preparatory actions flagged.")
+            render_action_card(_prep, "🟡",
+                               [display_action(item, language) for item in advisory['actions_prepare']],
+                               "card-prep", t("no_preparatory", language), t("show_more", language))
         with ac3:
-            render_action_card("Avoid", "⛔", advisory['actions_avoid'],
-                               "card-avoid", "No specific cautions flagged.")
+            render_action_card(t("avoid", language), "⛔",
+                               [display_action(item, language) for item in advisory['actions_avoid']],
+                               "card-avoid", t("no_cautions", language), t("show_more", language))
 
         # ----- General guidance -----
         if advisory.get('general_guidance'):
-            guidance = " · ".join(escape(str(g)) for g in advisory['general_guidance'])
+            guidance = " · ".join(
+                escape(display_action(g, language)) for g in advisory['general_guidance']
+            )
             st.markdown(
-                f"<div class='sec-title'>ℹ️ General Guidance</div>"
+                f"<div class='sec-title'>{escape(t('general_guidance', language))}</div>"
                 f"<div class='guidance-box'>{guidance}</div>",
                 unsafe_allow_html=True,
             )
@@ -633,7 +663,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
     # ----- Detail tabs -----
     st.markdown("<div style='margin-top:1.4rem'></div>", unsafe_allow_html=True)
     tab_outlook, tab_scenarios, tab_data, tab_sources = st.tabs(
-        ["📅 4-Week Outlook", "🎯 Risk Scenarios", "📡 Source Data", "📚 Sources & Disclaimer"]
+        [t("outlook", language), t("scenarios", language), t("source_data", language), t("sources", language)]
     )
 
     # --- Outlook tab ---
@@ -647,8 +677,8 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
             df_out = pd.DataFrame([
                 {
                     "Week": _week_label(_init, wk['week']),
-                    "Rainfall": _rain_category(wk.get('anomaly_mm_day')),
-                    "Temperature": _temp_category(wk.get('tmax_anomaly_degC')),
+                    "Rainfall": category(_rain_category(wk.get('anomaly_mm_day')), language),
+                    "Temperature": category(_temp_category(wk.get('tmax_anomaly_degC')), language),
                 }
                 for wk in weeks
             ]).set_index("Week")
@@ -668,7 +698,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                 "and exact model values, see the **📡 Source Data** tab."
             )
         else:
-            st.info("No extended outlook available for this district.")
+            st.info(t("no_outlook", language))
 
     # --- Scenarios tab ---
     with tab_scenarios:
@@ -677,12 +707,12 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                 risk_icon = {"Severe": "🔴", "Alert": "🟠", "Watch": "🟡"}.get(scenario['risk_level'], "⚪")
                 with st.container(border=True):
                     st.markdown(
-                        f"**{risk_icon} {scenario['display_name']}** — "
-                        f"{scenario['risk_level']} risk (confidence: {scenario['confidence']})"
+                        f"**{risk_icon} {scenario_name(scenario['scenario'], scenario['display_name'], language)}** — "
+                        f"{risk_name(scenario['risk_level'], language)} {t('risk', language).lower()} ({t('confidence', language).lower()}: {scenario['confidence']})"
                     )
-                    st.caption(" · ".join(scenario['reasons']))
+                    st.caption(" · ".join(reason(r, language) for r in scenario['reasons']))
         else:
-            st.success("✅ No risk scenarios triggered. Baseline planning guidance applies.")
+            st.success(t("no_scenarios", language))
 
     # --- Source data tab ---
     with tab_data:
