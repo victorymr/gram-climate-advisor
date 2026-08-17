@@ -24,7 +24,7 @@ The system follows a strict 4-tier source hierarchy:
 
 ## 🛰️ Model-based forecasts (subseasonal & seasonal)
 
-By default the forecast fields are extracted by hand from IMD imagery (see **Admin Updates** below).
+When available, the forecast fields are extracted by hand from IMD imagery (see **Admin Updates** below).
 The advisor can instead be driven by **numerical model forecasts** produced by the companion
 `india_forecasts` pipeline (vendored in this repo at `india_forecasts/`), which pulls real subseasonal and
 seasonal models and collapses them to each district.
@@ -33,17 +33,16 @@ seasonal models and collapses them to each district.
 
 - **Subseasonal (weekly, weeks 1–4/5)** — a multi-model mean of **GEFS + CFSv2 + EC46** as weekly
   rainfall and temperature anomalies per district. EC46 (ECMWF's 46-day extended ensemble) is pulled
-  **live from the Open-Meteo seasonal API** (no account, no ~3-week embargo, ~50 members); it joins the
-  mean for any init it shares with the other models.
-- **Weekly threshold odds** — genuine probabilities from the **ensemble members, pooled across every
-  model** that posts members for the init (GEFS members and/or EC46's ~50 members): the chance of a
+  **live from the Open-Meteo seasonal API** 
+- **Weekly threshold odds** — probabilities from the **ensemble members, pooled across every
+  model** that posts members for the init (GEFS 31 members and/or EC46's ~50 members): the chance of a
   wetter/drier-than-normal week, heavy rain, a dry spell, or a hot week. The contributing model(s) and
   member count are recorded alongside the odds.
 - **Seasonal (monthly)** — a SEAS5 + SFS tercile signal distilled into `seasonal_monsoon_context`.
 
-Model output **augments** the IMD data: the weekly *forecast* fields are replaced by the model
+Model output **augments** the IMD data where available: the weekly *forecast* fields are replaced by the model
 multi-model mean, while the *observed* IMD fields (rainfall departures, monsoon onset, official
-heat/heavy-rain warnings — which models cannot provide) are **preserved**.
+heat/heavy-rain warnings) are **preserved**.
 
 ### Refresh (one command, from the advisor project root)
 
