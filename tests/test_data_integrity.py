@@ -115,3 +115,89 @@ def test_icar_resolves_across_zones():
                    ("Assam", "Cachar"), ("Tamil Nadu", "Coimbatore"), ("Punjab", "Ludhiana")]:
         ic = load_icar_data(st, di)
         assert "scenarios" in ic and "delayed_monsoon" in ic["scenarios"], (st, di)
+
+
+def test_icar_alias_spelling_variants():
+    """Spelling variants in ICAR vs forecast data should resolve to real ICAR data."""
+    from utils import get_default_icar_data
+    cases = [
+        ("Karnataka", "Mysuru", "Mysore"),
+        ("Karnataka", "Ballari", "Bellary"),
+        ("Maharashtra", "Nashik", "Nasik"),
+        ("Bihar", "Begusarai", "Begusari"),
+        ("Gujarat", "Kachchh", "Kutch"),
+        ("Tamil Nadu", "Tuticorin", "Thoothukudi"),
+        ("Odisha", "Anugul", "Angul"),
+    ]
+    for state, district, expected_icar_district in cases:
+        ic = load_icar_data(state, district)
+        default = get_default_icar_data(state, district)
+        assert ic != default, f"{state}/{district} fell back to default"
+        assert ic["district"].lower() == expected_icar_district.lower(), \
+            f"{state}/{district} resolved to {ic['district']}, expected {expected_icar_district}"
+
+
+def test_icar_alias_renamed_districts():
+    """Districts renamed since 2012 should map to their ICAR-era name."""
+    from utils import get_default_icar_data
+    cases = [
+        ("Uttar Pradesh", "Prayagraj", "Allahabad"),
+        ("Uttar Pradesh", "Ayodhya", "Faizabad"),
+        ("Haryana", "Gurugram", "Gurgaon"),
+        ("Karnataka", "Vijayapura", "Bijapur"),
+        ("Karnataka", "Belagavi", "Belgaum"),
+    ]
+    for state, district, expected_icar_district in cases:
+        ic = load_icar_data(state, district)
+        default = get_default_icar_data(state, district)
+        assert ic != default, f"{state}/{district} fell back to default"
+        assert ic["district"].lower() == expected_icar_district.lower(), \
+            f"{state}/{district} resolved to {ic['district']}, expected {expected_icar_district}"
+
+
+def test_icar_alias_state_split():
+    """Telangana districts (split from AP in 2014) should resolve to AP ICAR entries."""
+    from utils import get_default_icar_data
+    cases = [
+        ("Telangana", "Hyderabad", "Ranga Reddy"),
+        ("Telangana", "Warangal", "Warangal"),
+        ("Telangana", "Karimnagar", "Karimnagar"),
+        ("Telangana", "Nalgonda", "Nalgonda"),
+    ]
+    for state, district, expected_icar_district in cases:
+        ic = load_icar_data(state, district)
+        default = get_default_icar_data(state, district)
+        assert ic != default, f"{state}/{district} fell back to default"
+        assert ic["state"] == "Andhra Pradesh", \
+            f"{state}/{district} resolved to state {ic['state']}, expected Andhra Pradesh"
+        assert ic["district"].lower() == expected_icar_district.lower(), \
+            f"{state}/{district} resolved to {ic['district']}, expected {expected_icar_district}"
+
+
+def test_icar_alias_post_2012_splits():
+    """Post-2012 district splits should map to their parent district in ICAR."""
+    from utils import get_default_icar_data
+    cases = [
+        ("Andhra Pradesh", "Eluru", "West Godavari"),
+        ("Andhra Pradesh", "Kakinada", "East Godavari"),
+        ("Rajasthan", "Balotra", "Barmer"),
+        ("Rajasthan", "Beawar", "Ajmer"),
+        ("Assam", "Majuli", "Jorhat"),
+    ]
+    for state, district, expected_icar_district in cases:
+        ic = load_icar_data(state, district)
+        default = get_default_icar_data(state, district)
+        assert ic != default, f"{state}/{district} fell back to default"
+        assert ic["district"].lower() == expected_icar_district.lower(), \
+            f"{state}/{district} resolved to {ic['district']}, expected {expected_icar_district}"
+
+
+def test_icar_fallback_for_ut():
+    """UTs with no ICAR plan should fall back to default gracefully."""
+    from utils import get_default_icar_data
+    for state, district in [("Delhi", "New Delhi"), ("Chandigarh", "Chandigarh"),
+                            ("Lakshadweep", "Lakshadweep District")]:
+        ic = load_icar_data(state, district)
+        default = get_default_icar_data(state, district)
+        assert ic == default, f"{state}/{district} should fall back to default"
+        assert "scenarios" in ic and "delayed_monsoon" in ic["scenarios"]

@@ -38,3 +38,7 @@ india_forecasts/plots/
 *.grb2
 *.idx
 *.bak
+
+# ICAR contingency-plan PDFs are source material, not runtime artifacts.
+# Fetch them with scripts/download_icar_pdfs.py (see data/icar_contingency_plans/manifest.csv).
+data/icar_contingency_plans/*.pdf

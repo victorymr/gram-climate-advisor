@@ -1,5 +1,6 @@
 from typing import Dict, List, Any
 from datetime import datetime
+from i18n import make_action, make_template_action
 
 class AdvisoryGenerator:
     """Generates climate risk advisories based on scenarios and user context."""
@@ -9,14 +10,14 @@ class AdvisoryGenerator:
     
     def generate_advisory(self, state: str, district: str, forecast_data: Dict[str, Any], 
                          icar_data: Dict[str, Any], scenarios: List[Dict[str, Any]], 
-                         user_context: Dict[str, Any]) -> Dict[str, Any]:
+                         user_context: Dict[str, Any], language: str = "en") -> Dict[str, Any]:
         """Generate a complete advisory for the given inputs."""
         
         # Determine overall risk level
         overall_risk = self._calculate_overall_risk(scenarios)
         
         # Generate forecast summary
-        forecast_summary = self._generate_forecast_summary(forecast_data, scenarios)
+        forecast_summary = self._generate_forecast_summary(forecast_data, scenarios, language)
         
         # Get main concerns
         main_concerns = [s['display_name'] for s in scenarios]
@@ -25,7 +26,7 @@ class AdvisoryGenerator:
         actions = self._generate_actions(scenarios, icar_data, user_context, forecast_data)
         
         # Generate extended 4-week outlook
-        extended_outlook = self._generate_extended_outlook(forecast_data)
+        extended_outlook = self._generate_extended_outlook(forecast_data, language)
         
         # Create advisory object
         advisory = {
@@ -43,7 +44,7 @@ class AdvisoryGenerator:
             "general_guidance": actions["general_guidance"],
             "source_notes": {
                 "forecast_source": forecast_data.get("forecast_source", "IMD forecast products"),
-                "agriculture_source": "ICAR/CRIDA district contingency plan and local agromet guidance where available",
+                "agriculture_source": "ICAR/CRIDA district agriculture contingency plans",
                 "health_source": "NDMA / state heat action / health guidance where available",
                 "last_updated": datetime.now().strftime("%Y-%m-%d")
             },
@@ -62,8 +63,10 @@ class AdvisoryGenerator:
         
         return highest_risk["risk_level"]
     
-    def _generate_forecast_summary(self, forecast: Dict[str, Any], scenarios: List[Dict[str, Any]]) -> str:
+    def _generate_forecast_summary(self, forecast: Dict[str, Any], scenarios: List[Dict[str, Any]], language: str = "en") -> str:
         """Generate a plain-language forecast summary."""
+        if language == "hi":
+            return self._generate_forecast_summary_hi(forecast)
         summary_parts = []
         
         # Rainfall situation
@@ -110,15 +113,83 @@ class AdvisoryGenerator:
             summary_parts.append("Above-normal temperatures are expected")
         
         # Combine parts
-        if len(summary_parts) == 1:
-            return summary_parts[0] + "."
-        elif len(summary_parts) == 2:
+        if len(summary_parts) == 2:
             return summary_parts[0] + ", " + summary_parts[1] + "."
         else:
             return summary_parts[0] + ", " + summary_parts[1] + ", and " + summary_parts[2] + "."
     
-    def _generate_extended_outlook(self, forecast: Dict[str, Any]) -> Dict[str, Any]:
+    def _generate_forecast_summary_hi(self, forecast: Dict[str, Any]) -> str:
+        """Hindi version of the forecast summary; numeric thresholds stay identical."""
+        departure = forecast.get("rainfall_since_june_1_pct_departure", 0)
+        if departure < -20:
+            first = f"1 जून से वर्षा सामान्य से {abs(departure)}% कम रही है"
+        elif departure > 20:
+            first = f"1 जून से वर्षा सामान्य से {departure}% अधिक रही है"
+        else:
+            first = "1 जून से वर्षा सामान्य के आसपास रही है"
+
+        weeks = [forecast.get(f"week{i}_rainfall_anomaly_mm_day", 0.0) for i in range(1, 5)]
+        if all(v <= -3.0 for v in weeks):
+            second = "4 सप्ताह के पूर्वानुमान में लगातार सामान्य से कम वर्षा दिख रही है"
+        elif all(v >= 3.0 for v in weeks):
+            second = "4 सप्ताह के पूर्वानुमान में लगातार सामान्य से अधिक वर्षा दिख रही है"
+        else:
+            second = "4 सप्ताह का वर्षा पूर्वानुमान मिला-जुला है"
+
+        parts = [first, second]
+        if forecast.get("heat_wave_warning", False):
+            parts.append("लू का खतरा बढ़ा हुआ है और लू की चेतावनी लागू है")
+        elif forecast.get("tmax_signal") == "above_normal":
+            parts.append("सामान्य से अधिक तापमान की संभावना है")
+        return "। ".join(parts) + "।"
+
+    def _generate_extended_outlook_hi(self, forecast: Dict[str, Any]) -> Dict[str, Any]:
+        """Hindi extended outlook while retaining the same numeric data."""
+        values = [forecast.get(f"week{i}_rainfall_anomaly_mm_day", 0.0) for i in range(1, 5)]
+        tmax = [forecast.get(f"week{i}_tmax_anomaly_degC") for i in range(1, 5)]
+
+        def label(value):
+            if value >= 7: return "सामान्य से बहुत अधिक"
+            if value >= 3: return "सामान्य से अधिक"
+            if value <= -7: return "सामान्य से बहुत कम"
+            if value <= -3: return "सामान्य से कम"
+            return "सामान्य के आसपास"
+
+        weeks = []
+        for index, value in enumerate(values, 1):
+            item = {"week": index, "anomaly_mm_day": value, "label": label(value)}
+            if tmax[index - 1] is not None:
+                item["tmax_anomaly_degC"] = tmax[index - 1]
+            weeks.append(item)
+
+        narrative = [f"इस सप्ताह: वर्षा {label(values[0])} ({values[0]:+.1f} मिमी/दिन)"]
+        avg_later = sum(values[1:]) / 3
+        if values[0] <= -3 and avg_later > -1:
+            narrative.append("पूर्वानुमान में सुधार है; अगले सप्ताहों में कुछ राहत की उम्मीद है।")
+        elif values[0] >= -1 and avg_later <= -3:
+            narrative.append("सावधानी: आगे के सप्ताहों में वर्षा कम हो सकती है।")
+        elif all(value <= -3 for value in values):
+            narrative.append("सभी 4 सप्ताह में लगातार सूखी स्थिति की संभावना है।")
+        elif all(value >= 3 for value in values):
+            narrative.append("सभी 4 सप्ताह में लगातार सामान्य से अधिक वर्षा की संभावना है।")
+        else:
+            narrative.append(f"सप्ताह 2-4 में वर्षा {label(avg_later)} रहने की संभावना है।")
+
+        departure = forecast.get("rainfall_since_june_1_pct_departure", 0)
+        if departure <= -30:
+            narrative.append(f"अब तक की वर्षा सामान्य से {abs(departure)}% कम है; अधिक वर्षा से कमी की भरपाई में मदद मिलेगी।")
+        elif departure >= 20:
+            narrative.append(f"अब तक की वर्षा सामान्य से {departure}% अधिक है; अतिरिक्त भारी वर्षा से जलभराव का जोखिम बढ़ सकता है।")
+        if tmax[0] is not None and tmax[0] >= 2:
+            narrative.append(f"इस सप्ताह तापमान सामान्य से अधिक ({tmax[0]:+.1f}°C) रहने की संभावना है।")
+        elif tmax[0] is not None and tmax[0] <= -2:
+            narrative.append(f"इस सप्ताह तापमान सामान्य से कम ({tmax[0]:+.1f}°C) रहने की संभावना है।")
+        return {"weeks": weeks, "narrative": " ".join(narrative)}
+
+    def _generate_extended_outlook(self, forecast: Dict[str, Any], language: str = "en") -> Dict[str, Any]:
         """Generate a 4-week extended outlook with plain-language interpretation."""
+        if language == "hi":
+            return self._generate_extended_outlook_hi(forecast)
         wk1 = forecast.get("week1_rainfall_anomaly_mm_day", 0.0)
         wk2 = forecast.get("week2_rainfall_anomaly_mm_day", 0.0)
         wk3 = forecast.get("week3_rainfall_anomaly_mm_day", 0.0)
@@ -157,7 +228,7 @@ class AdvisoryGenerator:
         narrative_parts = []
         
         # Week 1
-        narrative_parts.append(f"This week: rainfall {_label(wk1)} ({wk1:+.0f} mm/day)")
+        narrative_parts.append(f"This week: rainfall {_label(wk1)} ({wk1:+.1f} mm/day)")
         
         # Weeks 2-4 trajectory — collapse repeated labels for readability
         wk234_avg = (wk2 + wk3 + wk4) / 3.0
@@ -211,11 +282,11 @@ class AdvisoryGenerator:
         # Temperature context
         if tmax_wk1 is not None and tmax_wk1 >= 2.0:
             narrative_parts.append(
-                f"Temperatures are elevated (+{tmax_wk1:.0f}°C above normal this week)."
+                f"Temperatures are elevated ({tmax_wk1:+.1f}°C above normal this week)."
             )
         elif tmax_wk1 is not None and tmax_wk1 <= -2.0:
             narrative_parts.append(
-                f"Temperatures are cooler than normal ({tmax_wk1:.0f}°C this week), likely due to cloud cover."
+                f"Temperatures are cooler than normal ({tmax_wk1:+.1f}°C this week), likely due to cloud cover."
             )
         
         return {
@@ -262,6 +333,30 @@ class AdvisoryGenerator:
         for category in actions:
             actions[category] = self._deduplicate_actions(actions[category])
         
+        # Cap long ICAR action lists so the advisory stays actionable.
+        # Keep the most relevant items (first N after dedup) and move the rest
+        # to general_guidance as a summary note.
+        max_do_now = 12
+        max_prepare = 8
+        if len(actions["do_now"]) > max_do_now:
+            overflow = actions["do_now"][max_do_now:]
+            actions["do_now"] = actions["do_now"][:max_do_now]
+            actions["general_guidance"].append(
+                make_template_action("additional_contingency", {"count": len(overflow)})
+            )
+        if len(actions["prepare"]) > max_prepare:
+            overflow = actions["prepare"][max_prepare:]
+            actions["prepare"] = actions["prepare"][:max_prepare]
+            if not any("Additional contingency measures" in g for g in actions["general_guidance"]):
+                actions["general_guidance"].append(
+                    make_template_action("additional_preparatory", {"count": len(overflow)})
+                )
+        
+        # Normalize legacy strings into bilingual, string-compatible records at the
+        # boundary. Existing callers can still treat these as strings, while the UI
+        # and future pipeline stages can use stable IDs and language-aware display.
+        for category in actions:
+            actions[category] = [make_action(item, source="action_pipeline") for item in actions[category]]
         return actions
     
     def _add_user_specific_actions(self, actions: Dict[str, List[str]], 
@@ -312,26 +407,29 @@ class AdvisoryGenerator:
         
         # ICAR-specific actions for farmers — filtered by crop if specified
         if user_type == "farmer" and icar_actions:
+            # icar_pdf_actions (legacy flat list of strings) — pass through directly.
             if "icar_pdf_actions" in icar_actions:
                 actions["do_now"].extend(icar_actions["icar_pdf_actions"])
             if "crop_actions" in icar_actions:
-                crop_actions = icar_actions["crop_actions"]
+                crop_action_items = self._normalize_icar_items(icar_actions["crop_actions"])
                 if crop:
-                    # Prioritize actions mentioning the user's crop
                     crop_lower = crop.lower()
-                    relevant = [a for a in crop_actions if crop_lower in a.lower()]
-                    other = [a for a in crop_actions if crop_lower not in a.lower()]
+                    relevant = [a for a, c in crop_action_items
+                                if c and crop_lower in c.lower()]
+                    other = [a for a, c in crop_action_items
+                             if not (c and crop_lower in c.lower())]
                     actions["do_now"].extend(relevant)
-                    actions["prepare"].extend(other)  # others go to prepare
+                    actions["prepare"].extend(other)
                 else:
-                    actions["do_now"].extend(crop_actions)
+                    actions["do_now"].extend(a for a, _ in crop_action_items)
             # Livestock actions only shown to farmers if they have livestock
             # For now, skip for pure crop farmers — livestock_owner gets these
         
         # ICAR actions for livestock owners — livestock only, no crop advice
         elif user_type == "livestock_owner" and icar_actions:
             if "livestock_actions" in icar_actions:
-                actions["do_now"].extend(icar_actions["livestock_actions"])
+                livestock_items = self._normalize_icar_items(icar_actions["livestock_actions"])
+                actions["do_now"].extend(a for a, _ in livestock_items)
         
         # Village official/NGO actions
         elif user_type in ["village_official", "ngo_extension_worker"]:
@@ -352,6 +450,21 @@ class AdvisoryGenerator:
             actions["prepare"] = self._filter_by_crop_stage(actions["prepare"], crop_stage)
             actions["avoid"] = self._filter_by_crop_stage(actions["avoid"], crop_stage)
     
+    @staticmethod
+    def _normalize_icar_items(items: list) -> list[tuple[str, str]]:
+        """Normalize ICAR action items to (action_text, crop) tuples.
+
+        Handles both the legacy format (list of strings) and the new structured
+        format (list of dicts with 'action', 'crop', 'farming_situation').
+        """
+        result = []
+        for item in items:
+            if isinstance(item, dict):
+                result.append((item["action"], item.get("crop", "")))
+            else:
+                result.append((str(item), ""))
+        return result
+
     def _filter_by_crop_stage(self, action_list: List[str], crop_stage: str) -> List[str]:
         """Filter out actions that are irrelevant to the current crop stage.
         
@@ -581,7 +694,6 @@ class AdvisoryGenerator:
         return {
             "heat_stress": {
                 "do_now_all": [
-                    "Avoid heavy outdoor work during the hottest part of the day",
                     "Drink water frequently; use ORS where appropriate",
                     "Rest in shade or cooler spaces",
                     "Check on elderly people, children, pregnant women, and people with health conditions"
@@ -593,14 +705,17 @@ class AdvisoryGenerator:
                     "Keep basic heat illness response information available"
                 ],
                 "avoid_all": [
+                    "Heavy outdoor work during the hottest part of the day",
                     "Long outdoor work without rest breaks",
                     "Leaving children, elderly people, or animals in enclosed hot spaces",
                     "Unnecessary livestock transport during peak heat"
                 ],
                 "do_now_livestock_owner": [
                     "Provide shade and continuous drinking water for livestock",
-                    "Avoid grazing or transport during peak heat",
                     "Watch for panting, drooling, weakness, or reduced feed intake in animals"
+                ],
+                "avoid_livestock_owner": [
+                    "Grazing or transport during peak heat",
                 ],
                 "do_now_outdoor_worker": [
                     "Shift heavy work to early morning or evening",
@@ -708,7 +823,6 @@ class AdvisoryGenerator:
                 ],
                 "do_now_farmer": [
                     "Prioritize water for crops at critical reproductive stages",
-                    "Avoid spending scarce irrigation on failed or low-priority crops",
                     "Prepare for fodder shortage"
                 ],
                 "prepare_farmer": [
@@ -717,13 +831,13 @@ class AdvisoryGenerator:
                     "Coordinate village-level livestock water and fodder planning"
                 ],
                 "avoid_farmer": [
+                    "Spending scarce irrigation on failed or low-priority crops",
                     "Late fertilizer application without moisture",
                     "Replanting when the viable crop window has passed"
                 ]
             },
             "excess_rainfall_waterlogging": {
                 "do_now_all": [
-                    "Avoid unnecessary travel in flooded areas",
                     "Protect important documents and valuables"
                 ],
                 "prepare_all": [
@@ -731,12 +845,12 @@ class AdvisoryGenerator:
                     "Prepare emergency supplies"
                 ],
                 "avoid_all": [
+                    "Unnecessary travel in flooded areas",
                     "Entering flooded areas unnecessarily",
                     "Contaminated water consumption"
                 ],
                 "do_now_farmer": [
                     "Clear drainage channels",
-                    "Avoid field operations during heavy rain",
                     "Move livestock away from flood-prone areas"
                 ],
                 "prepare_farmer": [
@@ -745,6 +859,7 @@ class AdvisoryGenerator:
                     "Repair bunds after water recedes"
                 ],
                 "avoid_farmer": [
+                    "Field operations during heavy rain",
                     "Entering flooded fields unnecessarily",
                     "Applying fertilizer before heavy rainfall",
                     "Allowing livestock to drink contaminated stagnant water"

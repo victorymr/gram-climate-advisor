@@ -1,0 +1,631 @@
+[
+  {
+    "state": "Andaman & Nicobar",
+    "district": "Nicobar",
+    "pages": 21,
+    "total_actions": 1,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 0,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 1
+    },
+    "scenarios_found": [
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Andhra Pradesh",
+    "district": "Anantapur",
+    "pages": 30,
+    "total_actions": 27,
+    "scenario_counts": {
+      "delayed_monsoon": 1,
+      "early_season_dry_spell": 8,
+      "mid_season_break": 0,
+      "terminal_drought": 1,
+      "excess_rainfall_waterlogging": 17
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "mid_season_break"
+    ]
+  },
+  {
+    "state": "Arunachal Pradesh",
+    "district": "Anjaw",
+    "pages": 40,
+    "total_actions": 47,
+    "scenario_counts": {
+      "delayed_monsoon": 18,
+      "early_season_dry_spell": 10,
+      "mid_season_break": 2,
+      "terminal_drought": 3,
+      "excess_rainfall_waterlogging": 14
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Assam",
+    "district": "Baksa",
+    "pages": 47,
+    "total_actions": 70,
+    "scenario_counts": {
+      "delayed_monsoon": 10,
+      "early_season_dry_spell": 30,
+      "mid_season_break": 10,
+      "terminal_drought": 4,
+      "excess_rainfall_waterlogging": 16
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Bihar",
+    "district": "Gaya",
+    "pages": 31,
+    "total_actions": 45,
+    "scenario_counts": {
+      "delayed_monsoon": 8,
+      "early_season_dry_spell": 13,
+      "mid_season_break": 7,
+      "terminal_drought": 3,
+      "excess_rainfall_waterlogging": 14
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Chhattisgarh",
+    "district": "Balod",
+    "pages": 29,
+    "total_actions": 59,
+    "scenario_counts": {
+      "delayed_monsoon": 3,
+      "early_season_dry_spell": 30,
+      "mid_season_break": 6,
+      "terminal_drought": 4,
+      "excess_rainfall_waterlogging": 16
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Goa",
+    "district": "North Goa",
+    "pages": 41,
+    "total_actions": 4,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 4,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 0
+    },
+    "scenarios_found": [
+      "early_season_dry_spell"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ]
+  },
+  {
+    "state": "Gujarat",
+    "district": "Ahmedabad",
+    "pages": 32,
+    "total_actions": 66,
+    "scenario_counts": {
+      "delayed_monsoon": 4,
+      "early_season_dry_spell": 36,
+      "mid_season_break": 1,
+      "terminal_drought": 7,
+      "excess_rainfall_waterlogging": 18
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Haryana",
+    "district": "Ambala",
+    "pages": 26,
+    "total_actions": 9,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 4,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 5
+    },
+    "scenarios_found": [
+      "early_season_dry_spell",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon",
+      "mid_season_break",
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Himachal Pradesh",
+    "district": "Bilaspur",
+    "pages": 25,
+    "total_actions": 51,
+    "scenario_counts": {
+      "delayed_monsoon": 5,
+      "early_season_dry_spell": 29,
+      "mid_season_break": 4,
+      "terminal_drought": 5,
+      "excess_rainfall_waterlogging": 8
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Jammu & Kashmir",
+    "district": "Anantnag",
+    "pages": 24,
+    "total_actions": 44,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 19,
+      "mid_season_break": 9,
+      "terminal_drought": 2,
+      "excess_rainfall_waterlogging": 14
+    },
+    "scenarios_found": [
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon"
+    ]
+  },
+  {
+    "state": "Jharkhand",
+    "district": "Bokaro",
+    "pages": 35,
+    "total_actions": 21,
+    "scenario_counts": {
+      "delayed_monsoon": 5,
+      "early_season_dry_spell": 9,
+      "mid_season_break": 4,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 3
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Karnataka",
+    "district": "Bagalkot",
+    "pages": 37,
+    "total_actions": 110,
+    "scenario_counts": {
+      "delayed_monsoon": 4,
+      "early_season_dry_spell": 36,
+      "mid_season_break": 11,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 59
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Kerala",
+    "district": "Alappuzha",
+    "pages": 26,
+    "total_actions": 40,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 15,
+      "mid_season_break": 9,
+      "terminal_drought": 1,
+      "excess_rainfall_waterlogging": 15
+    },
+    "scenarios_found": [
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon"
+    ]
+  },
+  {
+    "state": "Madhya Pradesh",
+    "district": "Agar Malwa",
+    "pages": 26,
+    "total_actions": 26,
+    "scenario_counts": {
+      "delayed_monsoon": 2,
+      "early_season_dry_spell": 6,
+      "mid_season_break": 0,
+      "terminal_drought": 2,
+      "excess_rainfall_waterlogging": 16
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "mid_season_break"
+    ]
+  },
+  {
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "pages": 38,
+    "total_actions": 34,
+    "scenario_counts": {
+      "delayed_monsoon": 10,
+      "early_season_dry_spell": 14,
+      "mid_season_break": 7,
+      "terminal_drought": 1,
+      "excess_rainfall_waterlogging": 2
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Manipur",
+    "district": "Bishnupur",
+    "pages": 37,
+    "total_actions": 21,
+    "scenario_counts": {
+      "delayed_monsoon": 4,
+      "early_season_dry_spell": 13,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 4
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "mid_season_break",
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Meghalaya",
+    "district": "East Garo Hills",
+    "pages": 26,
+    "total_actions": 45,
+    "scenario_counts": {
+      "delayed_monsoon": 1,
+      "early_season_dry_spell": 25,
+      "mid_season_break": 16,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 3
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Mizoram",
+    "district": "Aizawl",
+    "pages": 37,
+    "total_actions": 46,
+    "scenario_counts": {
+      "delayed_monsoon": 3,
+      "early_season_dry_spell": 19,
+      "mid_season_break": 2,
+      "terminal_drought": 8,
+      "excess_rainfall_waterlogging": 14
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": []
+  },
+  {
+    "state": "Nagaland",
+    "district": "Dimapur",
+    "pages": 19,
+    "total_actions": 21,
+    "scenario_counts": {
+      "delayed_monsoon": 6,
+      "early_season_dry_spell": 11,
+      "mid_season_break": 0,
+      "terminal_drought": 4,
+      "excess_rainfall_waterlogging": 0
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "terminal_drought"
+    ],
+    "scenarios_missing": [
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ]
+  },
+  {
+    "state": "Odisha",
+    "district": "Angul",
+    "pages": 53,
+    "total_actions": 36,
+    "scenario_counts": {
+      "delayed_monsoon": 12,
+      "early_season_dry_spell": 21,
+      "mid_season_break": 1,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 2
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Punjab",
+    "district": "Amritsar",
+    "pages": 33,
+    "total_actions": 9,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 5,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 4
+    },
+    "scenarios_found": [
+      "early_season_dry_spell",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon",
+      "mid_season_break",
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Rajasthan",
+    "district": "Jaipur",
+    "pages": 24,
+    "total_actions": 19,
+    "scenario_counts": {
+      "delayed_monsoon": 3,
+      "early_season_dry_spell": 16,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 0
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell"
+    ],
+    "scenarios_missing": [
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ]
+  },
+  {
+    "state": "Sikkim",
+    "district": "East Sikkim",
+    "pages": 27,
+    "total_actions": 0,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 0,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 0
+    },
+    "scenarios_found": [],
+    "scenarios_missing": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ]
+  },
+  {
+    "state": "Tamil Nadu",
+    "district": "Ariyalur",
+    "pages": 24,
+    "total_actions": 49,
+    "scenario_counts": {
+      "delayed_monsoon": 8,
+      "early_season_dry_spell": 32,
+      "mid_season_break": 5,
+      "terminal_drought": 4,
+      "excess_rainfall_waterlogging": 0
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought"
+    ],
+    "scenarios_missing": [
+      "excess_rainfall_waterlogging"
+    ]
+  },
+  {
+    "state": "Tripura",
+    "district": "Dhalai",
+    "pages": 34,
+    "total_actions": 31,
+    "scenario_counts": {
+      "delayed_monsoon": 8,
+      "early_season_dry_spell": 12,
+      "mid_season_break": 0,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 11
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "mid_season_break",
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Uttar Pradesh",
+    "district": "Lucknow",
+    "pages": 17,
+    "total_actions": 16,
+    "scenario_counts": {
+      "delayed_monsoon": 3,
+      "early_season_dry_spell": 10,
+      "mid_season_break": 2,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 1
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "Uttarakhand",
+    "district": "Almora",
+    "pages": 38,
+    "total_actions": 59,
+    "scenario_counts": {
+      "delayed_monsoon": 11,
+      "early_season_dry_spell": 21,
+      "mid_season_break": 10,
+      "terminal_drought": 0,
+      "excess_rainfall_waterlogging": 17
+    },
+    "scenarios_found": [
+      "delayed_monsoon",
+      "early_season_dry_spell",
+      "mid_season_break",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "terminal_drought"
+    ]
+  },
+  {
+    "state": "West Bengal",
+    "district": "Alipurduar",
+    "pages": 22,
+    "total_actions": 19,
+    "scenario_counts": {
+      "delayed_monsoon": 0,
+      "early_season_dry_spell": 7,
+      "mid_season_break": 6,
+      "terminal_drought": 3,
+      "excess_rainfall_waterlogging": 3
+    },
+    "scenarios_found": [
+      "early_season_dry_spell",
+      "mid_season_break",
+      "terminal_drought",
+      "excess_rainfall_waterlogging"
+    ],
+    "scenarios_missing": [
+      "delayed_monsoon"
+    ]
+  }
+]

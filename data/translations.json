@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "languages": {
+    "en": "English",
+    "hi": "हिन्दी"
+  },
+  "actions": {
+    "protect_documents": {
+      "source_text": "Protect important documents and valuables",
+      "translations": {"hi": "महत्वपूर्ण दस्तावेज़ों और कीमती वस्तुओं को सुरक्षित रखें"},
+      "status": {"hi": "approved"}
+    },
+    "clear_drainage": {
+      "source_text": "Clear drainage channels",
+      "translations": {"hi": "जल निकासी नालियाँ साफ करें"},
+      "status": {"hi": "approved"}
+    },
+    "move_livestock_flood": {
+      "source_text": "Move livestock away from flood-prone areas",
+      "translations": {"hi": "पशुओं को बाढ़ संभावित क्षेत्रों से दूर ले जाएँ"},
+      "status": {"hi": "approved"}
+    },
+    "retransplant_dapog": {
+      "source_text": "Retransplanting through Dapog nursery if needed",
+      "translations": {"hi": "आवश्यकता होने पर डैपोग नर्सरी के माध्यम से दोबारा रोपाई करें"},
+      "status": {"hi": "machine_translated"}
+    },
+    "gap_filling_damage": {
+      "source_text": "Gap filling, if damage less than 20%",
+      "translations": {"hi": "क्षति 20% से कम होने पर खाली जगहों में पौधे लगाएँ"},
+      "status": {"hi": "machine_translated"}
+    },
+    "resow_drum_seeder": {
+      "source_text": "Resowing through drum seeder",
+      "translations": {"hi": "ड्रम सीडर के माध्यम से दोबारा बुवाई करें"},
+      "status": {"hi": "machine_translated"}
+    },
+    "harvest_maturity": {
+      "source_text": "Harvest at physiological maturity",
+      "translations": {"hi": "फसल को शारीरिक परिपक्वता पर काटें"},
+      "status": {"hi": "machine_translated"}
+    },
+    "safe_storage_transport": {
+      "source_text": "Storage and transportation at safer place",
+      "translations": {"hi": "भंडारण और परिवहन सुरक्षित स्थान पर करें"},
+      "status": {"hi": "machine_translated"}
+    },
+    "identify_higher_ground": {
+      "source_text": "Identify higher ground for livestock and equipment",
+      "translations": {"hi": "पशुओं और उपकरणों के लिए ऊँची जगह की पहचान करें"},
+      "status": {"hi": "machine_translated"}
+    },
+    "repair_bunds": {
+      "source_text": "Repair bunds after water recedes",
+      "translations": {"hi": "पानी उतरने के बाद खेत की मेड़ों की मरम्मत करें"},
+      "status": {"hi": "machine_translated"}
+    }
+  }
+}
