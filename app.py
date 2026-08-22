@@ -20,6 +20,7 @@ from rules import ScenarioClassifier
 from advisory import AdvisoryGenerator
 from utils import load_district_data, load_icar_data, get_district_list
 from i18n import LANGUAGES, category, display_action, option_labels, option_value, reason, risk_name, scenario_name, t
+from calibration import load_calibration, calibrate
 
 try:
     import folium

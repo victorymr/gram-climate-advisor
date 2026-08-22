@@ -78,6 +78,31 @@ Under the hood:
 - Every "Week N" in the tables, odds, and map is labelled with the **actual valid dates** (e.g.
   *Week 1 · Jul 12–18*), derived from the init date.
 
+### Forecast confidence — calibrated from the backtest
+
+The scenario **Confidence** (shown in the risk banner and on each scenario) is **measured, not
+assumed**. `india_forecasts/backtest/build_skill.py` scores the multi-model
+forecast the app ships against IMD gridded observations over the district backtest (2021–25,
+25 inits, 776 districts; see `india_forecasts/backtest/README.md`) and writes
+`data/forecast_skill.json`: per variable × lead-week × climate zone, the anomaly correlation (ACC),
+a **High / Medium / Low tier** (ACC ≥ 0.5 / ≥ 0.3 / below), and how often each displayed category
+("drier than normal", "warmer than normal", …) verified when it was forecast, against chance.
+
+Nationally, rainfall is High at week 1 and Low from week 2 on; temperature is High at week 1 and
+Medium through week 3. Zones differ (North India rainfall is only Medium even at week 1; South and
+West India keep Medium rainfall skill through week 4), so the tier is looked up for the district's
+zone and falls back to the national cell.
+
+This lives in the rule engine only (`src/skill.py`, `src/rules.py`); the app's UI is unchanged.
+Each scenario's `confidence` is the **weakest tier among the forecast weeks the classification
+rests on**: a dry-spell scenario justified by the observed deficit and the week-1 signal is High;
+one whose risk level was escalated by week-3/4 signals carries the week-3/4 tier. Official IMD
+warnings are always High. Each scenario also carries a `confidence_basis` list (the per-week
+justification) for downstream use. Without `forecast_skill.json` the engine falls back to the
+old lead-time heuristic.
+
+Refresh after re-running the backtest: `cd india_forecasts && python backtest/build_skill.py`.
+
 The app pins its working directory to its own location on startup and reads all data via
 repo-anchored paths, so `streamlit run app.py` works from any directory (the sidebar shows how many
 districts loaded). The clickable map and choropleth need `streamlit-folium` (in `requirements.txt`).
@@ -266,7 +291,7 @@ For detailed instructions, see [docs/admin_guide.md](docs/admin_guide.md).
 
 - **Overall risk level**: Low, Watch, Alert, Severe
 - **Scenario classification**: 6 climate risk scenarios
-- **Confidence scoring**: Based on data consistency
+- **Confidence scoring**: Measured forecast skill per lead week and climate zone (district backtest)
 - **Multi-source validation**: Cross-reference official sources
 
 ### Advisory Output

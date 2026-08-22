@@ -61,7 +61,14 @@ backtest/
   run_backtest.py      per init: download -> collapse to districts -> delete raw -> store
   build_truth.py       IMD rainfall + temp -> district weekly observed anomalies
   metrics.py           ACC/RMSE/CRPS(S)/Brier(SS)/reliability/rank-histogram
-  report.py            aggregate -> skill tables + plots
+  rereference.py       re-reference collapsed forecasts to each model's own climatology
+  plot_skill.py        skill-vs-lead plots (RMSE, BSS, before/after re-referencing)
+  mme_weights.py       GEFS:CFSv2 weight sweep (-> MME_WEIGHTS in forecast_region_s2s.py)
+  ec46_backtest.py     EC46 reforecast (2004-20) deterministic + ensemble skill
+  plot_compare.py      three-model skill comparison
+  bias_check.py        does model bias survive own-history referencing?
+  build_calibration.py reliability curves per threshold event x lead -> ../../data/calibration.json
+  build_skill.py       per lead-week x zone skill + confidence tiers   -> ../../data/forecast_skill.json
   collapsed/           kept per-init district member anomalies (small; git-ignored)
   truth/               kept per-valid-week district observed anomalies (small; git-ignored)
   scores/              output score tables
@@ -110,5 +117,20 @@ python backtest/sample_inits.py                 # (re)write inits.csv
 python backtest/run_backtest.py --limit 1       # measure/one-init smoke
 python backtest/run_backtest.py                 # all 50 (idempotent; skips done inits)
 python backtest/build_truth.py                  # IMD truth for the valid weeks
-python backtest/report.py                       # scores + plots
+python backtest/rereference.py                  # own-climatology reference -> collapsed_reref/
+BACKTEST_COLL=backtest/collapsed_reref python backtest/metrics.py   # scores/
+python backtest/plot_skill.py                   # plots/
+python backtest/build_calibration.py            # -> data/calibration.json (odds calibration)
+python backtest/build_skill.py                  # -> data/forecast_skill.json (confidence tiers)
 ```
+
+## What feeds the app
+
+- `data/calibration.json` — maps each raw ensemble probability (per threshold event x lead) to
+  how often it verified; applied to the Source Data odds.
+- `data/forecast_skill.json` — per variable x lead-week x climate zone: ACC, RMSESS, a
+  High/Medium/Low tier (ACC >= 0.5 / >= 0.3 / below) and the verified rate of each displayed
+  category vs chance. Drives the per-week outlook confidence and the scenario confidence
+  (`src/skill.py`, `src/rules.py`). Scores the MME_WEIGHTS-weighted GEFS+CFSv2 blend the app
+  ships; EC46 joins the live blend but has no 2021-25 reforecast (its 2004-20 skill is recorded
+  under `models` for comparison).

@@ -1,5 +1,7 @@
 from typing import Dict, List, Any, Tuple
 
+from skill import load_skill, district_zone, week_tier, weakest, describe
+
 class ScenarioClassifier:
     """Classifies climate risk scenarios based on forecast data and user context."""
     
@@ -83,13 +85,14 @@ class ScenarioClassifier:
             risk_level = "Watch"
         
         # Determine confidence
-        confidence = self._calculate_confidence(forecast, "heat_stress")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "heat_stress", risk_level)
         
         return {
             "scenario": "heat_stress",
             "display_name": "Heat stress",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_heat_stress_reasons(forecast),
             "source_layer": ["IMD forecast products"]
         }
@@ -120,13 +123,14 @@ class ScenarioClassifier:
         else:
             risk_level = "Watch"
         
-        confidence = self._calculate_confidence(forecast, "delayed_monsoon")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "delayed_monsoon", risk_level)
         
         return {
             "scenario": "delayed_monsoon",
             "display_name": "Delayed monsoon / delayed sowing",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_delayed_monsoon_reasons(forecast),
             "source_layer": ["IMD rainfall status", "IMD extended range forecast", "ICAR district contingency plan"]
         }
@@ -161,13 +165,14 @@ class ScenarioClassifier:
         else:
             risk_level = "Watch"
         
-        confidence = self._calculate_confidence(forecast, "early_season_dry_spell")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "early_season_dry_spell", risk_level)
         
         return {
             "scenario": "early_season_dry_spell",
             "display_name": "Early-season dry spell",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_early_season_dry_spell_reasons(forecast, user_context),
             "source_layer": ["IMD observed rainfall", "IMD forecast", "ICAR district contingency plan"]
         }
@@ -204,13 +209,14 @@ class ScenarioClassifier:
         else:
             risk_level = "Watch"
         
-        confidence = self._calculate_confidence(forecast, "mid_season_break")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "mid_season_break", risk_level)
         
         return {
             "scenario": "mid_season_break",
             "display_name": "Mid-season monsoon break",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_mid_season_break_reasons(forecast, user_context),
             "source_layer": ["IMD observed rainfall", "IMD forecast", "ICAR district contingency plan"]
         }
@@ -243,13 +249,14 @@ class ScenarioClassifier:
         else:
             risk_level = "Watch"
         
-        confidence = self._calculate_confidence(forecast, "terminal_drought")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "terminal_drought", risk_level)
         
         return {
             "scenario": "terminal_drought",
             "display_name": "Terminal drought / early withdrawal risk",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_terminal_drought_reasons(forecast, user_context),
             "source_layer": ["IMD observed rainfall", "IMD forecast", "ICAR district contingency plan"]
         }
@@ -293,24 +300,103 @@ class ScenarioClassifier:
         else:
             risk_level = "Watch"
         
-        confidence = self._calculate_confidence(forecast, "excess_rainfall_waterlogging")
+        confidence, confidence_basis = self._calculate_confidence(forecast, "excess_rainfall_waterlogging", risk_level)
         
         return {
             "scenario": "excess_rainfall_waterlogging",
             "display_name": "Excess rainfall / waterlogging",
             "risk_level": risk_level,
             "confidence": confidence,
+            "confidence_basis": confidence_basis,
             "reasons": self._get_excess_rainfall_reasons(forecast),
             "source_layer": ["IMD heavy rainfall warnings", "IMD extended range forecast"]
         }
     
-    def _calculate_confidence(self, forecast: Dict[str, Any], scenario: str) -> str:
-        """Calculate confidence based on forecast lead time.
-        
+    # Scenarios triggered by the week-1 below-normal rainfall signal whose risk level the
+    # weeks-2-4 outlook can escalate, with the observed-departure field and threshold that
+    # justifies "Alert" on its own (then no forecast beyond week 1 is needed).
+    _DRY_SCENARIOS = {
+        "delayed_monsoon": ("rainfall_since_june_1_pct_departure", -35),
+        "early_season_dry_spell": ("rainfall_last_14_days_pct_departure", -40),
+        "mid_season_break": ("rainfall_last_14_days_pct_departure", -50),
+        "terminal_drought": ("rainfall_last_14_days_pct_departure", -50),
+    }
+
+    def _forecast_evidence(self, forecast: Dict[str, Any], scenario: str,
+                           risk_level: str) -> Tuple[List[Tuple[str, int, str]], bool]:
+        """The forecast signals a classification rests on.
+
+        Returns ([(variable, week, category), ...], official): the minimal set of forecast
+        weeks needed to justify the assigned risk level (mirroring the rule branches above),
+        and whether an official IMD warning alone justifies the call.
+        """
+        traj = self._get_weekly_trajectory(forecast)
+        dry = [w for w in (1, 2, 3, 4) if traj[f"wk{w}"] <= -3.0]
+        wet = [w for w in (1, 2, 3, 4) if traj[f"wk{w}"] >= 3.0]
+
+        if scenario == "heat_stress":
+            if forecast.get("heat_wave_warning", False):
+                return [], True
+            return [("t2m", 1, "above")], False             # week-1 tmax signal
+
+        if scenario in self._DRY_SCENARIOS:
+            weeks = [1]                                     # week-1 below-normal trigger
+            field, level = self._DRY_SCENARIOS[scenario]
+            if risk_level == "Severe":
+                weeks = dry[:3] or [1]                      # persistent_dry: 3+ dry weeks
+            elif risk_level == "Alert" and forecast.get(field, 0) > level:
+                weeks = dry[:2] or [1]                      # escalated by below_count >= 2
+            return [("precip", w, "below") for w in weeks], False
+
+        if scenario == "excess_rainfall_waterlogging":
+            if forecast.get("heavy_rain_warning", False):
+                return [], True
+            anoms = traj["anomalies"]
+            peak = anoms.index(max(anoms)) + 1
+            if risk_level == "Alert" and max(anoms) < 10.0:
+                weeks = wet[:3] or [peak]                   # persistent_wet escalation
+            else:
+                weeks = [peak]                              # the +7 / +10 mm/day week
+            return [("precip", w, "heavy" if anoms[w - 1] >= 7.0 else "above")
+                    for w in weeks], False
+        return [], False
+
+    def _calculate_confidence(self, forecast: Dict[str, Any], scenario: str,
+                              risk_level: str = "Watch") -> Tuple[str, List[str]]:
+        """Confidence of a classification = measured skill of the forecast weeks it rests on.
+
+        data/forecast_skill.json (from the district backtest, per lead-week and climate
+        zone) gives each forecast week a High/Medium/Low tier. The confidence is the
+        WEAKEST tier among the contributing weeks, so a risk level escalated by a week-3/4
+        signal is labelled with week-3/4 skill rather than week 1's. Official IMD warnings
+        are High. Returns (tier, basis) where basis lists the plain-language justification.
+        Without the skill table it falls back to the lead-time heuristic (empty basis).
+        """
+        evidence, official = self._forecast_evidence(forecast, scenario, risk_level)
+        if official:
+            return "High", ["Official IMD warning in effect"]
+        skill = load_skill()
+        if not skill:
+            return self._heuristic_confidence(forecast, scenario), []
+        zone = district_zone(forecast.get("state"), forecast.get("district"))
+        tiers, basis = [], []
+        for var, week, cat in evidence:
+            tiers.append(week_tier(skill, var, week, zone))
+            line = describe(skill, var, week, zone, cat)
+            if line:
+                basis.append(line)
+        tier = weakest(tiers)
+        if tier is None:
+            return self._heuristic_confidence(forecast, scenario), []
+        return tier, basis
+
+    def _heuristic_confidence(self, forecast: Dict[str, Any], scenario: str) -> str:
+        """Lead-time heuristic used only when no skill table is available.
+
         Extended range forecast skill degrades with lead time:
         - Week 1-2 signals → High confidence
         - Week 3-4 signals only → Medium confidence
-        
+
         For scenarios that also use observed data (rainfall departure,
         heat wave warnings), the observed component is always High.
         """
