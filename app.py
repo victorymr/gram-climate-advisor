@@ -438,7 +438,42 @@ def _enriched_geojson(variable_key, week, source_key):
 
 # Language selector. Internal forecast keys and scenario logic remain English;
 # only presentation text changes with this selection.
-language_label = st.sidebar.selectbox(t("language"), list(LANGUAGES.keys()), index=0)
+# --- Deep links --------------------------------------------------------------
+# ?state=Bihar&district=Gaya&lang=hi[&user=farmer&crop=rice&irrigation=rainfed&stage=vegetative]
+# pre-selects the sidebar and shows the advisory straight away. Params are read ONCE
+# (first run) into session_state and only seed each widget's initial index, so later
+# changes by the user are never overridden; _sync_query_params() then keeps the address
+# bar equal to the current selection, so it is always a shareable link. Matching is
+# case/space-insensitive (?district=gaya, ?state=uttar-pradesh both resolve).
+DEEPLINK_KEYS = ("state", "district", "lang", "user", "crop", "irrigation", "stage")
+
+
+def _match_option(value, options):
+    """Index of the option whose normalised form equals value (None if absent/unmatched)."""
+    if value is None or value == "":
+        return None
+    n = _mnorm(value)
+    return next((i for i, o in enumerate(options) if _mnorm(o) == n), None)
+
+
+if "deeplink" not in st.session_state:
+    st.session_state["deeplink"] = {k: str(st.query_params.get(k)).strip()
+                                    for k in DEEPLINK_KEYS if st.query_params.get(k)}
+DEEPLINK = st.session_state["deeplink"]
+
+
+def _dl_index(key, options, offset=0, default=0):
+    """Initial selectbox index for a deep-linked value: position in `options` (+offset
+    when the widget prepends extra entries such as 'Not specified'), else default."""
+    i = _match_option(DEEPLINK.get(key), options)
+    return default if i is None else i + offset
+
+
+_lang_labels = list(LANGUAGES.keys())
+_lang_idx = _match_option(DEEPLINK.get("lang"), _lang_labels)            # 'हिन्दी' / 'English'
+if _lang_idx is None:
+    _lang_idx = _match_option(DEEPLINK.get("lang"), [LANGUAGES[l] for l in _lang_labels])  # 'hi' / 'en'
+language_label = st.sidebar.selectbox(t("language"), _lang_labels, index=_lang_idx or 0)
 language = LANGUAGES[language_label]
 
 # App header
@@ -489,10 +524,12 @@ if input_mode == "Map" and _HAS_MAP:
         selected_state = selected_district = None
         st.sidebar.caption("👉 Click a district on the map in the main panel.")
 else:
-    selected_state = st.sidebar.selectbox(t("select_state", language), states)
+    selected_state = st.sidebar.selectbox(t("select_state", language), states,
+                                          index=_dl_index("state", states))
     state_districts = [d for d in districts if d['state'] == selected_state]
     district_names = sorted([d['district'] for d in state_districts])
-    selected_district = st.sidebar.selectbox(t("select_district", language), district_names)
+    selected_district = st.sidebar.selectbox(t("select_district", language), district_names,
+                                             index=_dl_index("district", district_names))
 
 st.sidebar.markdown(f"### {escape(t('context', language))}")
 
@@ -506,7 +543,8 @@ user_types = [
     "Health worker"
 ]
 selected_user_type_label = st.sidebar.selectbox(
-    t("user_type", language), option_labels("user_type", user_types, language)
+    t("user_type", language), option_labels("user_type", user_types, language),
+    index=_dl_index("user", user_types),
 )
 selected_user_type = option_value("user_type", selected_user_type_label, language)
 
@@ -515,7 +553,8 @@ crop_types = [
     "Rice", "Maize", "Wheat", "Pulses", "Oilseeds", "Cotton", 
     "Sugarcane", "Vegetables", "Other"
 ]
-selected_crop = st.sidebar.selectbox(t("crop_type", language), [t("not_specified", language)] + crop_types)
+selected_crop = st.sidebar.selectbox(t("crop_type", language), [t("not_specified", language)] + crop_types,
+                                     index=_dl_index("crop", crop_types, offset=1))
 
 # Irrigation status
 irrigation_status = [
@@ -525,7 +564,8 @@ irrigation_status = [
     "Unknown"
 ]
 selected_irrigation_label = st.sidebar.selectbox(
-    t("irrigation", language), option_labels("irrigation", irrigation_status, language)
+    t("irrigation", language), option_labels("irrigation", irrigation_status, language),
+    index=_dl_index("irrigation", irrigation_status),
 )
 selected_irrigation = option_value("irrigation", selected_irrigation_label, language)
 
@@ -539,7 +579,8 @@ crop_stages = [
     "Unknown"
 ]
 crop_stage_labels = [t("not_specified", language)] + option_labels("crop_stage", crop_stages, language)
-selected_crop_stage_label = st.sidebar.selectbox(t("crop_stage", language), crop_stage_labels)
+selected_crop_stage_label = st.sidebar.selectbox(t("crop_stage", language), crop_stage_labels,
+                                                 index=_dl_index("stage", crop_stages, offset=1))
 selected_crop_stage = (
     option_value("crop_stage", selected_crop_stage_label, language)
     if selected_crop_stage_label != t("not_specified", language)
@@ -559,6 +600,35 @@ show_actions = st.sidebar.checkbox(
 # from the current sidebar selections on every run, so it always stays in sync.
 if st.sidebar.button(t("get_advisory", language), type="primary", use_container_width=True):
     st.session_state["advisory_shown"] = True
+
+# A deep link that resolved to a real district shows the advisory without a click (once).
+if DEEPLINK.get("district") and not st.session_state.get("deeplink_applied"):
+    st.session_state["deeplink_applied"] = True
+    if selected_district and _mnorm(selected_district) == _mnorm(DEEPLINK["district"]) and \
+            (not DEEPLINK.get("state") or _mnorm(selected_state) == _mnorm(DEEPLINK["state"])):
+        st.session_state["advisory_shown"] = True
+
+
+def _sync_query_params():
+    """Keep the URL a shareable link to what is on screen: always state/district/lang,
+    plus the context fields only when they differ from their defaults."""
+    want = {}
+    if selected_state and selected_district:
+        want["state"], want["district"] = selected_state, selected_district
+    want["lang"] = language
+    if selected_user_type != user_types[0]:
+        want["user"] = selected_user_type
+    if selected_crop != t("not_specified", language):
+        want["crop"] = selected_crop
+    if selected_irrigation != irrigation_status[0]:
+        want["irrigation"] = selected_irrigation
+    if selected_crop_stage != t("not_specified", language):
+        want["stage"] = selected_crop_stage
+    if st.query_params.to_dict() != want:
+        st.query_params.from_dict(want)
+
+
+_sync_query_params()
 
 # --- Clickable district map (Map mode): click a district -> select + show advisory ---
 if input_mode == "Map" and _HAS_MAP:

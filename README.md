@@ -117,6 +117,29 @@ If these keys are absent (e.g. a fresh IMD-only `district_forecasts.json` from `
 the app falls back to the numeric outlook and hides the switcher/odds — so the model layer is fully
 optional.
 
+## 🔗 Deep links
+
+The app reads URL query parameters, so you can send someone straight to a district, language
+and context — the advisory renders without a click:
+
+```
+http://localhost:8501/?state=Bihar&district=Gaya&lang=hi
+http://localhost:8501/?state=uttar-pradesh&district=varanasi&user=farmer&crop=rice&irrigation=rainfed&stage=vegetative
+```
+
+| param | values | notes |
+|---|---|---|
+| `state`, `district` | names as in the app | case/space/hyphen-insensitive |
+| `lang` | `en`, `hi` | |
+| `user` | Farmer, Livestock owner, Outdoor worker, Village official, NGO / extension worker, Health worker | |
+| `crop` | Rice, Maize, Wheat, Pulses, Oilseeds, Cotton, Sugarcane, Vegetables, Other | |
+| `irrigation` | Rainfed, Partial irrigation, Assured irrigation, Unknown | |
+| `stage` | Not sown, Recently sown, Vegetative, Flowering / reproductive, Harvesting, Unknown | |
+
+Parameters only seed the initial selection — anything the user changes afterwards wins — and
+the address bar is kept in sync with the current selection, so it is always a shareable link.
+Unmatched values fall back to the defaults without an error.
+
 ## 📁 Project Structure
 
 ```
