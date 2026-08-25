@@ -511,6 +511,9 @@ else:
 input_mode_label = st.sidebar.radio(
     t("select_by", language), [t("dropdowns", language), t("map", language)],
     horizontal=True, disabled=not _HAS_MAP,
+    # Map is the default when available; a deep-linked district needs the dropdowns,
+    # which are what the URL parameters pre-select.
+    index=1 if (_HAS_MAP and not DEEPLINK.get("district")) else 0,
     help=None if _HAS_MAP else "Install streamlit-folium to enable the map.",
 )
 input_mode = "Map" if input_mode_label == t("map", language) else "Dropdowns"
