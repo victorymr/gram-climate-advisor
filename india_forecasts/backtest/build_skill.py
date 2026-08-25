@@ -104,6 +104,10 @@ def cell(g, fcol):
     rec = {"n": int(np.isfinite(f).sum()),
            "acc": round(_acc(f, o), 3), "rmsess": round(_rmsess(f, o), 3)}
     rec["tier"] = tier_for(rec["acc"])
+    if "src" in g:                       # per-period ACC alongside the pooled number
+        for src, sg in g.groupby("src"):
+            rec[f"acc_{src}"] = round(_acc(sg[fcol].to_numpy(float), sg["obs"].to_numpy(float)), 3)
+            rec[f"n_{src}"] = int(np.isfinite(sg[fcol].to_numpy(float)).sum())
     cats = {}
     for name, fn in CATEGORIES[var].items():
         fc_in, ob_in = fn(f), fn(o)
@@ -130,6 +134,14 @@ def model_acc_table(df):
         out["ec46_2004_2020"] = {var: {str(int(r.week)): round(float(r.acc), 3)
                                        for r in e[e.variable == var].itertuples()}
                                  for var in ("precip", "t2m")}
+    if "src" in df:
+        for src, label in (("op", "op_2021_2025"), ("refc", "gefs_refc_2000_2019")):
+            sub = df[df.src == src]
+            if len(sub):
+                out[label] = {var: {str(int(w)): round(_acc(g["mme_w"].to_numpy(float),
+                                                            g["obs"].to_numpy(float)), 3)
+                                    for w, g in sub[sub.variable == var].groupby("week")}
+                              for var in ("precip", "t2m")}
     return out
 
 
@@ -143,6 +155,23 @@ def main():
     wg, wc = MME_WEIGHTS["gefs"], MME_WEIGHTS["cfsv2"]
     c = df["cfsv2"].where(np.isfinite(df["cfsv2"]), df["gefs"])
     df["mme_w"] = (wg * df["gefs"] + wc * c) / (wg + wc)
+    df["src"] = "op"
+
+    # Pool in the GEFSv12 reforecast backtest (2000-2019, 11-member, LOO own-clim) when
+    # its collapsed+truth data exist. Its ensemble mean stands in for the shipped MME
+    # (the weight sweep put the optimum at ~0.9-1.0 GEFS, i.e. ~GEFS alone), so pooling
+    # is consistent; the per-period ACCs are kept alongside for transparency.
+    try:
+        import score_reforecast
+        rdf = score_reforecast.load_pairs_refc()
+        rdf["mme_w"] = rdf["gefs"]
+        rdf["src"] = "refc"
+        df = pd.concat([df, rdf], ignore_index=True)
+        print(f"pooled with reforecast: +{len(rdf):,} samples "
+              f"({rdf['init'].nunique()} inits {rdf['year'].min()}-{rdf['year'].max()})")
+    except Exception as e:
+        print(f"(no reforecast pairs pooled: {type(e).__name__}: {str(e)[:120]})")
+
     n_inits, years = df["init"].nunique(), sorted(df["year"].unique())
     print(f"{len(df):,} samples, {n_inits} inits {years[0]}-{years[-1]}, "
           f"{df['district'].nunique()} districts; GEFS:CFSv2 weight {wg}:{wc}")
@@ -166,11 +195,23 @@ def main():
                 **{f"{cn}_hit": cv.get("hit_rate") for cn, cv in rec["categories"].items()},
                 **{f"{cn}_base": cv["base_rate"] for cn, cv in rec["categories"].items()}))
 
+    enso = {}
+    if "enso" in df:
+        for (ph, var, wk), g in df.dropna(subset=["enso"]).groupby(["enso", "variable", "week"]):
+            if len(g) < MIN_N:
+                continue
+            enso.setdefault(ph, {}).setdefault(var, {})[str(int(wk))] = {
+                "acc": round(_acc(g["mme_w"].to_numpy(float), g["obs"].to_numpy(float)), 3),
+                "n": int(len(g)),
+                "n_seasons": int(g["year"].nunique())}
+
     out = {
         "_meta": {
             "source": f"District backtest: GEFS 31-member ensemble mean + CFSv2, weighted "
-                      f"{wg}:{wc} as in the live MME, own-climatology referenced; truth = IMD "
-                      f"gridded rainfall/temperature (weekly anomalies vs day-of-year normal).",
+                      f"{wg}:{wc} as in the live MME, own-climatology referenced, pooled with "
+                      f"the GEFSv12 11-member reforecast (2000-2019, LOO own-climatology); "
+                      f"truth = IMD gridded rainfall/temperature (weekly anomalies vs "
+                      f"day-of-year normal).",
             "period": f"{years[0]}-{years[-1]}, {n_inits} inits (May-Sep), "
                       f"{df['district'].nunique()} districts",
             "tier_rule": {"metric": "acc", **TIER_RULE, "else": "Low"},
@@ -187,6 +228,7 @@ def main():
         "weeks": WEEKS,
         "national": national,
         "zones": zones,
+        "enso": enso,
         "models": model_acc_table(df),
     }
     OUT.write_text(json.dumps(out, indent=1))

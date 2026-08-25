@@ -39,9 +39,13 @@ def fired(fc, ctx=FARMER):
 # ----------------------------------------------------------------- skill table
 def test_skill_table_present_and_decays_with_lead():
     assert SKILL and SKILL["national"]["precip"] and SKILL["national"]["t2m"]
+    rank = {"High": 3, "Medium": 2, "Low": 1}
     for var in ("precip", "t2m"):
-        assert week_tier(SKILL, var, 1) == "High"
+        # data assertion kept loose: the exact week-1 tier moves with the backtest sample
+        # (25-init 2021-25: High; pooled with the 2000-19 reforecast: precip 0.496 -> Medium)
+        assert rank[week_tier(SKILL, var, 1)] >= 2
         assert week_tier(SKILL, var, 5) == "Low"
+        assert rank[week_tier(SKILL, var, 1)] >= rank[week_tier(SKILL, var, 5)]
         accs = [week_skill(SKILL, var, w)["acc"] for w in (1, 2, 3, 4, 5)]
         assert accs[0] == max(accs) and accs[-1] < accs[0]
 
@@ -79,13 +83,14 @@ def test_district_zone_lookup():
 
 
 # --------------------------------------------------------- rule-engine confidence
-def test_week1_only_evidence_is_high():
-    # Alert justified by the observed departure alone -> only week 1 is forecast evidence
+def test_week1_only_evidence_takes_week1_tier():
+    # Alert justified by the observed departure alone -> only week 1 is forecast evidence,
+    # so confidence must equal the table's week-1 tier (whatever the current table says).
     s = fired(base_fc(monsoon_onset_status="delayed", rainfall_since_june_1_pct_departure=-40,
                       week1_rainfall_signal="below_normal", week1_rainfall_anomaly_mm_day=-4))
     dm = s["delayed_monsoon"]
     assert dm["risk_level"] == "Alert"
-    assert dm["confidence"] == week_tier(SKILL, "precip", 1) == "High"
+    assert dm["confidence"] == week_tier(SKILL, "precip", 1)
     assert len(dm["confidence_basis"]) == 1 and dm["confidence_basis"][0].startswith("Week 1 rainfall")
 
 
