@@ -96,6 +96,11 @@ python download_gefs.py --date 2026-06-29 --members all    # each member -> *_in
 APCP arrives in accumulation buckets (summed per week by default); pass
 `--precip-accum cumulative` if your build serves run-accumulated APCP.
 
+Lead coverage is **verified**: Herbie silently drops any lead whose S3 probe was throttled, which
+once produced a 3-week "35-day" mean; unresolved leads are now re-probed and a forecast short of
+35 days is refused (`--allow-partial` overrides), so a truncated file is never written or cached.
+A previously saved partial member is detected and re-fetched on the next `--members` run.
+
 `--members all` (c00 + p01..p30) writes a **member-resolved** weekly file
 `data/gefs/gefs_<date>_india_weekly_members.nc` (dims `member,week,lat,lon`) — the ensemble used
 for probabilistic odds below. It is **resumable**: each member is saved as it lands (cached members
