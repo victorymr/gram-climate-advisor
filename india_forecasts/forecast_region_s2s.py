@@ -94,12 +94,36 @@ def _init_of(path):
         return str(ds.attrs.get("init_date", "")) or None
 
 
-def _file_for_init(sub, init):
-    """Weekly file in data/<sub>/ whose filename init matches, else None."""
+# EC46 comes from Open-Meteo's LIVE run, so its cycle date can't be pinned to an arbitrary
+# (older) GEFS/CFSv2 init -- match its file within a few days of the target init (a small
+# weekly-window offset, negligible for weekly means). Archived models require an exact init.
+MODEL_INIT_TOLERANCE = {"EC46": 5}   # days
+
+
+def _nearest_within(cands, init, tol):
+    """From [(path, 'YYYYMMDD')], the path nearest to `init` within `tol` days, or None."""
+    if tol <= 0 or not cands:
+        return None
+    tgt = pd.Timestamp(init)
+    near = sorted((abs((pd.Timestamp(d) - tgt).days), f, d) for f, d in cands)
+    return near[0] if near and near[0][0] <= tol else None
+
+
+def _file_for_init(sub, init, tol=0):
+    """Weekly file in data/<sub>/ whose filename init == `init`; else the nearest within
+    `tol` days (for live models like EC46 whose cycle date can't match an older init)."""
+    cands = []
     for f in sorted(glob.glob(str(DATA_DIR / sub / "*_india_weekly.nc"))):
         m = re.search(r"_(\d{8})_india_weekly", os.path.basename(f))
-        if m and m.group(1) == init:
+        if not m:
+            continue
+        if m.group(1) == init:
             return f
+        cands.append((f, m.group(1)))
+    hit = _nearest_within(cands, init, tol)
+    if hit:
+        print(f"  {sub}: no {init} file; using nearest {hit[2]} (offset {hit[0]}d)")
+        return hit[1]
     return None
 
 
@@ -121,12 +145,14 @@ def discover_models(explicit, init):
                  "Run the download_*.py scripts first.")
     target = init or max(_init_of(p) for p in newest.values() if _init_of(p))
 
-    # for that init, pick EACH dir's matching file (a dir may hold a newer init too)
-    specs = [(name, _file_for_init(sub, target))
-             for name, sub in MODEL_DIRS.items() if _file_for_init(sub, target)]
+    # for that init, pick EACH dir's matching file (a dir may hold a newer init too; EC46
+    # is matched with tolerance since its live cycle date rarely equals an older GEFS init)
+    picks = {name: _file_for_init(sub, target, MODEL_INIT_TOLERANCE.get(name, 0))
+             for name, sub in MODEL_DIRS.items()}
+    specs = [(name, p) for name, p in picks.items() if p]
     if not specs:
         sys.exit(f"No weekly files for init {target} in data/{{gefs,cfsv2,ec46}}/.")
-    missing = [n for n, sub in MODEL_DIRS.items() if n in newest and not _file_for_init(sub, target)]
+    missing = [n for n in MODEL_DIRS if n in newest and not picks.get(n)]
     if missing:
         print(f"  init {target}: using {[n for n, _ in specs]}; no {target} file for {missing}")
     return specs, target
@@ -167,18 +193,89 @@ def resolve_geom(gadm, state, district, lat, lon):
 VARS = {"t2m": "t2m_anom_degC", "precip": "precip_anom_mm_day"}
 
 
-def load_anomaly_grids(specs, clim_path):
-    """Return {model_name: {var: weekly anomaly DataArray}} on each model's grid."""
-    clim = xr.open_dataset(clim_path)
+# Guards on using a model's own climatology (see model_clim): the nearest DOY node must
+# be close enough to be representative, and built from enough inits to be stable.
+MODEL_CLIM_MAX_DOY_GAP = 20      # days
+MODEL_CLIM_MIN_SAMPLES = 5       # inits pooled into that node
+
+
+def model_clim(model_name, init, fallback):
+    """Climatology to anomalise `model_name` against -> (dataset, label).
+
+    Prefers the model's OWN climatology (data/clim/<model>_model_clim.nc, built by
+    build_model_clim.py), selected at the nearest init day-of-year. This removes the
+    model's mean offset vs ERA5, so the anomaly -- and the "wetter / drier than normal"
+    wording it drives -- reflects the model against its own history. The backtest showed
+    why this matters: against the shared ERA5 climatology CFSv2 carried a -1.9 mm/day dry
+    offset and called weeks "drier than normal" 58% of the time vs a 46% base rate.
+
+    Falls back to the shared ERA5 climatology for any model with no hindcast-based
+    climatology (e.g. EC46, whose Open-Meteo feed is forecast-only).
+    """
+    key = str(model_name).split()[0].lower()
+    p = DATA_DIR / "clim" / f"{key}_model_clim.nc"
+    if not p.exists():
+        return fallback, "ERA5"
+    mc = xr.open_dataset(p)
+    if "doy" not in mc.dims or mc.sizes.get("doy", 0) == 0:
+        return fallback, "ERA5"
+    doy = int(pd.Timestamp(init).dayofyear)
+    nodes = mc["doy"].values.astype(float)
+    dist = np.minimum(np.abs(nodes - doy), 365.25 - np.abs(nodes - doy))
+    i = int(dist.argmin())
+    node, gap = int(nodes[i]), float(dist[i])
+    # Guards -- a partially-built climatology must not be used silently. Snapping to a
+    # node months away (or one averaged from a couple of inits) would be worse than the
+    # shared ERA5 reference, so fall back rather than pretend.
+    if gap > MODEL_CLIM_MAX_DOY_GAP:
+        return fallback, f"ERA5 ({key} clim has no node within {MODEL_CLIM_MAX_DOY_GAP}d of doy {doy})"
+    nsamp = int(mc["n_samples"].sel(doy=node).values) if "n_samples" in mc else None
+    if nsamp is not None and nsamp < MODEL_CLIM_MIN_SAMPLES:
+        return fallback, f"ERA5 ({key} clim doy {node} has only {nsamp} samples)"
+    return mc.sel(doy=node), f"{key} own (doy {node}, n={nsamp})"
+
+
+# Multi-model-mean weights (case-insensitive name prefix; default 1.0). CFSv2 is heavily
+# down-weighted: the district backtest found its skill <= climatology at every lead even
+# after per-model bias removal (its operational chain dates to ~2011), so an equal-weight
+# mean scored worse than GEFS alone -- down-weighting CFSv2 flipped several leads from
+# negative to positive RMSE skill. Backtest-optimal GEFS:CFSv2 was ~16:1; 0.1 keeps a
+# little week-1 ensemble diversity. GEFS and EC46 (ECMWF extended, a top S2S performer)
+# keep full weight; EC46's weight is not backtest-validated (no hindcast) but it is a
+# trusted global ensemble. Only affects the MME mean -- the odds pool real ensemble
+# members (GEFS/EC46), and CFSv2 has no members so it never entered the odds.
+MME_WEIGHTS = {"gefs": 1.0, "ec46": 1.0, "cfsv2": 0.1}
+
+# Physically-plausible weekly-mean anomaly limits; per-model values are clipped to these
+# before the MME (see the clip note where it's applied).
+ANOM_CLIP = {"precip": 50.0, "t2m": 15.0}
+
+
+def mme_weight(model_name):
+    key = str(model_name).split()[0].lower()
+    for k, w in MME_WEIGHTS.items():
+        if key.startswith(k):
+            return w
+    return 1.0
+
+
+def load_anomaly_grids(specs, clim_path, init=None):
+    """Return {model_name: {var: weekly anomaly DataArray}} on each model's grid.
+
+    Each model is anomalised against its own climatology when one exists, else the
+    shared ERA5 climatology (see model_clim)."""
+    era5 = xr.open_dataset(clim_path)
     grids = {}
     for name, path in specs:
         ds = xr.open_dataset(path)
+        clim, label = model_clim(name, init, era5) if init else (era5, "ERA5")
         gv = {}
         for var in VARS:
             if var in ds and var in clim:
                 gv[var] = anomalise(ds[var], clim[var])
         if gv:
             grids[name] = gv
+            print(f"  {name}: anomalies vs {label}")
         else:
             print(f"  warning: {name} has none of {list(VARS)}; skipped")
     if not grids:
@@ -221,55 +318,82 @@ def find_member_files(init, explicit=None):
         return [("members", explicit)]
     out = []
     for name, sub in MODEL_DIRS.items():
-        for f in sorted(glob.glob(str(DATA_DIR / sub / f"*_{init}_india_weekly_members.nc"))):
-            out.append((name, f))
+        exact = sorted(glob.glob(str(DATA_DIR / sub / f"*_{init}_india_weekly_members.nc")))
+        if exact:
+            out.append((name, exact[0]))
+            continue
+        # EC46 members: accept the nearest within tolerance (its live cycle date rarely
+        # equals an older GEFS/CFSv2 init) so its ensemble still feeds the odds.
+        cands = []
+        for f in glob.glob(str(DATA_DIR / sub / "*_india_weekly_members.nc")):
+            m = re.search(r"_(\d{8})_india_weekly_members", os.path.basename(f))
+            if m:
+                cands.append((f, m.group(1)))
+        hit = _nearest_within(cands, init, MODEL_INIT_TOLERANCE.get(name, 0))
+        if hit:
+            out.append((name, hit[1]))
     return out
 
 
 def compute_probs(member_files, clim_path, districts, gadm, init):
     """Per district/week threshold-exceedance probabilities from the POOLED multi-model
-    ensemble. Each model's members are anomalised vs the ERA5 weekly clim and region-
-    collapsed; members are pooled across whichever models are available for this init, and
-    the fraction crossing each threshold is the forecast probability."""
-    clim = xr.open_dataset(clim_path)
+    ensemble. Each model's members are anomalised vs that model's OWN climatology when one
+    exists (else the shared ERA5 clim -- see model_clim) and region-collapsed; members are
+    pooled across whichever models are available for this init, and the fraction crossing
+    each threshold is the forecast probability."""
+    era5 = xr.open_dataset(clim_path)
     models = []
     for mname, path in member_files:
         ds = xr.open_dataset(path)
+        clim, label = model_clim(mname, init, era5)
         anom = {v: anomalise(ds[v], clim[v]) for v in VARS if v in ds and v in clim}
         if anom:
             models.append((mname, anom))
+            print(f"  odds: {mname} members vs {label}")
     rows = []
     for _, d in districts.iterrows():
         state, name = d["state"], d["district"]
         geom, _ = resolve_geom(gadm, state, name, d["latitude"], d["longitude"])
-        pooled = {"precip": {}, "t2m": {}}   # var -> {week: [member values...]}
-        contrib = set()
+        # keep each model's members separate so the threshold probability is a WEIGHTED
+        # mean of the per-model exceedance fractions (MME_WEIGHTS), rather than a raw pool
+        # -- otherwise a model just contributes in proportion to its member count.
+        pmv = {}                             # model -> {var: {week: np.array(member vals)}}
+        weeks_seen = set()
         for mname, anom in models:
+            mv = pmv.setdefault(mname, {"precip": {}, "t2m": {}})
             for v, a in anom.items():
                 lon, lat = _lonlat(a)
                 w, _, _ = region_weights(a[lat].values, a[lon].values, lat, lon, geom)
                 coll = a.weighted(w.fillna(0.0)).mean((lat, lon))    # (member, week)
                 for wk in coll["week"].values:
                     vals = np.asarray(coll.sel(week=int(wk)).values).ravel()
-                    pooled[v].setdefault(int(wk), []).extend(vals[np.isfinite(vals)].tolist())
-                contrib.add(mname)
-        for w in sorted(pooled["precip"].keys()):
-            pa = np.array(pooled["precip"].get(w, []))
-            ta = np.array(pooled["t2m"].get(w, []))
+                    mv[v][int(wk)] = vals[np.isfinite(vals)]
+                    if v == "precip":
+                        weeks_seen.add(int(wk))
+        for wk in sorted(weeks_seen):
+            def wfrac(var, mask_fn):
+                """Weight-averaged exceedance fraction across the models present this week."""
+                num = den = 0.0
+                for mname, mv in pmv.items():
+                    arr = mv[var].get(wk)
+                    if arr is None or arr.size == 0:
+                        continue
+                    wt = mme_weight(mname)
+                    num += wt * float(mask_fn(arr).mean())
+                    den += wt
+                return round(num / den, 3) if den > 0 else ""
 
-            def frac(arr, mask):
-                return round(float(mask.mean()), 3) if arr.size else ""
-
-            p_wetter = frac(pa, pa >= WET_MM)
-            p_drier = frac(pa, pa <= DRY_MM)
-            p_near = round(1.0 - p_wetter - p_drier, 3) if pa.size else ""
+            p_wetter = wfrac("precip", lambda a: a >= WET_MM)
+            p_drier = wfrac("precip", lambda a: a <= DRY_MM)
+            p_near = round(1.0 - p_wetter - p_drier, 3) if p_wetter != "" else ""
+            n_tot = sum(int(mv["precip"].get(wk, np.array([])).size) for mv in pmv.values())
             rows.append({
-                "region": f"{name}, {state}", "state": state, "district": name, "week": w,
+                "region": f"{name}, {state}", "state": state, "district": name, "week": wk,
                 "p_wetter": p_wetter, "p_near": p_near, "p_drier": p_drier,
-                "p_heavy": frac(pa, pa >= HEAVY_MM),
-                "p_dryspell": frac(pa, pa <= DRYSPELL_MM),
-                "p_hot": frac(ta, ta >= HOT_C),
-                "n_members": int(pa.size), "models": ",".join(sorted(contrib)), "init_date": init,
+                "p_heavy": wfrac("precip", lambda a: a >= HEAVY_MM),
+                "p_dryspell": wfrac("precip", lambda a: a <= DRYSPELL_MM),
+                "p_hot": wfrac("t2m", lambda a: a >= HOT_C),
+                "n_members": n_tot, "models": ",".join(sorted(pmv.keys())), "init_date": init,
             })
     return rows
 
@@ -293,7 +417,7 @@ def main():
     clim_path = find_clim(init, args.clim)
     print(f"init {init}  models {[n for n, _ in specs]}  clim {clim_path}")
 
-    grids = load_anomaly_grids(specs, clim_path)
+    grids = load_anomaly_grids(specs, clim_path, init=init)
     gadm = gadm_districts()
     districts = pd.read_csv(args.districts)
 
@@ -311,7 +435,13 @@ def main():
             for var in VARS:
                 if var in gv:
                     ser, ncell, fb = regional_series(gv[var], geom)
-                    per_var[var] = ser
+                    # Clip to a physically-plausible weekly-mean anomaly. Guards against
+                    # coarse-model / baseline-mismatch artifacts -- notably EC46 (1.0 deg,
+                    # ERA5-referenced with no hindcast), which can emit implausible extremes
+                    # over small heavy-rain districts that would then pull the MME.
+                    lim = ANOM_CLIP[var]
+                    per_var[var] = {w: max(-lim, min(lim, v)) for w, v in ser.items()
+                                    if v is not None and np.isfinite(v)}
                     fb_any = fb_any or fb
             per_model[model] = per_var
 
@@ -336,12 +466,14 @@ def main():
                 pv = per_model[model]
                 if any(w in pv.get(var, {}) for var in VARS):
                     _emit(model, w, _v(pv, "precip", w), _v(pv, "t2m", w), 1)
-            # ... plus the multi-model mean (mean over models covering the week)
+            # ... plus the multi-model mean: a WEIGHTED mean over models covering the week
+            # (MME_WEIGHTS down-weights CFSv2; see the backtest note above).
             agg, hits = {}, set()
             for var in VARS:
-                vals = [pv[var][w] for pv in per_model.values()
-                        if var in pv and w in pv[var] and np.isfinite(pv[var][w])]
-                agg[var] = round(float(np.mean(vals)), 3) if vals else ""
+                wv = [(mme_weight(m), pv[var][w]) for m, pv in per_model.items()
+                      if var in pv and w in pv[var] and np.isfinite(pv[var][w])]
+                wsum = sum(wt for wt, _ in wv)
+                agg[var] = round(sum(wt * v for wt, v in wv) / wsum, 3) if wsum > 0 else ""
                 hits |= {m for m, pv in per_model.items()
                          if var in pv and w in pv[var] and np.isfinite(pv[var][w])}
             _emit("MME", w, agg["precip"], agg["t2m"], len(hits))

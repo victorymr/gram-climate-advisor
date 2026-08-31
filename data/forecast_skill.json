@@ -1,0 +1,2717 @@
+{
+ "_meta": {
+  "source": "District backtest: GEFS 31-member ensemble mean + CFSv2, weighted 1.0:0.1 as in the live MME, own-climatology referenced, pooled with the GEFSv12 11-member reforecast (2000-2019, LOO own-climatology); truth = IMD gridded rainfall/temperature (weekly anomalies vs day-of-year normal).",
+  "period": "2000-2025, 245 inits (May-Sep), 778 districts",
+  "tier_rule": {
+   "metric": "acc",
+   "High": 0.5,
+   "Medium": 0.3,
+   "else": "Low"
+  },
+  "categories": {
+   "precip": "below <= -3, above >= 3, heavy >= 7 mm/day",
+   "t2m": "below <= -1.5, above >= 1.5 degC"
+  },
+  "hit_rate": "P(observed category | forecast category); base_rate = P(observed category)",
+  "caveat": "Backtest blend is GEFS+CFSv2; the live MME also includes EC46 (no 2021-25 reforecast). EC46's 2004-20 reforecast skill (see models.ec46_2004_2020) is similar or better, so these tiers are if anything slightly conservative.",
+  "min_n_zone": 500
+ },
+ "weeks": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "national": {
+  "precip": {
+   "1": {
+    "n": 191100,
+    "acc": 0.496,
+    "rmsess": 0.026,
+    "tier": "Medium",
+    "acc_op": 0.563,
+    "n_op": 19500,
+    "acc_refc": 0.498,
+    "n_refc": 171600,
+    "categories": {
+     "below": {
+      "base_rate": 0.283,
+      "n_fc": 55441,
+      "hit_rate": 0.59
+     },
+     "near": {
+      "base_rate": 0.518,
+      "n_fc": 89472,
+      "hit_rate": 0.686
+     },
+     "above": {
+      "base_rate": 0.199,
+      "n_fc": 46187,
+      "hit_rate": 0.468
+     },
+     "heavy": {
+      "base_rate": 0.103,
+      "n_fc": 23878,
+      "hit_rate": 0.371
+     }
+    }
+   },
+   "2": {
+    "n": 191100,
+    "acc": 0.29,
+    "rmsess": -0.021,
+    "tier": "Low",
+    "acc_op": 0.203,
+    "n_op": 19500,
+    "acc_refc": 0.298,
+    "n_refc": 171600,
+    "categories": {
+     "below": {
+      "base_rate": 0.284,
+      "n_fc": 38231,
+      "hit_rate": 0.527
+     },
+     "near": {
+      "base_rate": 0.52,
+      "n_fc": 116172,
+      "hit_rate": 0.609
+     },
+     "above": {
+      "base_rate": 0.197,
+      "n_fc": 36697,
+      "hit_rate": 0.374
+     },
+     "heavy": {
+      "base_rate": 0.101,
+      "n_fc": 11878,
+      "hit_rate": 0.291
+     }
+    }
+   },
+   "3": {
+    "n": 191100,
+    "acc": 0.194,
+    "rmsess": -0.006,
+    "tier": "Low",
+    "acc_op": 0.272,
+    "n_op": 19500,
+    "acc_refc": 0.185,
+    "n_refc": 171600,
+    "categories": {
+     "below": {
+      "base_rate": 0.287,
+      "n_fc": 23102,
+      "hit_rate": 0.518
+     },
+     "near": {
+      "base_rate": 0.506,
+      "n_fc": 140607,
+      "hit_rate": 0.558
+     },
+     "above": {
+      "base_rate": 0.207,
+      "n_fc": 27391,
+      "hit_rate": 0.355
+     },
+     "heavy": {
+      "base_rate": 0.108,
+      "n_fc": 4644,
+      "hit_rate": 0.291
+     }
+    }
+   },
+   "4": {
+    "n": 191100,
+    "acc": 0.131,
+    "rmsess": -0.026,
+    "tier": "Low",
+    "acc_op": 0.253,
+    "n_op": 19500,
+    "acc_refc": 0.121,
+    "n_refc": 171600,
+    "categories": {
+     "below": {
+      "base_rate": 0.296,
+      "n_fc": 18806,
+      "hit_rate": 0.496
+     },
+     "near": {
+      "base_rate": 0.511,
+      "n_fc": 150412,
+      "hit_rate": 0.55
+     },
+     "above": {
+      "base_rate": 0.192,
+      "n_fc": 21882,
+      "hit_rate": 0.29
+     },
+     "heavy": {
+      "base_rate": 0.099,
+      "n_fc": 3332,
+      "hit_rate": 0.255
+     }
+    }
+   },
+   "5": {
+    "n": 191100,
+    "acc": 0.079,
+    "rmsess": -0.034,
+    "tier": "Low",
+    "acc_op": 0.102,
+    "n_op": 19500,
+    "acc_refc": 0.078,
+    "n_refc": 171600,
+    "categories": {
+     "below": {
+      "base_rate": 0.297,
+      "n_fc": 17828,
+      "hit_rate": 0.483
+     },
+     "near": {
+      "base_rate": 0.501,
+      "n_fc": 152255,
+      "hit_rate": 0.536
+     },
+     "above": {
+      "base_rate": 0.202,
+      "n_fc": 21017,
+      "hit_rate": 0.272
+     },
+     "heavy": {
+      "base_rate": 0.107,
+      "n_fc": 2862,
+      "hit_rate": 0.197
+     }
+    }
+   }
+  },
+  "t2m": {
+   "1": {
+    "n": 190573,
+    "acc": 0.753,
+    "rmsess": 0.214,
+    "tier": "High",
+    "acc_op": 0.62,
+    "n_op": 19450,
+    "acc_refc": 0.776,
+    "n_refc": 171123,
+    "categories": {
+     "below": {
+      "base_rate": 0.088,
+      "n_fc": 21329,
+      "hit_rate": 0.487
+     },
+     "near": {
+      "base_rate": 0.829,
+      "n_fc": 147063,
+      "hit_rate": 0.916
+     },
+     "above": {
+      "base_rate": 0.083,
+      "n_fc": 22181,
+      "hit_rate": 0.434
+     }
+    }
+   },
+   "2": {
+    "n": 190577,
+    "acc": 0.527,
+    "rmsess": 0.002,
+    "tier": "High",
+    "acc_op": 0.364,
+    "n_op": 19450,
+    "acc_refc": 0.553,
+    "n_refc": 171127,
+    "categories": {
+     "below": {
+      "base_rate": 0.066,
+      "n_fc": 14381,
+      "hit_rate": 0.324
+     },
+     "near": {
+      "base_rate": 0.853,
+      "n_fc": 161459,
+      "hit_rate": 0.892
+     },
+     "above": {
+      "base_rate": 0.081,
+      "n_fc": 14737,
+      "hit_rate": 0.387
+     }
+    }
+   },
+   "3": {
+    "n": 190573,
+    "acc": 0.432,
+    "rmsess": 0.007,
+    "tier": "Medium",
+    "acc_op": 0.32,
+    "n_op": 19450,
+    "acc_refc": 0.447,
+    "n_refc": 171123,
+    "categories": {
+     "below": {
+      "base_rate": 0.082,
+      "n_fc": 9841,
+      "hit_rate": 0.401
+     },
+     "near": {
+      "base_rate": 0.84,
+      "n_fc": 170606,
+      "hit_rate": 0.867
+     },
+     "above": {
+      "base_rate": 0.077,
+      "n_fc": 10126,
+      "hit_rate": 0.33
+     }
+    }
+   },
+   "4": {
+    "n": 190573,
+    "acc": 0.307,
+    "rmsess": -0.083,
+    "tier": "Medium",
+    "acc_op": 0.212,
+    "n_op": 19450,
+    "acc_refc": 0.32,
+    "n_refc": 171123,
+    "categories": {
+     "below": {
+      "base_rate": 0.061,
+      "n_fc": 7172,
+      "hit_rate": 0.265
+     },
+     "near": {
+      "base_rate": 0.861,
+      "n_fc": 175129,
+      "hit_rate": 0.875
+     },
+     "above": {
+      "base_rate": 0.078,
+      "n_fc": 8272,
+      "hit_rate": 0.267
+     }
+    }
+   },
+   "5": {
+    "n": 190573,
+    "acc": 0.293,
+    "rmsess": -0.049,
+    "tier": "Low",
+    "acc_op": 0.104,
+    "n_op": 19450,
+    "acc_refc": 0.316,
+    "n_refc": 171123,
+    "categories": {
+     "below": {
+      "base_rate": 0.071,
+      "n_fc": 5746,
+      "hit_rate": 0.319
+     },
+     "near": {
+      "base_rate": 0.854,
+      "n_fc": 177861,
+      "hit_rate": 0.867
+     },
+     "above": {
+      "base_rate": 0.075,
+      "n_fc": 6966,
+      "hit_rate": 0.271
+     }
+    }
+   }
+  }
+ },
+ "zones": {
+  "Central India": {
+   "precip": {
+    "1": {
+     "n": 29645,
+     "acc": 0.595,
+     "rmsess": 0.111,
+     "tier": "High",
+     "acc_op": 0.517,
+     "n_op": 3025,
+     "acc_refc": 0.609,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.29,
+       "n_fc": 8671,
+       "hit_rate": 0.645
+      },
+      "near": {
+       "base_rate": 0.51,
+       "n_fc": 13419,
+       "hit_rate": 0.719
+      },
+      "above": {
+       "base_rate": 0.199,
+       "n_fc": 7555,
+       "hit_rate": 0.507
+      },
+      "heavy": {
+       "base_rate": 0.107,
+       "n_fc": 4003,
+       "hit_rate": 0.413
+      }
+     }
+    },
+    "2": {
+     "n": 29645,
+     "acc": 0.366,
+     "rmsess": 0.029,
+     "tier": "Medium",
+     "acc_op": 0.269,
+     "n_op": 3025,
+     "acc_refc": 0.374,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.291,
+       "n_fc": 6479,
+       "hit_rate": 0.557
+      },
+      "near": {
+       "base_rate": 0.493,
+       "n_fc": 16861,
+       "hit_rate": 0.595
+      },
+      "above": {
+       "base_rate": 0.216,
+       "n_fc": 6305,
+       "hit_rate": 0.42
+      },
+      "heavy": {
+       "base_rate": 0.116,
+       "n_fc": 1982,
+       "hit_rate": 0.291
+      }
+     }
+    },
+    "3": {
+     "n": 29645,
+     "acc": 0.243,
+     "rmsess": 0.006,
+     "tier": "Low",
+     "acc_op": 0.232,
+     "n_op": 3025,
+     "acc_refc": 0.246,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.299,
+       "n_fc": 3986,
+       "hit_rate": 0.535
+      },
+      "near": {
+       "base_rate": 0.498,
+       "n_fc": 20912,
+       "hit_rate": 0.554
+      },
+      "above": {
+       "base_rate": 0.203,
+       "n_fc": 4747,
+       "hit_rate": 0.35
+      },
+      "heavy": {
+       "base_rate": 0.108,
+       "n_fc": 768,
+       "hit_rate": 0.389
+      }
+     }
+    },
+    "4": {
+     "n": 29645,
+     "acc": 0.183,
+     "rmsess": -0.009,
+     "tier": "Low",
+     "acc_op": 0.41,
+     "n_op": 3025,
+     "acc_refc": 0.159,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.305,
+       "n_fc": 3472,
+       "hit_rate": 0.514
+      },
+      "near": {
+       "base_rate": 0.483,
+       "n_fc": 22253,
+       "hit_rate": 0.528
+      },
+      "above": {
+       "base_rate": 0.212,
+       "n_fc": 3920,
+       "hit_rate": 0.344
+      },
+      "heavy": {
+       "base_rate": 0.115,
+       "n_fc": 556,
+       "hit_rate": 0.29
+      }
+     }
+    },
+    "5": {
+     "n": 29645,
+     "acc": 0.105,
+     "rmsess": -0.038,
+     "tier": "Low",
+     "acc_op": 0.098,
+     "n_op": 3025,
+     "acc_refc": 0.106,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.303,
+       "n_fc": 3571,
+       "hit_rate": 0.488
+      },
+      "near": {
+       "base_rate": 0.485,
+       "n_fc": 22173,
+       "hit_rate": 0.53
+      },
+      "above": {
+       "base_rate": 0.212,
+       "n_fc": 3901,
+       "hit_rate": 0.285
+      },
+      "heavy": {
+       "base_rate": 0.115,
+       "n_fc": 562,
+       "hit_rate": 0.219
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 29645,
+     "acc": 0.799,
+     "rmsess": 0.305,
+     "tier": "High",
+     "acc_op": 0.547,
+     "n_op": 3025,
+     "acc_refc": 0.834,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.112,
+       "n_fc": 3574,
+       "hit_rate": 0.617
+      },
+      "near": {
+       "base_rate": 0.794,
+       "n_fc": 22274,
+       "hit_rate": 0.907
+      },
+      "above": {
+       "base_rate": 0.095,
+       "n_fc": 3797,
+       "hit_rate": 0.484
+      }
+     }
+    },
+    "2": {
+     "n": 29645,
+     "acc": 0.613,
+     "rmsess": 0.117,
+     "tier": "High",
+     "acc_op": 0.387,
+     "n_op": 3025,
+     "acc_refc": 0.648,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.089,
+       "n_fc": 2120,
+       "hit_rate": 0.515
+      },
+      "near": {
+       "base_rate": 0.821,
+       "n_fc": 25081,
+       "hit_rate": 0.875
+      },
+      "above": {
+       "base_rate": 0.09,
+       "n_fc": 2444,
+       "hit_rate": 0.421
+      }
+     }
+    },
+    "3": {
+     "n": 29645,
+     "acc": 0.538,
+     "rmsess": 0.112,
+     "tier": "High",
+     "acc_op": 0.478,
+     "n_op": 3025,
+     "acc_refc": 0.547,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.105,
+       "n_fc": 1665,
+       "hit_rate": 0.586
+      },
+      "near": {
+       "base_rate": 0.801,
+       "n_fc": 26148,
+       "hit_rate": 0.84
+      },
+      "above": {
+       "base_rate": 0.093,
+       "n_fc": 1832,
+       "hit_rate": 0.364
+      }
+     }
+    },
+    "4": {
+     "n": 29645,
+     "acc": 0.383,
+     "rmsess": -0.017,
+     "tier": "Medium",
+     "acc_op": 0.048,
+     "n_op": 3025,
+     "acc_refc": 0.417,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.078,
+       "n_fc": 1396,
+       "hit_rate": 0.416
+      },
+      "near": {
+       "base_rate": 0.833,
+       "n_fc": 26644,
+       "hit_rate": 0.86
+      },
+      "above": {
+       "base_rate": 0.088,
+       "n_fc": 1605,
+       "hit_rate": 0.308
+      }
+     }
+    },
+    "5": {
+     "n": 29645,
+     "acc": 0.396,
+     "rmsess": 0.03,
+     "tier": "Medium",
+     "acc_op": 0.052,
+     "n_op": 3025,
+     "acc_refc": 0.432,
+     "n_refc": 26620,
+     "categories": {
+      "below": {
+       "base_rate": 0.087,
+       "n_fc": 1198,
+       "hit_rate": 0.477
+      },
+      "near": {
+       "base_rate": 0.821,
+       "n_fc": 27038,
+       "hit_rate": 0.847
+      },
+      "above": {
+       "base_rate": 0.092,
+       "n_fc": 1409,
+       "hit_rate": 0.38
+      }
+     }
+    }
+   }
+  },
+  "East India": {
+   "precip": {
+    "1": {
+     "n": 28175,
+     "acc": 0.495,
+     "rmsess": 0.047,
+     "tier": "Medium",
+     "acc_op": 0.596,
+     "n_op": 2875,
+     "acc_refc": 0.493,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.351,
+       "n_fc": 8673,
+       "hit_rate": 0.662
+      },
+      "near": {
+       "base_rate": 0.428,
+       "n_fc": 12238,
+       "hit_rate": 0.577
+      },
+      "above": {
+       "base_rate": 0.221,
+       "n_fc": 7264,
+       "hit_rate": 0.48
+      },
+      "heavy": {
+       "base_rate": 0.118,
+       "n_fc": 3616,
+       "hit_rate": 0.377
+      }
+     }
+    },
+    "2": {
+     "n": 28175,
+     "acc": 0.278,
+     "rmsess": -0.007,
+     "tier": "Low",
+     "acc_op": 0.168,
+     "n_op": 2875,
+     "acc_refc": 0.289,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.365,
+       "n_fc": 6167,
+       "hit_rate": 0.582
+      },
+      "near": {
+       "base_rate": 0.427,
+       "n_fc": 15934,
+       "hit_rate": 0.493
+      },
+      "above": {
+       "base_rate": 0.207,
+       "n_fc": 6074,
+       "hit_rate": 0.374
+      },
+      "heavy": {
+       "base_rate": 0.11,
+       "n_fc": 1645,
+       "hit_rate": 0.3
+      }
+     }
+    },
+    "3": {
+     "n": 28175,
+     "acc": 0.155,
+     "rmsess": -0.014,
+     "tier": "Low",
+     "acc_op": 0.204,
+     "n_op": 2875,
+     "acc_refc": 0.147,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.359,
+       "n_fc": 3924,
+       "hit_rate": 0.477
+      },
+      "near": {
+       "base_rate": 0.399,
+       "n_fc": 19926,
+       "hit_rate": 0.42
+      },
+      "above": {
+       "base_rate": 0.241,
+       "n_fc": 4325,
+       "hit_rate": 0.37
+      },
+      "heavy": {
+       "base_rate": 0.134,
+       "n_fc": 502,
+       "hit_rate": 0.235
+      }
+     }
+    },
+    "4": {
+     "n": 28175,
+     "acc": 0.082,
+     "rmsess": -0.035,
+     "tier": "Low",
+     "acc_op": 0.238,
+     "n_op": 2875,
+     "acc_refc": 0.077,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.382,
+       "n_fc": 2977,
+       "hit_rate": 0.455
+      },
+      "near": {
+       "base_rate": 0.418,
+       "n_fc": 21696,
+       "hit_rate": 0.43
+      },
+      "above": {
+       "base_rate": 0.2,
+       "n_fc": 3502,
+       "hit_rate": 0.252
+      },
+      "heavy": {
+       "base_rate": 0.107,
+       "n_fc": 259,
+       "hit_rate": 0.228
+      }
+     }
+    },
+    "5": {
+     "n": 28175,
+     "acc": 0.057,
+     "rmsess": -0.034,
+     "tier": "Low",
+     "acc_op": 0.082,
+     "n_op": 2875,
+     "acc_refc": 0.055,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.378,
+       "n_fc": 2867,
+       "hit_rate": 0.502
+      },
+      "near": {
+       "base_rate": 0.394,
+       "n_fc": 21882,
+       "hit_rate": 0.411
+      },
+      "above": {
+       "base_rate": 0.228,
+       "n_fc": 3426,
+       "hit_rate": 0.263
+      },
+      "heavy": {
+       "base_rate": 0.13,
+       "n_fc": 271,
+       "hit_rate": 0.185
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 28175,
+     "acc": 0.741,
+     "rmsess": 0.103,
+     "tier": "High",
+     "acc_op": 0.582,
+     "n_op": 2875,
+     "acc_refc": 0.767,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.065,
+       "n_fc": 3432,
+       "hit_rate": 0.363
+      },
+      "near": {
+       "base_rate": 0.849,
+       "n_fc": 21201,
+       "hit_rate": 0.929
+      },
+      "above": {
+       "base_rate": 0.086,
+       "n_fc": 3542,
+       "hit_rate": 0.414
+      }
+     }
+    },
+    "2": {
+     "n": 28175,
+     "acc": 0.481,
+     "rmsess": -0.126,
+     "tier": "Medium",
+     "acc_op": 0.24,
+     "n_op": 2875,
+     "acc_refc": 0.519,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.044,
+       "n_fc": 2432,
+       "hit_rate": 0.216
+      },
+      "near": {
+       "base_rate": 0.887,
+       "n_fc": 23316,
+       "hit_rate": 0.925
+      },
+      "above": {
+       "base_rate": 0.069,
+       "n_fc": 2427,
+       "hit_rate": 0.369
+      }
+     }
+    },
+    "3": {
+     "n": 28175,
+     "acc": 0.401,
+     "rmsess": -0.059,
+     "tier": "Medium",
+     "acc_op": 0.315,
+     "n_op": 2875,
+     "acc_refc": 0.411,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.063,
+       "n_fc": 1626,
+       "hit_rate": 0.403
+      },
+      "near": {
+       "base_rate": 0.864,
+       "n_fc": 24979,
+       "hit_rate": 0.897
+      },
+      "above": {
+       "base_rate": 0.073,
+       "n_fc": 1570,
+       "hit_rate": 0.334
+      }
+     }
+    },
+    "4": {
+     "n": 28175,
+     "acc": 0.316,
+     "rmsess": -0.136,
+     "tier": "Medium",
+     "acc_op": 0.237,
+     "n_op": 2875,
+     "acc_refc": 0.329,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.036,
+       "n_fc": 1253,
+       "hit_rate": 0.216
+      },
+      "near": {
+       "base_rate": 0.895,
+       "n_fc": 25355,
+       "hit_rate": 0.916
+      },
+      "above": {
+       "base_rate": 0.069,
+       "n_fc": 1567,
+       "hit_rate": 0.326
+      }
+     }
+    },
+    "5": {
+     "n": 28175,
+     "acc": 0.286,
+     "rmsess": -0.07,
+     "tier": "Low",
+     "acc_op": 0.029,
+     "n_op": 2875,
+     "acc_refc": 0.321,
+     "n_refc": 25300,
+     "categories": {
+      "below": {
+       "base_rate": 0.057,
+       "n_fc": 963,
+       "hit_rate": 0.166
+      },
+      "near": {
+       "base_rate": 0.864,
+       "n_fc": 26218,
+       "hit_rate": 0.878
+      },
+      "above": {
+       "base_rate": 0.079,
+       "n_fc": 994,
+       "hit_rate": 0.391
+      }
+     }
+    }
+   }
+  },
+  "North India": {
+   "precip": {
+    "1": {
+     "n": 44345,
+     "acc": 0.504,
+     "rmsess": -0.062,
+     "tier": "High",
+     "acc_op": 0.372,
+     "n_op": 4525,
+     "acc_refc": 0.518,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.213,
+       "n_fc": 11040,
+       "hit_rate": 0.51
+      },
+      "near": {
+       "base_rate": 0.622,
+       "n_fc": 23428,
+       "hit_rate": 0.77
+      },
+      "above": {
+       "base_rate": 0.165,
+       "n_fc": 9877,
+       "hit_rate": 0.433
+      },
+      "heavy": {
+       "base_rate": 0.078,
+       "n_fc": 4813,
+       "hit_rate": 0.33
+      }
+     }
+    },
+    "2": {
+     "n": 44345,
+     "acc": 0.29,
+     "rmsess": -0.052,
+     "tier": "Low",
+     "acc_op": 0.159,
+     "n_op": 4525,
+     "acc_refc": 0.302,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.224,
+       "n_fc": 7796,
+       "hit_rate": 0.484
+      },
+      "near": {
+       "base_rate": 0.623,
+       "n_fc": 28561,
+       "hit_rate": 0.713
+      },
+      "above": {
+       "base_rate": 0.154,
+       "n_fc": 7988,
+       "hit_rate": 0.322
+      },
+      "heavy": {
+       "base_rate": 0.074,
+       "n_fc": 2458,
+       "hit_rate": 0.239
+      }
+     }
+    },
+    "3": {
+     "n": 44345,
+     "acc": 0.213,
+     "rmsess": -0.018,
+     "tier": "Low",
+     "acc_op": 0.274,
+     "n_op": 4525,
+     "acc_refc": 0.205,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.207,
+       "n_fc": 4102,
+       "hit_rate": 0.467
+      },
+      "near": {
+       "base_rate": 0.619,
+       "n_fc": 34492,
+       "hit_rate": 0.666
+      },
+      "above": {
+       "base_rate": 0.174,
+       "n_fc": 5751,
+       "hit_rate": 0.31
+      },
+      "heavy": {
+       "base_rate": 0.083,
+       "n_fc": 622,
+       "hit_rate": 0.206
+      }
+     }
+    },
+    "4": {
+     "n": 44345,
+     "acc": 0.086,
+     "rmsess": -0.052,
+     "tier": "Low",
+     "acc_op": -0.12,
+     "n_op": 4525,
+     "acc_refc": 0.105,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.227,
+       "n_fc": 3006,
+       "hit_rate": 0.462
+      },
+      "near": {
+       "base_rate": 0.623,
+       "n_fc": 37094,
+       "hit_rate": 0.655
+      },
+      "above": {
+       "base_rate": 0.15,
+       "n_fc": 4245,
+       "hit_rate": 0.237
+      },
+      "heavy": {
+       "base_rate": 0.074,
+       "n_fc": 333,
+       "hit_rate": 0.054
+      }
+     }
+    },
+    "5": {
+     "n": 44345,
+     "acc": 0.097,
+     "rmsess": -0.04,
+     "tier": "Low",
+     "acc_op": 0.078,
+     "n_op": 4525,
+     "acc_refc": 0.1,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.216,
+       "n_fc": 2686,
+       "hit_rate": 0.429
+      },
+      "near": {
+       "base_rate": 0.619,
+       "n_fc": 37720,
+       "hit_rate": 0.643
+      },
+      "above": {
+       "base_rate": 0.165,
+       "n_fc": 3939,
+       "hit_rate": 0.244
+      },
+      "heavy": {
+       "base_rate": 0.08,
+       "n_fc": 193,
+       "hit_rate": 0.15
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 44345,
+     "acc": 0.747,
+     "rmsess": 0.174,
+     "tier": "High",
+     "acc_op": 0.638,
+     "n_op": 4525,
+     "acc_refc": 0.766,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.12,
+       "n_fc": 6828,
+       "hit_rate": 0.493
+      },
+      "near": {
+       "base_rate": 0.772,
+       "n_fc": 30030,
+       "hit_rate": 0.888
+      },
+      "above": {
+       "base_rate": 0.108,
+       "n_fc": 7487,
+       "hit_rate": 0.436
+      }
+     }
+    },
+    "2": {
+     "n": 44345,
+     "acc": 0.501,
+     "rmsess": -0.059,
+     "tier": "High",
+     "acc_op": 0.333,
+     "n_op": 4525,
+     "acc_refc": 0.532,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.091,
+       "n_fc": 5143,
+       "hit_rate": 0.296
+      },
+      "near": {
+       "base_rate": 0.786,
+       "n_fc": 33682,
+       "hit_rate": 0.84
+      },
+      "above": {
+       "base_rate": 0.124,
+       "n_fc": 5520,
+       "hit_rate": 0.444
+      }
+     }
+    },
+    "3": {
+     "n": 44345,
+     "acc": 0.451,
+     "rmsess": 0.003,
+     "tier": "Medium",
+     "acc_op": 0.303,
+     "n_op": 4525,
+     "acc_refc": 0.475,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.118,
+       "n_fc": 3635,
+       "hit_rate": 0.368
+      },
+      "near": {
+       "base_rate": 0.782,
+       "n_fc": 36615,
+       "hit_rate": 0.813
+      },
+      "above": {
+       "base_rate": 0.1,
+       "n_fc": 4095,
+       "hit_rate": 0.334
+      }
+     }
+    },
+    "4": {
+     "n": 44345,
+     "acc": 0.277,
+     "rmsess": -0.136,
+     "tier": "Low",
+     "acc_op": 0.088,
+     "n_op": 4525,
+     "acc_refc": 0.301,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.085,
+       "n_fc": 2862,
+       "hit_rate": 0.252
+      },
+      "near": {
+       "base_rate": 0.803,
+       "n_fc": 38205,
+       "hit_rate": 0.818
+      },
+      "above": {
+       "base_rate": 0.112,
+       "n_fc": 3278,
+       "hit_rate": 0.254
+      }
+     }
+    },
+    "5": {
+     "n": 44345,
+     "acc": 0.263,
+     "rmsess": -0.092,
+     "tier": "Low",
+     "acc_op": 0.054,
+     "n_op": 4525,
+     "acc_refc": 0.286,
+     "n_refc": 39820,
+     "categories": {
+      "below": {
+       "base_rate": 0.093,
+       "n_fc": 2432,
+       "hit_rate": 0.313
+      },
+      "near": {
+       "base_rate": 0.814,
+       "n_fc": 38982,
+       "hit_rate": 0.824
+      },
+      "above": {
+       "base_rate": 0.093,
+       "n_fc": 2931,
+       "hit_rate": 0.191
+      }
+     }
+    }
+   }
+  },
+  "North-West India": {
+   "precip": {
+    "1": {
+     "n": 12250,
+     "acc": 0.581,
+     "rmsess": 0.022,
+     "tier": "High",
+     "acc_op": 0.598,
+     "n_op": 1250,
+     "acc_refc": 0.595,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.169,
+       "n_fc": 2318,
+       "hit_rate": 0.618
+      },
+      "near": {
+       "base_rate": 0.675,
+       "n_fc": 7588,
+       "hit_rate": 0.846
+      },
+      "above": {
+       "base_rate": 0.156,
+       "n_fc": 2344,
+       "hit_rate": 0.477
+      },
+      "heavy": {
+       "base_rate": 0.065,
+       "n_fc": 1186,
+       "hit_rate": 0.299
+      }
+     }
+    },
+    "2": {
+     "n": 12250,
+     "acc": 0.34,
+     "rmsess": 0.003,
+     "tier": "Medium",
+     "acc_op": 0.421,
+     "n_op": 1250,
+     "acc_refc": 0.33,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.172,
+       "n_fc": 1636,
+       "hit_rate": 0.533
+      },
+      "near": {
+       "base_rate": 0.678,
+       "n_fc": 8708,
+       "hit_rate": 0.777
+      },
+      "above": {
+       "base_rate": 0.149,
+       "n_fc": 1906,
+       "hit_rate": 0.368
+      },
+      "heavy": {
+       "base_rate": 0.07,
+       "n_fc": 589,
+       "hit_rate": 0.229
+      }
+     }
+    },
+    "3": {
+     "n": 12250,
+     "acc": 0.242,
+     "rmsess": -0.004,
+     "tier": "Low",
+     "acc_op": 0.317,
+     "n_op": 1250,
+     "acc_refc": 0.227,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.169,
+       "n_fc": 991,
+       "hit_rate": 0.562
+      },
+      "near": {
+       "base_rate": 0.671,
+       "n_fc": 9926,
+       "hit_rate": 0.74
+      },
+      "above": {
+       "base_rate": 0.16,
+       "n_fc": 1333,
+       "hit_rate": 0.349
+      },
+      "heavy": {
+       "base_rate": 0.067,
+       "n_fc": 170,
+       "hit_rate": 0.206
+      }
+     }
+    },
+    "4": {
+     "n": 12250,
+     "acc": 0.051,
+     "rmsess": -0.058,
+     "tier": "Low",
+     "acc_op": 0.134,
+     "n_op": 1250,
+     "acc_refc": 0.042,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.178,
+       "n_fc": 678,
+       "hit_rate": 0.471
+      },
+      "near": {
+       "base_rate": 0.682,
+       "n_fc": 10570,
+       "hit_rate": 0.726
+      },
+      "above": {
+       "base_rate": 0.14,
+       "n_fc": 1002,
+       "hit_rate": 0.213
+      },
+      "heavy": {
+       "base_rate": 0.068,
+       "n_fc": 93
+      }
+     }
+    },
+    "5": {
+     "n": 12250,
+     "acc": 0.138,
+     "rmsess": -0.026,
+     "tier": "Low",
+     "acc_op": 0.095,
+     "n_op": 1250,
+     "acc_refc": 0.143,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.171,
+       "n_fc": 624,
+       "hit_rate": 0.482
+      },
+      "near": {
+       "base_rate": 0.678,
+       "n_fc": 10747,
+       "hit_rate": 0.711
+      },
+      "above": {
+       "base_rate": 0.151,
+       "n_fc": 879,
+       "hit_rate": 0.299
+      },
+      "heavy": {
+       "base_rate": 0.061,
+       "n_fc": 47
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 12250,
+     "acc": 0.773,
+     "rmsess": 0.318,
+     "tier": "High",
+     "acc_op": 0.81,
+     "n_op": 1250,
+     "acc_refc": 0.769,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.137,
+       "n_fc": 1751,
+       "hit_rate": 0.598
+      },
+      "near": {
+       "base_rate": 0.725,
+       "n_fc": 8610,
+       "hit_rate": 0.854
+      },
+      "above": {
+       "base_rate": 0.138,
+       "n_fc": 1889,
+       "hit_rate": 0.563
+      }
+     }
+    },
+    "2": {
+     "n": 12250,
+     "acc": 0.569,
+     "rmsess": 0.108,
+     "tier": "High",
+     "acc_op": 0.484,
+     "n_op": 1250,
+     "acc_refc": 0.584,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.1,
+       "n_fc": 1102,
+       "hit_rate": 0.4
+      },
+      "near": {
+       "base_rate": 0.758,
+       "n_fc": 10129,
+       "hit_rate": 0.8
+      },
+      "above": {
+       "base_rate": 0.141,
+       "n_fc": 1019,
+       "hit_rate": 0.478
+      }
+     }
+    },
+    "3": {
+     "n": 12250,
+     "acc": 0.423,
+     "rmsess": 0.05,
+     "tier": "Medium",
+     "acc_op": 0.376,
+     "n_op": 1250,
+     "acc_refc": 0.428,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.133,
+       "n_fc": 749,
+       "hit_rate": 0.397
+      },
+      "near": {
+       "base_rate": 0.737,
+       "n_fc": 10784,
+       "hit_rate": 0.752
+      },
+      "above": {
+       "base_rate": 0.13,
+       "n_fc": 717,
+       "hit_rate": 0.339
+      }
+     }
+    },
+    "4": {
+     "n": 12250,
+     "acc": 0.218,
+     "rmsess": -0.096,
+     "tier": "Low",
+     "acc_op": 0.178,
+     "n_op": 1250,
+     "acc_refc": 0.222,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.093,
+       "n_fc": 418,
+       "hit_rate": 0.225
+      },
+      "near": {
+       "base_rate": 0.772,
+       "n_fc": 11272,
+       "hit_rate": 0.773
+      },
+      "above": {
+       "base_rate": 0.135,
+       "n_fc": 560,
+       "hit_rate": 0.177
+      }
+     }
+    },
+    "5": {
+     "n": 12250,
+     "acc": 0.256,
+     "rmsess": -0.047,
+     "tier": "Low",
+     "acc_op": 0.126,
+     "n_op": 1250,
+     "acc_refc": 0.269,
+     "n_refc": 11000,
+     "categories": {
+      "below": {
+       "base_rate": 0.11,
+       "n_fc": 380,
+       "hit_rate": 0.4
+      },
+      "near": {
+       "base_rate": 0.771,
+       "n_fc": 11312,
+       "hit_rate": 0.778
+      },
+      "above": {
+       "base_rate": 0.12,
+       "n_fc": 558,
+       "hit_rate": 0.246
+      }
+     }
+    }
+   }
+  },
+  "Northeast India": {
+   "precip": {
+    "1": {
+     "n": 31850,
+     "acc": 0.37,
+     "rmsess": -0.02,
+     "tier": "Medium",
+     "acc_op": 0.58,
+     "n_op": 3250,
+     "acc_refc": 0.353,
+     "n_refc": 28600,
+     "categories": {
+      "below": {
+       "base_rate": 0.41,
+       "n_fc": 11736,
+       "hit_rate": 0.599
+      },
+      "near": {
+       "base_rate": 0.331,
+       "n_fc": 11209,
+       "hit_rate": 0.38
+      },
+      "above": {
+       "base_rate": 0.259,
+       "n_fc": 8905,
+       "hit_rate": 0.447
+      },
+      "heavy": {
+       "base_rate": 0.147,
+       "n_fc": 4948,
+       "hit_rate": 0.352
+      }
+     }
+    },
+    "2": {
+     "n": 31850,
+     "acc": 0.177,
+     "rmsess": -0.068,
+     "tier": "Low",
+     "acc_op": 0.046,
+     "n_op": 3250,
+     "acc_refc": 0.186,
+     "n_refc": 28600,
+     "categories": {
+      "below": {
+       "base_rate": 0.408,
+       "n_fc": 7917,
+       "hit_rate": 0.507
+      },
+      "near": {
+       "base_rate": 0.346,
+       "n_fc": 17084,
+       "hit_rate": 0.359
+      },
+      "above": {
+       "base_rate": 0.246,
+       "n_fc": 6849,
+       "hit_rate": 0.356
+      },
+      "heavy": {
+       "base_rate": 0.134,
+       "n_fc": 2503,
+       "hit_rate": 0.272
+      }
+     }
+    },
+    "3": {
+     "n": 31850,
+     "acc": 0.114,
+     "rmsess": -0.018,
+     "tier": "Low",
+     "acc_op": 0.239,
+     "n_op": 3250,
+     "acc_refc": 0.101,
+     "n_refc": 28600,
+     "categories": {
+      "below": {
+       "base_rate": 0.395,
+       "n_fc": 5432,
+       "hit_rate": 0.517
+      },
+      "near": {
+       "base_rate": 0.331,
+       "n_fc": 20787,
+       "hit_rate": 0.354
+      },
+      "above": {
+       "base_rate": 0.274,
+       "n_fc": 5631,
+       "hit_rate": 0.373
+      },
+      "heavy": {
+       "base_rate": 0.154,
+       "n_fc": 1217,
+       "hit_rate": 0.221
+      }
+     }
+    },
+    "4": {
+     "n": 31850,
+     "acc": 0.055,
+     "rmsess": -0.039,
+     "tier": "Low",
+     "acc_op": 0.173,
+     "n_op": 3250,
+     "acc_refc": 0.046,
+     "n_refc": 28600,
+     "categories": {
+      "below": {
+       "base_rate": 0.41,
+       "n_fc": 4297,
+       "hit_rate": 0.486
+      },
+      "near": {
+       "base_rate": 0.356,
+       "n_fc": 23454,
+       "hit_rate": 0.369
+      },
+      "above": {
+       "base_rate": 0.234,
+       "n_fc": 4099,
+       "hit_rate": 0.27
+      },
+      "heavy": {
+       "base_rate": 0.124,
+       "n_fc": 849,
+       "hit_rate": 0.238
+      }
+     }
+    },
+    "5": {
+     "n": 31850,
+     "acc": 0.047,
+     "rmsess": -0.021,
+     "tier": "Low",
+     "acc_op": 0.192,
+     "n_op": 3250,
+     "acc_refc": 0.034,
+     "n_refc": 28600,
+     "categories": {
+      "below": {
+       "base_rate": 0.391,
+       "n_fc": 3598,
+       "hit_rate": 0.464
+      },
+      "near": {
+       "base_rate": 0.356,
+       "n_fc": 24232,
+       "hit_rate": 0.367
+      },
+      "above": {
+       "base_rate": 0.253,
+       "n_fc": 4020,
+       "hit_rate": 0.292
+      },
+      "heavy": {
+       "base_rate": 0.144,
+       "n_fc": 685,
+       "hit_rate": 0.161
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 31012,
+     "acc": 0.75,
+     "rmsess": 0.231,
+     "tier": "High",
+     "acc_op": 0.675,
+     "n_op": 3175,
+     "acc_refc": 0.772,
+     "n_refc": 27837,
+     "categories": {
+      "below": {
+       "base_rate": 0.058,
+       "n_fc": 2611,
+       "hit_rate": 0.406
+      },
+      "near": {
+       "base_rate": 0.893,
+       "n_fc": 26209,
+       "hit_rate": 0.937
+      },
+      "above": {
+       "base_rate": 0.049,
+       "n_fc": 2192,
+       "hit_rate": 0.269
+      }
+     }
+    },
+    "2": {
+     "n": 31016,
+     "acc": 0.49,
+     "rmsess": -0.03,
+     "tier": "Medium",
+     "acc_op": 0.308,
+     "n_op": 3175,
+     "acc_refc": 0.509,
+     "n_refc": 27841,
+     "categories": {
+      "below": {
+       "base_rate": 0.039,
+       "n_fc": 1473,
+       "hit_rate": 0.216
+      },
+      "near": {
+       "base_rate": 0.906,
+       "n_fc": 28100,
+       "hit_rate": 0.918
+      },
+      "above": {
+       "base_rate": 0.055,
+       "n_fc": 1443,
+       "hit_rate": 0.198
+      }
+     }
+    },
+    "3": {
+     "n": 31012,
+     "acc": 0.208,
+     "rmsess": -0.142,
+     "tier": "Low",
+     "acc_op": -0.03,
+     "n_op": 3175,
+     "acc_refc": 0.238,
+     "n_refc": 27837,
+     "categories": {
+      "below": {
+       "base_rate": 0.052,
+       "n_fc": 799,
+       "hit_rate": 0.18
+      },
+      "near": {
+       "base_rate": 0.902,
+       "n_fc": 29599,
+       "hit_rate": 0.906
+      },
+      "above": {
+       "base_rate": 0.046,
+       "n_fc": 614,
+       "hit_rate": 0.166
+      }
+     }
+    },
+    "4": {
+     "n": 31012,
+     "acc": 0.223,
+     "rmsess": -0.085,
+     "tier": "Low",
+     "acc_op": 0.46,
+     "n_op": 3175,
+     "acc_refc": 0.192,
+     "n_refc": 27837,
+     "categories": {
+      "below": {
+       "base_rate": 0.043,
+       "n_fc": 340,
+       "hit_rate": 0.0
+      },
+      "near": {
+       "base_rate": 0.903,
+       "n_fc": 30394,
+       "hit_rate": 0.901
+      },
+      "above": {
+       "base_rate": 0.055,
+       "n_fc": 278,
+       "hit_rate": 0.076
+      }
+     }
+    },
+    "5": {
+     "n": 31012,
+     "acc": 0.201,
+     "rmsess": -0.078,
+     "tier": "Low",
+     "acc_op": 0.324,
+     "n_op": 3175,
+     "acc_refc": 0.188,
+     "n_refc": 27837,
+     "categories": {
+      "below": {
+       "base_rate": 0.057,
+       "n_fc": 167,
+       "hit_rate": 0.114
+      },
+      "near": {
+       "base_rate": 0.895,
+       "n_fc": 30616,
+       "hit_rate": 0.895
+      },
+      "above": {
+       "base_rate": 0.048,
+       "n_fc": 229,
+       "hit_rate": 0.044
+      }
+     }
+    }
+   }
+  },
+  "South India": {
+   "precip": {
+    "1": {
+     "n": 35525,
+     "acc": 0.574,
+     "rmsess": 0.002,
+     "tier": "High",
+     "acc_op": 0.624,
+     "n_op": 3625,
+     "acc_refc": 0.579,
+     "n_refc": 31900,
+     "categories": {
+      "below": {
+       "base_rate": 0.217,
+       "n_fc": 9628,
+       "hit_rate": 0.505
+      },
+      "near": {
+       "base_rate": 0.601,
+       "n_fc": 17892,
+       "hit_rate": 0.738
+      },
+      "above": {
+       "base_rate": 0.181,
+       "n_fc": 8005,
+       "hit_rate": 0.439
+      },
+      "heavy": {
+       "base_rate": 0.082,
+       "n_fc": 3755,
+       "hit_rate": 0.348
+      }
+     }
+    },
+    "2": {
+     "n": 35525,
+     "acc": 0.323,
+     "rmsess": -0.046,
+     "tier": "Medium",
+     "acc_op": 0.317,
+     "n_op": 3625,
+     "acc_refc": 0.329,
+     "n_refc": 31900,
+     "categories": {
+      "below": {
+       "base_rate": 0.206,
+       "n_fc": 5734,
+       "hit_rate": 0.459
+      },
+      "near": {
+       "base_rate": 0.599,
+       "n_fc": 24257,
+       "hit_rate": 0.678
+      },
+      "above": {
+       "base_rate": 0.195,
+       "n_fc": 5534,
+       "hit_rate": 0.39
+      },
+      "heavy": {
+       "base_rate": 0.09,
+       "n_fc": 1747,
+       "hit_rate": 0.342
+      }
+     }
+    },
+    "3": {
+     "n": 35525,
+     "acc": 0.229,
+     "rmsess": -0.016,
+     "tier": "Low",
+     "acc_op": 0.4,
+     "n_op": 3625,
+     "acc_refc": 0.212,
+     "n_refc": 31900,
+     "categories": {
+      "below": {
+       "base_rate": 0.245,
+       "n_fc": 3115,
+       "hit_rate": 0.515
+      },
+      "near": {
+       "base_rate": 0.576,
+       "n_fc": 28635,
+       "hit_rate": 0.617
+      },
+      "above": {
+       "base_rate": 0.179,
+       "n_fc": 3775,
+       "hit_rate": 0.343
+      },
+      "heavy": {
+       "base_rate": 0.082,
+       "n_fc": 850,
+       "hit_rate": 0.321
+      }
+     }
+    },
+    "4": {
+     "n": 35525,
+     "acc": 0.229,
+     "rmsess": -0.008,
+     "tier": "Low",
+     "acc_op": 0.396,
+     "n_op": 3625,
+     "acc_refc": 0.212,
+     "n_refc": 31900,
+     "categories": {
+      "below": {
+       "base_rate": 0.24,
+       "n_fc": 3180,
+       "hit_rate": 0.523
+      },
+      "near": {
+       "base_rate": 0.559,
+       "n_fc": 28570,
+       "hit_rate": 0.604
+      },
+      "above": {
+       "base_rate": 0.201,
+       "n_fc": 3775,
+       "hit_rate": 0.349
+      },
+      "heavy": {
+       "base_rate": 0.093,
+       "n_fc": 867,
+       "hit_rate": 0.322
+      }
+     }
+    },
+    "5": {
+     "n": 35525,
+     "acc": 0.09,
+     "rmsess": -0.077,
+     "tier": "Low",
+     "acc_op": 0.022,
+     "n_op": 3625,
+     "acc_refc": 0.097,
+     "n_refc": 31900,
+     "categories": {
+      "below": {
+       "base_rate": 0.271,
+       "n_fc": 3266,
+       "hit_rate": 0.498
+      },
+      "near": {
+       "base_rate": 0.541,
+       "n_fc": 28704,
+       "hit_rate": 0.581
+      },
+      "above": {
+       "base_rate": 0.188,
+       "n_fc": 3555,
+       "hit_rate": 0.249
+      },
+      "heavy": {
+       "base_rate": 0.089,
+       "n_fc": 750,
+       "hit_rate": 0.199
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 35770,
+     "acc": 0.723,
+     "rmsess": 0.191,
+     "tier": "High",
+     "acc_op": 0.577,
+     "n_op": 3650,
+     "acc_refc": 0.752,
+     "n_refc": 32120,
+     "categories": {
+      "below": {
+       "base_rate": 0.064,
+       "n_fc": 2664,
+       "hit_rate": 0.446
+      },
+      "near": {
+       "base_rate": 0.878,
+       "n_fc": 30377,
+       "hit_rate": 0.934
+      },
+      "above": {
+       "base_rate": 0.058,
+       "n_fc": 2729,
+       "hit_rate": 0.422
+      }
+     }
+    },
+    "2": {
+     "n": 35770,
+     "acc": 0.528,
+     "rmsess": 0.04,
+     "tier": "High",
+     "acc_op": 0.439,
+     "n_op": 3650,
+     "acc_refc": 0.539,
+     "n_refc": 32120,
+     "categories": {
+      "below": {
+       "base_rate": 0.05,
+       "n_fc": 1841,
+       "hit_rate": 0.37
+      },
+      "near": {
+       "base_rate": 0.908,
+       "n_fc": 32317,
+       "hit_rate": 0.935
+      },
+      "above": {
+       "base_rate": 0.041,
+       "n_fc": 1612,
+       "hit_rate": 0.292
+      }
+     }
+    },
+    "3": {
+     "n": 35770,
+     "acc": 0.436,
+     "rmsess": -0.001,
+     "tier": "Medium",
+     "acc_op": 0.423,
+     "n_op": 3650,
+     "acc_refc": 0.44,
+     "n_refc": 32120,
+     "categories": {
+      "below": {
+       "base_rate": 0.046,
+       "n_fc": 1193,
+       "hit_rate": 0.365
+      },
+      "near": {
+       "base_rate": 0.898,
+       "n_fc": 33423,
+       "hit_rate": 0.918
+      },
+      "above": {
+       "base_rate": 0.056,
+       "n_fc": 1154,
+       "hit_rate": 0.355
+      }
+     }
+    },
+    "4": {
+     "n": 35770,
+     "acc": 0.377,
+     "rmsess": -0.019,
+     "tier": "Medium",
+     "acc_op": 0.404,
+     "n_op": 3650,
+     "acc_refc": 0.376,
+     "n_refc": 32120,
+     "categories": {
+      "below": {
+       "base_rate": 0.043,
+       "n_fc": 802,
+       "hit_rate": 0.281
+      },
+      "near": {
+       "base_rate": 0.915,
+       "n_fc": 34102,
+       "hit_rate": 0.925
+      },
+      "above": {
+       "base_rate": 0.042,
+       "n_fc": 866,
+       "hit_rate": 0.279
+      }
+     }
+    },
+    "5": {
+     "n": 35770,
+     "acc": 0.323,
+     "rmsess": -0.023,
+     "tier": "Medium",
+     "acc_op": 0.143,
+     "n_op": 3650,
+     "acc_refc": 0.346,
+     "n_refc": 32120,
+     "categories": {
+      "below": {
+       "base_rate": 0.041,
+       "n_fc": 583,
+       "hit_rate": 0.273
+      },
+      "near": {
+       "base_rate": 0.908,
+       "n_fc": 34455,
+       "hit_rate": 0.917
+      },
+      "above": {
+       "base_rate": 0.051,
+       "n_fc": 732,
+       "hit_rate": 0.333
+      }
+     }
+    }
+   }
+  },
+  "West India": {
+   "precip": {
+    "1": {
+     "n": 9310,
+     "acc": 0.648,
+     "rmsess": 0.192,
+     "tier": "High",
+     "acc_op": 0.672,
+     "n_op": 950,
+     "acc_refc": 0.653,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.346,
+       "n_fc": 3375,
+       "hit_rate": 0.723
+      },
+      "near": {
+       "base_rate": 0.44,
+       "n_fc": 3698,
+       "hit_rate": 0.739
+      },
+      "above": {
+       "base_rate": 0.213,
+       "n_fc": 2237,
+       "hit_rate": 0.62
+      },
+      "heavy": {
+       "base_rate": 0.143,
+       "n_fc": 1557,
+       "hit_rate": 0.541
+      }
+     }
+    },
+    "2": {
+     "n": 9310,
+     "acc": 0.431,
+     "rmsess": 0.083,
+     "tier": "Medium",
+     "acc_op": 0.304,
+     "n_op": 950,
+     "acc_refc": 0.452,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.318,
+       "n_fc": 2502,
+       "hit_rate": 0.665
+      },
+      "near": {
+       "base_rate": 0.476,
+       "n_fc": 4767,
+       "hit_rate": 0.654
+      },
+      "above": {
+       "base_rate": 0.206,
+       "n_fc": 2041,
+       "hit_rate": 0.454
+      },
+      "heavy": {
+       "base_rate": 0.131,
+       "n_fc": 954,
+       "hit_rate": 0.409
+      }
+     }
+    },
+    "3": {
+     "n": 9310,
+     "acc": 0.333,
+     "rmsess": 0.055,
+     "tier": "Medium",
+     "acc_op": 0.384,
+     "n_op": 950,
+     "acc_refc": 0.333,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.357,
+       "n_fc": 1552,
+       "hit_rate": 0.691
+      },
+      "near": {
+       "base_rate": 0.434,
+       "n_fc": 5929,
+       "hit_rate": 0.544
+      },
+      "above": {
+       "base_rate": 0.209,
+       "n_fc": 1829,
+       "hit_rate": 0.447
+      },
+      "heavy": {
+       "base_rate": 0.136,
+       "n_fc": 515,
+       "hit_rate": 0.447
+      }
+     }
+    },
+    "4": {
+     "n": 9310,
+     "acc": 0.232,
+     "rmsess": 0.019,
+     "tier": "Low",
+     "acc_op": 0.406,
+     "n_op": 950,
+     "acc_refc": 0.214,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.324,
+       "n_fc": 1196,
+       "hit_rate": 0.607
+      },
+      "near": {
+       "base_rate": 0.475,
+       "n_fc": 6775,
+       "hit_rate": 0.55
+      },
+      "above": {
+       "base_rate": 0.201,
+       "n_fc": 1339,
+       "hit_rate": 0.355
+      },
+      "heavy": {
+       "base_rate": 0.124,
+       "n_fc": 375,
+       "hit_rate": 0.328
+      }
+     }
+    },
+    "5": {
+     "n": 9310,
+     "acc": 0.123,
+     "rmsess": -0.014,
+     "tier": "Low",
+     "acc_op": 0.176,
+     "n_op": 950,
+     "acc_refc": 0.118,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.357,
+       "n_fc": 1216,
+       "hit_rate": 0.564
+      },
+      "near": {
+       "base_rate": 0.429,
+       "n_fc": 6797,
+       "hit_rate": 0.494
+      },
+      "above": {
+       "base_rate": 0.214,
+       "n_fc": 1297,
+       "hit_rate": 0.325
+      },
+      "heavy": {
+       "base_rate": 0.139,
+       "n_fc": 354,
+       "hit_rate": 0.268
+      }
+     }
+    }
+   },
+   "t2m": {
+    "1": {
+     "n": 9310,
+     "acc": 0.774,
+     "rmsess": 0.339,
+     "tier": "High",
+     "acc_op": 0.679,
+     "n_op": 950,
+     "acc_refc": 0.786,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.066,
+       "n_fc": 469,
+       "hit_rate": 0.597
+      },
+      "near": {
+       "base_rate": 0.885,
+       "n_fc": 8296,
+       "hit_rate": 0.936
+      },
+      "above": {
+       "base_rate": 0.049,
+       "n_fc": 545,
+       "hit_rate": 0.47
+      }
+     }
+    },
+    "2": {
+     "n": 9310,
+     "acc": 0.591,
+     "rmsess": 0.148,
+     "tier": "High",
+     "acc_op": 0.49,
+     "n_op": 950,
+     "acc_refc": 0.602,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.045,
+       "n_fc": 270,
+       "hit_rate": 0.315
+      },
+      "near": {
+       "base_rate": 0.912,
+       "n_fc": 8768,
+       "hit_rate": 0.925
+      },
+      "above": {
+       "base_rate": 0.044,
+       "n_fc": 272,
+       "hit_rate": 0.298
+      }
+     }
+    },
+    "3": {
+     "n": 9310,
+     "acc": 0.484,
+     "rmsess": 0.102,
+     "tier": "Medium",
+     "acc_op": 0.429,
+     "n_op": 950,
+     "acc_refc": 0.49,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.068,
+       "n_fc": 174,
+       "hit_rate": 0.592
+      },
+      "near": {
+       "base_rate": 0.883,
+       "n_fc": 8992,
+       "hit_rate": 0.893
+      },
+      "above": {
+       "base_rate": 0.049,
+       "n_fc": 144,
+       "hit_rate": 0.16
+      }
+     }
+    },
+    "4": {
+     "n": 9310,
+     "acc": 0.354,
+     "rmsess": 0.002,
+     "tier": "Medium",
+     "acc_op": 0.235,
+     "n_op": 950,
+     "acc_refc": 0.372,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.047,
+       "n_fc": 101,
+       "hit_rate": 0.059
+      },
+      "near": {
+       "base_rate": 0.902,
+       "n_fc": 9091,
+       "hit_rate": 0.902
+      },
+      "above": {
+       "base_rate": 0.05,
+       "n_fc": 118,
+       "hit_rate": 0.093
+      }
+     }
+    },
+    "5": {
+     "n": 9310,
+     "acc": 0.299,
+     "rmsess": -0.012,
+     "tier": "Low",
+     "acc_op": 0.141,
+     "n_op": 950,
+     "acc_refc": 0.313,
+     "n_refc": 8360,
+     "categories": {
+      "below": {
+       "base_rate": 0.06,
+       "n_fc": 23
+      },
+      "near": {
+       "base_rate": 0.894,
+       "n_fc": 9174,
+       "hit_rate": 0.895
+      },
+      "above": {
+       "base_rate": 0.046,
+       "n_fc": 113,
+       "hit_rate": 0.124
+      }
+     }
+    }
+   }
+  }
+ },
+ "enso": {
+  "el_nino": {
+   "precip": {
+    "1": {
+     "acc": 0.471,
+     "n": 38220,
+     "n_seasons": 5
+    },
+    "2": {
+     "acc": 0.263,
+     "n": 38220,
+     "n_seasons": 5
+    },
+    "3": {
+     "acc": 0.086,
+     "n": 38220,
+     "n_seasons": 5
+    },
+    "4": {
+     "acc": 0.107,
+     "n": 38220,
+     "n_seasons": 5
+    },
+    "5": {
+     "acc": 0.013,
+     "n": 38220,
+     "n_seasons": 5
+    }
+   },
+   "t2m": {
+    "1": {
+     "acc": 0.752,
+     "n": 38085,
+     "n_seasons": 5
+    },
+    "2": {
+     "acc": 0.437,
+     "n": 38089,
+     "n_seasons": 5
+    },
+    "3": {
+     "acc": 0.305,
+     "n": 38085,
+     "n_seasons": 5
+    },
+    "4": {
+     "acc": 0.239,
+     "n": 38085,
+     "n_seasons": 5
+    },
+    "5": {
+     "acc": 0.359,
+     "n": 38085,
+     "n_seasons": 5
+    }
+   }
+  },
+  "la_nina": {
+   "precip": {
+    "1": {
+     "acc": 0.459,
+     "n": 46020,
+     "n_seasons": 7
+    },
+    "2": {
+     "acc": 0.294,
+     "n": 46020,
+     "n_seasons": 7
+    },
+    "3": {
+     "acc": 0.189,
+     "n": 46020,
+     "n_seasons": 7
+    },
+    "4": {
+     "acc": 0.129,
+     "n": 46020,
+     "n_seasons": 7
+    },
+    "5": {
+     "acc": 0.114,
+     "n": 46020,
+     "n_seasons": 7
+    }
+   },
+   "t2m": {
+    "1": {
+     "acc": 0.686,
+     "n": 45891,
+     "n_seasons": 7
+    },
+    "2": {
+     "acc": 0.5,
+     "n": 45891,
+     "n_seasons": 7
+    },
+    "3": {
+     "acc": 0.318,
+     "n": 45891,
+     "n_seasons": 7
+    },
+    "4": {
+     "acc": 0.195,
+     "n": 45891,
+     "n_seasons": 7
+    },
+    "5": {
+     "acc": 0.17,
+     "n": 45891,
+     "n_seasons": 7
+    }
+   }
+  },
+  "neutral": {
+   "precip": {
+    "1": {
+     "acc": 0.519,
+     "n": 106860,
+     "n_seasons": 13
+    },
+    "2": {
+     "acc": 0.294,
+     "n": 106860,
+     "n_seasons": 13
+    },
+    "3": {
+     "acc": 0.228,
+     "n": 106860,
+     "n_seasons": 13
+    },
+    "4": {
+     "acc": 0.135,
+     "n": 106860,
+     "n_seasons": 13
+    },
+    "5": {
+     "acc": 0.078,
+     "n": 106860,
+     "n_seasons": 13
+    }
+   },
+   "t2m": {
+    "1": {
+     "acc": 0.777,
+     "n": 106597,
+     "n_seasons": 13
+    },
+    "2": {
+     "acc": 0.568,
+     "n": 106597,
+     "n_seasons": 13
+    },
+    "3": {
+     "acc": 0.507,
+     "n": 106597,
+     "n_seasons": 13
+    },
+    "4": {
+     "acc": 0.376,
+     "n": 106597,
+     "n_seasons": 13
+    },
+    "5": {
+     "acc": 0.309,
+     "n": 106597,
+     "n_seasons": 13
+    }
+   }
+  }
+ },
+ "models": {
+  "gefs": {
+   "precip": {
+    "1": 0.496,
+    "2": 0.289,
+    "3": 0.193,
+    "4": 0.132,
+    "5": 0.082
+   },
+   "t2m": {
+    "1": 0.752,
+    "2": 0.524,
+    "3": 0.432,
+    "4": 0.308,
+    "5": 0.293
+   }
+  },
+  "cfsv2": {
+   "precip": {
+    "1": 0.376,
+    "2": 0.1,
+    "3": 0.102,
+    "4": 0.03,
+    "5": -0.07
+   },
+   "t2m": {
+    "1": 0.554,
+    "2": 0.354,
+    "3": 0.17,
+    "4": 0.055,
+    "5": 0.052
+   }
+  },
+  "mme_equal": {
+   "precip": {
+    "1": 0.508,
+    "2": 0.159,
+    "3": 0.181,
+    "4": 0.109,
+    "5": -0.017
+   },
+   "t2m": {
+    "1": 0.608,
+    "2": 0.386,
+    "3": 0.252,
+    "4": 0.12,
+    "5": 0.079
+   }
+  },
+  "mme_weighted": {
+   "precip": {
+    "1": 0.496,
+    "2": 0.29,
+    "3": 0.194,
+    "4": 0.131,
+    "5": 0.079
+   },
+   "t2m": {
+    "1": 0.753,
+    "2": 0.527,
+    "3": 0.432,
+    "4": 0.307,
+    "5": 0.293
+   }
+  },
+  "ec46_2004_2020": {
+   "precip": {
+    "1": 0.52,
+    "2": 0.334,
+    "3": 0.206,
+    "4": 0.092,
+    "5": 0.069
+   },
+   "t2m": {
+    "1": 0.754,
+    "2": 0.606,
+    "3": 0.393,
+    "4": 0.319,
+    "5": 0.253
+   }
+  },
+  "op_2021_2025": {
+   "precip": {
+    "1": 0.563,
+    "2": 0.203,
+    "3": 0.272,
+    "4": 0.253,
+    "5": 0.102
+   },
+   "t2m": {
+    "1": 0.62,
+    "2": 0.364,
+    "3": 0.32,
+    "4": 0.212,
+    "5": 0.104
+   }
+  },
+  "gefs_refc_2000_2019": {
+   "precip": {
+    "1": 0.498,
+    "2": 0.298,
+    "3": 0.185,
+    "4": 0.121,
+    "5": 0.078
+   },
+   "t2m": {
+    "1": 0.776,
+    "2": 0.553,
+    "3": 0.447,
+    "4": 0.32,
+    "5": 0.316
+   }
+  }
+ }
+}

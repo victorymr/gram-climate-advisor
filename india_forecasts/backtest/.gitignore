@@ -1,0 +1,7 @@
+# Generated backtest artifacts (kept locally, not committed)
+collapsed/
+plots/
+plots/
+scores/
+truth/
+collapsed_refc/

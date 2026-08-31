@@ -52,18 +52,60 @@ def fxx_list(step_hours):
     return list(range(step_hours, MAX_LEAD_H + 1, step_hours))
 
 
-def fetch(date, member, step_hours, inspect=False):
+FXX_RETRIES = 3          # extra probe rounds for leads FastHerbie could not resolve
+FXX_RETRY_THREADS = 4    # gentle on S3: the 50-thread probe burst is what gets throttled
+N_WEEKS = MAX_LEAD_H // 168
+
+
+def _missing_leads(da, fxx):
+    got = set(int(x) for x in np.asarray(da["lead_hours"].values).ravel())
+    return [f for f in fxx if f not in got]
+
+
+def fetch(date, member, step_hours, inspect=False, allow_partial=False):
     """Return (t_da, p_da) each dims (step, lat, lon) with coord lead_hours, on the
-    global GEFS grid (cropped to India), using Herbie + FastHerbie."""
+    global GEFS grid (cropped to India), using Herbie + FastHerbie.
+
+    Lead coverage is VERIFIED: FastHerbie probes S3 for every lead with 50 threads and,
+    when a probe fails (throttling / connection reset), silently drops that lead --
+    .xarray() then returns whatever survived, e.g. a 3-week "35-day" forecast (seen on
+    2026-08-17: the mean and 15/31 members stopped at 504 h). Unresolved leads are
+    re-probed gently, and a forecast still short of MAX_LEAD_H is refused unless
+    allow_partial, so a truncated file can never be written (or cached) by accident.
+    """
+    import time
     from herbie import FastHerbie
 
     fxx = fxx_list(step_hours)
-    FH = FastHerbie([pd.Timestamp(date)], model="gefs", fxx=fxx,
-                    member=member, product="atmos.5")
+    # Pin to AWS (s3://noaa-gefs-pds). Herbie's default also tries the Azure Planetary
+    # Computer mirror, which needs SAS-token signing and SSL-fails under concurrency.
+    kw = dict(model="gefs", member=member, product="atmos.5", priority=["aws"])
+    FH = FastHerbie([pd.Timestamp(date)], fxx=fxx, **kw)
     if inspect:
         H0 = FH.objects[0]
         print(H0.inventory().head(40).to_string())
         return None, None
+
+    for attempt in range(1, FXX_RETRIES + 1):
+        have = {H.fxx for H in FH.file_exists}
+        missing = [f for f in fxx if f not in have]
+        if not missing:
+            break
+        print(f"  {member}: {len(missing)}/{len(fxx)} lead(s) unresolved (from f{missing[0]:03d}); "
+              f"re-probing, try {attempt}/{FXX_RETRIES}", flush=True)
+        time.sleep(2 * attempt)
+        FH2 = FastHerbie([pd.Timestamp(date)], fxx=missing, max_threads=FXX_RETRY_THREADS, **kw)
+        FH.objects = sorted(FH.file_exists + FH2.file_exists, key=lambda H: H.fxx)
+        FH.file_exists = [H for H in FH.objects if H.grib is not None]
+        FH.file_not_exists = []
+        FH.tasks = len(FH.objects)
+    have = {H.fxx for H in FH.file_exists}
+    missing = [f for f in fxx if f not in have]
+    if missing and not allow_partial:
+        raise RuntimeError(
+            f"GEFS {member} {date}: {len(missing)}/{len(fxx)} leads unavailable after "
+            f"{FXX_RETRIES} re-probes (from f{missing[0]:03d}); refusing to build a partial "
+            f"forecast (--allow-partial overrides)")
 
     dt = FH.xarray(f"{SEARCH_T}|{SEARCH_P}")   # one dataset (or list) with t2m + tp
     dss = dt if isinstance(dt, list) else [dt]
@@ -90,9 +132,26 @@ def fetch(date, member, step_hours, inspect=False):
     t = grab(["t2m", "2t"])
     p = grab(["tp", "apcp", "unknown"])
     if t is None or p is None:
-        sys.exit(f"Could not extract TMP/APCP. Vars seen: "
-                 f"{[list(d.data_vars) for d in dss]}. Use --inspect.")
+        # RuntimeError (not sys.exit): callers run this in worker threads, where
+        # SystemExit would bypass their `except Exception` and abort the whole run.
+        raise RuntimeError(f"Could not extract TMP/APCP. Vars seen: "
+                           f"{[list(d.data_vars) for d in dss]}.")
+    # belt and braces: the subset download itself can also drop a step
+    for name, da in (("TMP", t), ("APCP", p)):
+        miss = _missing_leads(da, fxx)
+        if miss and not allow_partial:
+            raise RuntimeError(f"GEFS {member} {date}: {name} missing {len(miss)} lead(s) "
+                               f"after download (from f{miss[0]:03d}); refusing partial forecast")
     return t, p
+
+
+def _complete(path):
+    """True if a saved weekly file covers every week to MAX_LEAD_H (else it is partial)."""
+    try:
+        with xr.open_dataset(path) as ds:
+            return int(ds.sizes.get("week", 0)) >= N_WEEKS
+    except Exception:
+        return False
 
 
 def to_weekly_fields(t, p, precip_accum):
@@ -129,7 +188,14 @@ def main():
                          "Writes gefs_<date>_india_weekly_members.nc (dims member,week,lat,lon).")
     ap.add_argument("--step-hours", type=int, default=6, help="Lead sampling cadence (default 6h).")
     ap.add_argument("--precip-accum", choices=["bucket", "cumulative"], default="bucket")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="Concurrent members to fetch with --members. Default 1 (sequential): "
+                         "measured fastest + most reliable, since cfgrib decoding is GIL-bound "
+                         "and >1 worker triggers AWS throttling. >1 is available but was slower.")
     ap.add_argument("--inspect", action="store_true", help="Print one GEFS inventory and stop.")
+    ap.add_argument("--allow-partial", action="store_true",
+                    help="Save a forecast even if some leads could not be fetched (default: "
+                         "refuse, so a truncated 'N-week' file is never written or cached).")
     args = ap.parse_args()
 
     d = pd.Timestamp(args.date)
@@ -142,23 +208,39 @@ def main():
     if args.members:
         import glob
         import re as _re
+        from concurrent.futures import ThreadPoolExecutor, as_completed
         members = expand_members(args.members)
         tag = d.strftime("%Y%m%d")
-        for m in members:
+
+        def _get_member(m):
+            """Fetch+save one member (cached members skip; one retry). Thread-safe:
+            each member is a distinct GRIB and writes its own per-member file."""
             mf = GEFS_DIR / f"gefs_{tag}_member_{m}.nc"
             if mf.exists():
-                print(f"  member {m}: cached"); continue
+                if _complete(mf) or args.allow_partial:
+                    return f"member {m}: cached"
+                # a truncated member from an earlier run: re-fetch rather than keep it
+                print(f"  member {m}: cached file is partial (< {N_WEEKS} weeks) -> re-fetching",
+                      flush=True)
+                mf.unlink()
             for attempt in (1, 2):
                 try:
-                    t, p = fetch(args.date, m, args.step_hours)
+                    t, p = fetch(args.date, m, args.step_hours, allow_partial=args.allow_partial)
                     t2m, precip = to_weekly_fields(t, p, args.precip_accum)
                     save_netcdf(xr.Dataset({"t2m": t2m, "precip": precip},
                                            attrs={"model": "GEFS", "init_date": tag, "member": m}), mf)
-                    print(f"  member {m}: saved (try {attempt})")
-                    break
+                    return f"member {m}: saved (try {attempt})"
                 except Exception as e:
-                    print(f"  member {m}: {type(e).__name__} (try {attempt}); "
-                          f"{'retrying' if attempt == 1 else 'skipping'}")
+                    if attempt == 2:
+                        return f"member {m}: {type(e).__name__} - skipped ({str(e)[:120]})"
+            return f"member {m}: skipped"
+
+        # Members are fetched concurrently (the download is S3-latency bound, so this
+        # is the dominant speed-up); FastHerbie still parallelises steps within a member.
+        with ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
+            futs = [ex.submit(_get_member, m) for m in members]
+            for fut in as_completed(futs):
+                print(f"  {fut.result()}", flush=True)
 
         parts = sorted(glob.glob(str(GEFS_DIR / f"gefs_{tag}_member_*.nc")))
         if not parts:
@@ -176,7 +258,8 @@ def main():
         return
 
     # --- single member / ensemble mean (existing behaviour) ---
-    t, p = fetch(args.date, args.member, args.step_hours, inspect=args.inspect)
+    t, p = fetch(args.date, args.member, args.step_hours, inspect=args.inspect,
+                 allow_partial=args.allow_partial)
     if args.inspect:
         return
     t2m, precip = to_weekly_fields(t, p, args.precip_accum)
