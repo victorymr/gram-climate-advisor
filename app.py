@@ -640,7 +640,7 @@ if input_mode == "Map" and _HAS_MAP:
     if not geo:
         st.warning("Map data not found — run `python scripts/build_district_list.py`.")
     else:
-        fmap = folium.Map(location=[22.5, 80.5], zoom_start=4, tiles="cartodbpositron", control_scale=True)
+        fmap = folium.Map(location=[22.5, 80.5], zoom_start=4, tiles="OpenStreetMap", control_scale=True)
         folium.GeoJson(
             geo, name="districts",
             style_function=lambda f: {"fillColor": "#74a9cf", "color": "#5a5a5a",
@@ -968,7 +968,7 @@ if st.session_state.get("advisory_shown") and selected_state and selected_distri
                         "fillOpacity": 0.82}
 
             fmap = folium.Map(location=[22.4, 80.5], zoom_start=4,
-                              tiles="cartodbpositron", control_scale=False)
+                              tiles="OpenStreetMap", control_scale=False)
             folium.GeoJson(
                 geo, name="forecast", style_function=_nat_style,
                 tooltip=folium.GeoJsonTooltip(
