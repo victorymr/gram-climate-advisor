@@ -13,7 +13,8 @@ merges into district_forecasts.json — this is what lets the drought / delayed-
 dry-spell scenarios fire nationwide (they key on observed rainfall departures).
 
 Data source: India Meteorological Department 0.25 deg gauge-based gridded rainfall via imdlib.
-  - current season : imdlib.get_real_data  (real-time, provisional, ~1-2 day lag)
+  - current season : IMD real-time daily grids (provisional, ~1-2 day lag), fetched with
+                     retries + a per-day cache in data/obs/imd_rt, read via imdlib.open_real_data
   - climatology    : imdlib.get_data       (historical yearwise) -> day-of-year normal, cached
 Both are the same IMD product/grid, so the departure is internally consistent. IMD is the
 gauge reference over India (see Pai et al. 2014); ERA5 runs ~15% wet, CHIRPS is a satellite-
@@ -69,12 +70,77 @@ def build_climatology(years):
     return clim
 
 
+RT_URL = "https://imdpune.gov.in/cmpg/Realtimedata/Rainfall/rain.php"   # imdlib's real-time endpoint
+RT_BYTES = 129 * 135 * 4     # one complete 0.25 deg daily grid (float32)
+RT_REFRESH_DAYS = 7          # re-fetch the newest week every run: IMD revises provisional data
+RT_MAX_SHORTFALL = 7         # newest days allowed to be not-yet-published before we give up
+RT_THREADS = 2               # imdpune.gov.in takes ~6-10 s per day and stalls under load
+
+
+def _rt_path(day):
+    return RT_DIR / f"rain_ind0.25_{day:%y_%m_%d}.grd"     # imdlib's naming, so open_real_data reads it
+
+
+def _rt_cached(day):
+    p = _rt_path(day)
+    return p.exists() and p.stat().st_size == RT_BYTES
+
+
+def _fetch_rt_day(sess, day, attempts=5):
+    """Download one IMD real-time daily grid into the cache; True on success. Unlike
+    imdlib.get_real_data (no timeout, no retry, aborts the season on the first error),
+    a stalled or failed request here is retried and only costs that one day. The backoff
+    (5+10+20+40 s) rides out the minute-long outages imdpune.gov.in has (seen 2026-10-06)."""
+    import time
+    import requests
+    path = _rt_path(day)
+    for i in range(attempts):
+        try:
+            r = sess.post(RT_URL, data={"rain": f"{day:%d%m%Y}"}, timeout=(15, 90))
+            r.raise_for_status()
+            if len(r.content) == RT_BYTES:      # anything else: not published yet / error page
+                tmp = path.with_suffix(".part")
+                tmp.write_bytes(r.content)
+                tmp.replace(path)
+                return True
+        except requests.RequestException:
+            pass
+        if i < attempts - 1:
+            time.sleep(5 * 2 ** i)
+    return False
+
+
 def get_current(year, asof):
-    """IMD real-time daily rain (mm/day), Jun 1 -> asof, on the IMD grid."""
+    """IMD real-time daily rain (mm/day), Jun 1 -> asof, on the IMD grid.
+
+    Returns (rain, end): days already cached are kept (only missing days and the newest
+    RT_REFRESH_DAYS are fetched), and `end` may fall short of asof by up to
+    RT_MAX_SHORTFALL days if IMD has not published the newest days yet."""
     import imdlib as imd
+    import requests
+    from concurrent.futures import ThreadPoolExecutor
     RT_DIR.mkdir(parents=True, exist_ok=True)
-    d = imd.get_real_data("rain", f"{year}-06-01", asof.isoformat(), file_dir=str(RT_DIR))
-    return _rain(d.get_xarray())
+    days = list(pd.date_range(f"{year}-06-01", asof).date)
+    todo = [d for d in days if not _rt_cached(d) or (asof - d).days < RT_REFRESH_DAYS]
+    print(f"  IMD real-time rain: {len(days) - len(todo)} day(s) cached, fetching {len(todo)}")
+    if todo:
+        with requests.Session() as sess, ThreadPoolExecutor(RT_THREADS) as ex:
+            list(ex.map(lambda d: _fetch_rt_day(sess, d), todo))
+
+    # the season must be contiguous from Jun 1; only a short unpublished tail is tolerated
+    end = None
+    for d in days:
+        if not _rt_cached(d):
+            break
+        end = d
+    if end is None or (asof - end).days > RT_MAX_SHORTFALL:
+        gap = days[0] if end is None else end + timedelta(days=1)
+        sys.exit(f"IMD real-time rain unavailable for {gap} (after retries); "
+                 f"re-run later to resume -- {sum(map(_rt_cached, days))}/{len(days)} days are cached.")
+    if end < asof:
+        print(f"  [warn] IMD real-time rain not yet published after {end}; scoring to {end} instead of {asof}")
+    d = imd.open_real_data("rain", f"{year}-06-01", end.isoformat(), str(RT_DIR))
+    return _rain(d.get_xarray()), end
 
 
 def onset_status(dep_pct):
@@ -115,7 +181,7 @@ def main():
 
     print(f"IMD observed departures: {args.year}-06-01 -> {asof}   (climatology {args.clim_years[0]}-{args.clim_years[1]})")
     clim = build_climatology(args.clim_years)               # (dayofyear, lat, lon)
-    cur = get_current(args.year, asof)                       # (time, lat, lon), same IMD grid
+    cur, asof = get_current(args.year, asof)                 # (time, lat, lon), same IMD grid
     lon, lat = _lonlat(cur)
 
     dates = pd.to_datetime(cur["time"].values)

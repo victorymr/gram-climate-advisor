@@ -6,19 +6,18 @@ India, aggregate to weekly means, save NetCDF. No account needed (anonymous S3).
 Source : s3://noaa-gefs-pds  (Registry of Open Data on AWS), 0.5 deg, 00 UTC cycle
          runs to +840 h (35 days). We pull the ensemble-mean files (geavg,
          ...pgrb2a.0p50...) and only the TMP:2 m and APCP:surface fields, via
-         Herbie's GRIB index byte-range subsetting (small downloads).
+         GRIB .idx byte-range requests on one keep-alive session (small, fast).
 Overlap with EC46 is weeks 1-5 (GEFS stops at day 35).
 
 SETUP
 -----
-    pip install herbie-data xarray cfgrib eccodes netcdf4
-    # Herbie handles the AWS GEFS paths + .idx byte-range subsetting.
+    pip install requests xarray eccodes netcdf4
 
 USAGE
 -----
     python download_gefs.py --date 2026-05-24                 # ens-mean -> weekly India NetCDF
     python download_gefs.py --date 2026-05-24 --step-hours 6  # finer sampling (default 6h)
-    python download_gefs.py --date 2026-05-24 --inspect       # list one Herbie inventory, stop
+    python download_gefs.py --date 2026-05-24 --inspect       # print one GRIB .idx inventory, stop
 
 PRECIP NOTE: GEFS APCP is delivered in accumulation buckets. We sum buckets per
 week -> mm/day (default). If your build serves run-accumulated APCP instead, pass
@@ -30,8 +29,10 @@ runs to 35 days once weekly (Wednesdays, 5/11 members) -- see --reforecast notes
 at the bottom. Without a GEFS climatology the compare plot falls back to absolute.
 """
 
+import re
 import sys
 import argparse
+import threading
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -44,17 +45,21 @@ GEFS_DIR = DATA_DIR / "gefs"
 GEFS_DIR.mkdir(parents=True, exist_ok=True)
 
 MAX_LEAD_H = 840          # 35 days
-SEARCH_T = ":TMP:2 m above ground:"
-SEARCH_P = ":APCP:surface:"
 
 
 def fxx_list(step_hours):
     return list(range(step_hours, MAX_LEAD_H + 1, step_hours))
 
 
-FXX_RETRIES = 3          # extra probe rounds for leads FastHerbie could not resolve
-FXX_RETRY_THREADS = 4    # gentle on S3: the 50-thread probe burst is what gets throttled
+FXX_RETRIES = 3          # extra rounds for leads that failed (5xx / reset / not yet published)
+FETCH_THREADS = 16       # concurrent leads per member over one pooled HTTPS session
 N_WEEKS = MAX_LEAD_H // 168
+
+S3_BASE = "https://noaa-gefs-pds.s3.amazonaws.com"
+_FIELD_RE = re.compile(r":(TMP:2 m above ground|APCP:surface):")
+# eccodes is not thread-safe: concurrent decodes from --workers threads crash the whole
+# process natively ("fatal flex scanner internal error", exit 2), so decode one at a time.
+_ECCODES_LOCK = threading.Lock()
 
 
 def _missing_leads(da, fxx):
@@ -62,81 +67,138 @@ def _missing_leads(da, fxx):
     return [f for f in fxx if f not in got]
 
 
-def fetch(date, member, step_hours, inspect=False, allow_partial=False):
-    """Return (t_da, p_da) each dims (step, lat, lon) with coord lead_hours, on the
-    global GEFS grid (cropped to India), using Herbie + FastHerbie.
+def _session(threads=FETCH_THREADS):
+    """One keep-alive HTTPS session for all requests. This is the whole speed-up over
+    Herbie, which opens a fresh connection (TLS handshake) for every .idx and byte-range
+    GET: ~100 s/member via Herbie vs ~5 s here for the same ~45 MB."""
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3.util.retry import Retry
+    s = requests.Session()
+    retry = Retry(total=5, backoff_factor=0.5, status_forcelist=[429, 500, 502, 503, 504])
+    s.mount("https://", HTTPAdapter(pool_connections=threads, pool_maxsize=threads, max_retries=retry))
+    return s
 
-    Lead coverage is VERIFIED: FastHerbie probes S3 for every lead with 50 threads and,
-    when a probe fails (throttling / connection reset), silently drops that lead --
-    .xarray() then returns whatever survived, e.g. a 3-week "35-day" forecast (seen on
-    2026-08-17: the mean and 15/31 members stopped at 504 h). Unresolved leads are
-    re-probed gently, and a forecast still short of MAX_LEAD_H is refused unless
-    allow_partial, so a truncated file can never be written (or cached) by accident.
+
+def _lead_url(date, member, f):
+    return (f"{S3_BASE}/gefs.{pd.Timestamp(date):%Y%m%d}/00/atmos/pgrb2ap5/"
+            f"ge{member}.t00z.pgrb2a.0p50.f{f:03d}")
+
+
+def _fetch_lead(sess, date, member, f):
+    """GRIB bytes of the TMP:2m + APCP messages for one lead (byte-range subset via the
+    .idx), or None if the lead is not on S3 (yet). Network errors propagate."""
+    url = _lead_url(date, member, f)
+    r = sess.get(url + ".idx", timeout=30)
+    if r.status_code in (403, 404):
+        return None
+    r.raise_for_status()
+    lines = r.text.strip().splitlines()
+    starts = [int(ln.split(":")[1]) for ln in lines]
+    out = b""
+    for i, ln in enumerate(lines):
+        if _FIELD_RE.search(ln):
+            end = starts[i + 1] - 1 if i + 1 < len(lines) else ""
+            g = sess.get(url, headers={"Range": f"bytes={starts[i]}-{end}"}, timeout=60)
+            g.raise_for_status()
+            out += g.content
+    return out
+
+
+def _decode(blobs):
+    """{lead: grib bytes} -> (t, p) DataArrays (step, latitude, longitude), cropped to
+    India per message with eccodes (no cfgrib index files / global-grid concat).
+    Serialised on _ECCODES_LOCK; the network fetch before it still overlaps across members."""
+    with _ECCODES_LOCK:
+        return _decode_locked(blobs)
+
+
+def _decode_locked(blobs):
+    import eccodes
+    t_rows, p_rows, grid = {}, {}, None
+    for f, blob in blobs.items():
+        mv = memoryview(blob)
+        pos = 0
+        while (k := blob.find(b"GRIB", pos)) >= 0:
+            n = int.from_bytes(blob[k + 8:k + 16], "big")       # GRIB2 total message length
+            gid = eccodes.codes_new_from_message(bytes(mv[k:k + n]))
+            try:
+                if grid is None:
+                    ny, nx = eccodes.codes_get(gid, "Nj"), eccodes.codes_get(gid, "Ni")
+                    # per-point coords are in value order whatever the scan mode
+                    lat = eccodes.codes_get_array(gid, "latitudes").reshape(ny, nx)[:, 0]
+                    lon = eccodes.codes_get_array(gid, "longitudes").reshape(ny, nx)[0, :]
+                    tmpl = xr.DataArray(np.zeros((lat.size, lon.size), "f4"),
+                                        coords={"latitude": lat, "longitude": lon},
+                                        dims=("latitude", "longitude"))
+                    crop = subset_to_india(tmpl, INDIA_BBOX)
+                    iy = np.flatnonzero(np.isin(lat, crop["latitude"].values))
+                    ix = np.flatnonzero(np.isin(lon, crop["longitude"].values))
+                    grid = (lat.size, lon.size, iy, ix,
+                            {"latitude": lat[iy], "longitude": lon[ix]})   # file order (N->S)
+                ny, nx, iy, ix, _ = grid
+                vals = eccodes.codes_get_values(gid).reshape(ny, nx)[np.ix_(iy, ix)].astype("f4")
+                name = eccodes.codes_get(gid, "shortName")
+            finally:
+                eccodes.codes_release(gid)
+            (t_rows if name in ("2t", "t2m") else p_rows)[f] = vals
+            pos = k + n
+
+    def build(rows):
+        leads = sorted(rows)
+        coords = dict(grid[4]) if grid else {}
+        coords["lead_hours"] = ("step", np.array(leads, dtype=int))
+        return xr.DataArray(np.stack([rows[f] for f in leads]) if leads else
+                            np.zeros((0, 0, 0), "f4"),
+                            dims=("step", "latitude", "longitude"), coords=coords)
+    return build(t_rows), build(p_rows)
+
+
+def fetch(date, member, step_hours, inspect=False, allow_partial=False):
+    """Return (t_da, p_da) each dims (step, lat, lon) with coord lead_hours, cropped to
+    India, from s3://noaa-gefs-pds via .idx byte-range requests on one pooled session.
+
+    Lead coverage is VERIFIED: any lead that fails (throttling / reset / not yet on S3)
+    is retried, and a forecast still short of MAX_LEAD_H is refused unless allow_partial,
+    so a truncated "35-day" file (seen 2026-08-17 under Herbie: 15/31 members stopped at
+    504 h) can never be written or cached by accident.
     """
     import time
-    from herbie import FastHerbie
+    from concurrent.futures import ThreadPoolExecutor
 
     fxx = fxx_list(step_hours)
-    # Pin to AWS (s3://noaa-gefs-pds). Herbie's default also tries the Azure Planetary
-    # Computer mirror, which needs SAS-token signing and SSL-fails under concurrency.
-    kw = dict(model="gefs", member=member, product="atmos.5", priority=["aws"])
-    FH = FastHerbie([pd.Timestamp(date)], fxx=fxx, **kw)
+    sess = _session()
     if inspect:
-        H0 = FH.objects[0]
-        print(H0.inventory().head(40).to_string())
+        print(sess.get(_lead_url(date, member, fxx[0]) + ".idx", timeout=30).text[:4000])
         return None, None
 
-    for attempt in range(1, FXX_RETRIES + 1):
-        have = {H.fxx for H in FH.file_exists}
-        missing = [f for f in fxx if f not in have]
+    def one(f):
+        try:
+            return f, _fetch_lead(sess, date, member, f)
+        except Exception:
+            return f, None
+
+    blobs, missing = {}, fxx
+    for attempt in range(FXX_RETRIES + 1):
+        if attempt:
+            print(f"  {member}: {len(missing)}/{len(fxx)} lead(s) unresolved (from f{missing[0]:03d}); "
+                  f"retrying, try {attempt}/{FXX_RETRIES}", flush=True)
+            time.sleep(2 * attempt)
+        with ThreadPoolExecutor(min(FETCH_THREADS, len(missing))) as ex:
+            for f, blob in ex.map(one, missing):
+                if blob:
+                    blobs[f] = blob
+        missing = [f for f in fxx if f not in blobs]
         if not missing:
             break
-        print(f"  {member}: {len(missing)}/{len(fxx)} lead(s) unresolved (from f{missing[0]:03d}); "
-              f"re-probing, try {attempt}/{FXX_RETRIES}", flush=True)
-        time.sleep(2 * attempt)
-        FH2 = FastHerbie([pd.Timestamp(date)], fxx=missing, max_threads=FXX_RETRY_THREADS, **kw)
-        FH.objects = sorted(FH.file_exists + FH2.file_exists, key=lambda H: H.fxx)
-        FH.file_exists = [H for H in FH.objects if H.grib is not None]
-        FH.file_not_exists = []
-        FH.tasks = len(FH.objects)
-    have = {H.fxx for H in FH.file_exists}
-    missing = [f for f in fxx if f not in have]
     if missing and not allow_partial:
         raise RuntimeError(
             f"GEFS {member} {date}: {len(missing)}/{len(fxx)} leads unavailable after "
-            f"{FXX_RETRIES} re-probes (from f{missing[0]:03d}); refusing to build a partial "
+            f"{FXX_RETRIES} retries (from f{missing[0]:03d}); refusing to build a partial "
             f"forecast (--allow-partial overrides)")
 
-    dt = FH.xarray(f"{SEARCH_T}|{SEARCH_P}")   # one dataset (or list) with t2m + tp
-    dss = dt if isinstance(dt, list) else [dt]
-
-    def grab(short_options):
-        parts = []
-        for d in dss:
-            v = next((s for s in short_options if s in d.data_vars), None)
-            if v is None:
-                continue
-            da = subset_to_india(d[v], INDIA_BBOX)
-            # standardise the lead coordinate to hours
-            lead = da["step"] if "step" in da.coords else da["lead_time"]
-            lead_h = (lead / np.timedelta64(1, "h")).astype(int) if np.issubdtype(
-                np.asarray(lead).dtype, np.timedelta64) else np.asarray(lead).astype(int)
-            stepdim = [x for x in da.dims if x not in ("latitude", "longitude", "lat", "lon")]
-            sdim = stepdim[0] if stepdim else "step"
-            parts.append(da.assign_coords(lead_hours=(sdim, np.atleast_1d(lead_h))))
-        if not parts:
-            return None
-        out = xr.concat(parts, dim=parts[0].dims[0]) if len(parts) > 1 else parts[0]
-        return out.sortby("lead_hours")
-
-    t = grab(["t2m", "2t"])
-    p = grab(["tp", "apcp", "unknown"])
-    if t is None or p is None:
-        # RuntimeError (not sys.exit): callers run this in worker threads, where
-        # SystemExit would bypass their `except Exception` and abort the whole run.
-        raise RuntimeError(f"Could not extract TMP/APCP. Vars seen: "
-                           f"{[list(d.data_vars) for d in dss]}.")
-    # belt and braces: the subset download itself can also drop a step
+    t, p = _decode(blobs)
+    # belt and braces: a lead's .idx may lack one of the two fields
     for name, da in (("TMP", t), ("APCP", p)):
         miss = _missing_leads(da, fxx)
         if miss and not allow_partial:
@@ -188,10 +250,10 @@ def main():
                          "Writes gefs_<date>_india_weekly_members.nc (dims member,week,lat,lon).")
     ap.add_argument("--step-hours", type=int, default=6, help="Lead sampling cadence (default 6h).")
     ap.add_argument("--precip-accum", choices=["bucket", "cumulative"], default="bucket")
-    ap.add_argument("--workers", type=int, default=1,
-                    help="Concurrent members to fetch with --members. Default 1 (sequential): "
-                         "measured fastest + most reliable, since cfgrib decoding is GIL-bound "
-                         "and >1 worker triggers AWS throttling. >1 is available but was slower.")
+    ap.add_argument("--workers", type=int, default=4,
+                    help="Concurrent members to fetch with --members (default 4; each also runs "
+                         f"{FETCH_THREADS} lead requests). Measured for all 31 members: 1 worker "
+                         "~190 s, 4 workers ~90 s, all 35-day complete.")
     ap.add_argument("--inspect", action="store_true", help="Print one GEFS inventory and stop.")
     ap.add_argument("--allow-partial", action="store_true",
                     help="Save a forecast even if some leads could not be fetched (default: "
@@ -236,7 +298,7 @@ def main():
             return f"member {m}: skipped"
 
         # Members are fetched concurrently (the download is S3-latency bound, so this
-        # is the dominant speed-up); FastHerbie still parallelises steps within a member.
+        # is the dominant speed-up); fetch() still parallelises leads within a member.
         with ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
             futs = [ex.submit(_get_member, m) for m in members]
             for fut in as_completed(futs):
